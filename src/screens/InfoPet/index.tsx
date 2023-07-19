@@ -5,23 +5,17 @@ import { StackRouterProps } from "../../routers/stack";
 
 import { styles } from "./styles";
 
-export default function Home() {
+export default function InfoPet() {
   // para fazer a navegação
   const navigaton = useNavigation<StackRouterProps>();
 
   return (
     <View style={styles.container}>
-      <Text>Página Home </Text>
+      <Text>Página InfoPet </Text>
       <Button
-        title="ir para Login"
+        title="ir para Home"
         onPress={() => {
-          navigaton.navigate("Login");
-        }}
-      />
-      <Button
-        title="ir para Info Pet"
-        onPress={() => {
-          navigaton.navigate("InfoPet");
+          navigaton.navigate("Home");
         }}
       />
       <StatusBar style="auto" />
