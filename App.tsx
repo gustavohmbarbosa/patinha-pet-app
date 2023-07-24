@@ -4,23 +4,43 @@ import {
   PaperProvider,
 } from "react-native-paper";
 import StackRouterComponent from "./src/routers/stack";
+import { Poppins_400Regular, useFonts } from "@expo-google-fonts/poppins";
+import {
+  Quicksand_500Medium,
+  Quicksand_600SemiBold,
+} from "@expo-google-fonts/quicksand";
+import { View, Text } from "react-native";
+import { APPTHEME } from "./src/styles/theme";
+import { Loading } from "./src/components/Loading";
 
+// definição de tema do react native paper
 const theme: MD3Theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: "#E3EBEE",
-    primary: "#006184",
-    secondary: "#D66853",
+    background: APPTHEME.colors.background,
+    primary: APPTHEME.colors.primary,
+    secondary: APPTHEME.colors.secondary,
   },
 };
 
 export default function App() {
+  // fazer o carregamento das fonts pro app
+  const [fontsLoaded] = useFonts({
+    Poppins_400Regular,
+    Quicksand_500Medium,
+    Quicksand_600SemiBold,
+  });
   return (
     // usando o React Native Paper - material ui
-    <PaperProvider>
-      {/* // component de rotas */}
-      <StackRouterComponent />
+    <PaperProvider theme={theme}>
+      {fontsLoaded ? (
+        /* component de rotas */
+
+        <StackRouterComponent />
+      ) : (
+        <Loading />
+      )}
     </PaperProvider>
   );
 }

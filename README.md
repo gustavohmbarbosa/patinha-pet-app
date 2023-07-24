@@ -14,7 +14,7 @@ Não precisa baixar pois já ta nas dependências
 
 ```bash
 # Clone este repositório
-$ git clone https://github.com/gustavohmbarbosa/patinha-pet-app
+$ git clone https://github.com/gustavohmbarbosa/patinha-pet-app.git
 
 
 # Para rodar o projeto, deve usar:

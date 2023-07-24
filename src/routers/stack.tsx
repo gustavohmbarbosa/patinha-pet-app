@@ -10,15 +10,17 @@ import {
 import Home from "../screens/Home";
 import Login from "../screens/Login";
 import InfoPet from "../screens/InfoPet";
+import { APPTHEME } from "../styles/theme";
+import { ExempleTabs } from "../screens/ExempleTabs";
 
 // Personalizando o thema padrão do React Navigate
 const theme: Theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: "#E3EBEE",
-    primary: "#006184",
-    text: "#006184",
+    background: APPTHEME.colors.background,
+    primary: APPTHEME.colors.primary,
+    text: APPTHEME.colors.primary,
   },
 };
 
@@ -29,6 +31,7 @@ type StackNavigationProps = {
   Home: undefined;
   Login: undefined;
   InfoPet: undefined;
+  ExempleTabs: undefined;
 };
 
 // esse type será usado todas as vezes que for usar as rotas
@@ -53,6 +56,7 @@ export default function StackRouterComponent() {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="InfoPet" component={InfoPet} />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="ExempleTabs" component={ExempleTabs} />
       </Stack.Navigator>
     </NavigationContainer>
   );
