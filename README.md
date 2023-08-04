@@ -17,6 +17,9 @@ Não precisa baixar pois já ta nas dependências
 $ git clone https://github.com/gustavohmbarbosa/patinha-pet-app.git
 
 
+# Para instalar dependências:
+$ npx expo install
+
 # Para rodar o projeto, deve usar:
 $ npx expo start
 

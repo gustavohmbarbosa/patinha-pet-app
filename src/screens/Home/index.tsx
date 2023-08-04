@@ -26,36 +26,38 @@ export default function Home() {
   const [pet, setPet] = useState<RadioTypePetProps>("dog");
 
   return (
-    <View style={styles.container}>
-      <FabGroup />
-      <Text>Página Home </Text>
-      <Button
-        onPress={() => {
-          navigaton.navigate("Login");
-        }}
-      >
-        ir para Login
-      </Button>
-      <TextInput label={"Nome"} />
+    <Portal.Host>
+      <View style={styles.container}>
+        <FabGroup />
+        <Text>Página Home </Text>
+        <Button
+          onPress={() => {
+            navigaton.navigate("Login");
+          }}
+        >
+          ir para Login
+        </Button>
+        <TextInput label={"Nome"} />
 
-      <Button
-        onPress={() => {
-          navigaton.navigate("ExempleTabs");
-        }}
-      >
-        ir para ExempleTabs
-      </Button>
-      {/* <Loading /> */}
+        <Button
+          onPress={() => {
+            navigaton.navigate("ExempleTabs");
+          }}
+        >
+          ir para ExempleTabs
+        </Button>
+        {/* <Loading /> */}
 
-      <AvatarText label="LN" title="Luan" />
-      <FabIcon icon="hospital-box-outline" />
-      <StatusBar style="auto" />
-      <ButtonOutline icon={() => <GoogleImg />} onPress={() => {}}>
-        Google
-      </ButtonOutline>
-      <Switch value={switchOn} onValueChange={() => setSwitchOn(!switchOn)} />
-      <RadioPet pet={pet} setPet={setPet} />
-      <DatePicker />
-    </View>
+        <AvatarText label="LN" title="Luan" />
+        <FabIcon icon="hospital-box-outline" />
+        <StatusBar style="auto" />
+        <ButtonOutline icon={() => <GoogleImg />} onPress={() => {}}>
+          Google
+        </ButtonOutline>
+        <Switch value={switchOn} onValueChange={() => setSwitchOn(!switchOn)} />
+        <RadioPet pet={pet} setPet={setPet} />
+        <DatePicker />
+      </View>
+    </Portal.Host>
   );
 }

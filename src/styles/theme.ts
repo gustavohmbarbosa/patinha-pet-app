@@ -19,7 +19,7 @@ export const APPTHEME = {
       black25: "#00000040", //25%
       black50: "#00000080", //50%
       dark: "#04181F",
-      gray: "#E3EBEE",
+      background: "#E3EBEE",
     },
     other: {
       cyan: "#5BC0BE",
