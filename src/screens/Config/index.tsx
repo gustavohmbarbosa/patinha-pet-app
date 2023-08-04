@@ -6,6 +6,7 @@ import { styles } from "./styles";
 import { APPTHEME } from "../../styles/theme";
 import InfoImg from "../../assets/info.svg";
 import LogoutImg from "../../assets/logout.svg";
+import PinImg from "../../assets/pin.svg";
 import ChevronImg from "../../assets/chevron-white.svg";
 import { useNavigation } from "@react-navigation/native";
 import { StackRouterProps } from "../../routers/stack";
@@ -23,15 +24,17 @@ export function Config() {
       subtitle: "Minhas informações de conta",
       icon: <InfoImg width={24} height={24} />,
       onPress: () => {
-        navigation.push("Login");
+        navigation.push("UserInfo");
       },
     },
     {
       id: 2,
-      title: "Sair",
-      subtitle: "Fazer logout",
-      icon: <LogoutImg width={24} height={24} />,
-      onPress: () => {},
+      title: "Endereço",
+      subtitle: "Seu endereço cadastrado",
+      icon: <PinImg width={24} height={24} />,
+      onPress: () => {
+        navigation.push("AdressInfo");
+      },
     },
   ];
 
@@ -58,38 +61,64 @@ export function Config() {
         </View>
       </View>
       <View style={styles.content}>
-        {
-          // não to usando Flatlist porque não é uma lista(plmns por agr)
-          options.map((item) => (
-            <View key={item.id}>
-              <Divider
-                style={{
-                  backgroundColor: APPTHEME.colors.background,
-                  opacity: 0.5,
-                }}
-              />
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => item.onPress()}
-              >
-                <View style={styles.buttonContent}>
-                  {item.icon}
-                  <View>
-                    <Text style={styles.title}>{item.title}</Text>
-                    <Text style={styles.buttonText}>{item.subtitle}</Text>
+        <View>
+          <Divider
+            style={{
+              backgroundColor: APPTHEME.colors.background,
+              opacity: 0.5,
+            }}
+          />
+          {
+            // não to usando Flatlist porque não é uma lista(plmns por agr)
+            options.map((item) => (
+              <View key={item.id}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => item.onPress()}
+                >
+                  <View style={styles.buttonContent}>
+                    {item.icon}
+                    <View>
+                      <Text style={styles.title}>{item.title}</Text>
+                      <Text style={styles.buttonText}>{item.subtitle}</Text>
+                    </View>
                   </View>
-                </View>
-                <ChevronImg width={24} height={24} />
-              </TouchableOpacity>
-              <Divider
-                style={{
-                  backgroundColor: APPTHEME.colors.background,
-                  opacity: 0.5,
-                }}
-              />
+                  <ChevronImg width={24} height={24} />
+                </TouchableOpacity>
+                <Divider
+                  style={{
+                    backgroundColor: APPTHEME.colors.background,
+                    opacity: 0.5,
+                  }}
+                />
+              </View>
+            ))
+          }
+        </View>
+        <View>
+          <Divider
+            style={{
+              backgroundColor: APPTHEME.colors.background,
+              opacity: 0.5,
+            }}
+          />
+          <TouchableOpacity style={styles.button} onPress={() => {}}>
+            <View style={styles.buttonContent}>
+              <LogoutImg width={24} height={24} />
+              <View>
+                <Text style={styles.title}>Sair</Text>
+                <Text style={styles.buttonText}>Fazer lougout</Text>
+              </View>
             </View>
-          ))
-        }
+            <ChevronImg width={24} height={24} />
+          </TouchableOpacity>
+          <Divider
+            style={{
+              backgroundColor: APPTHEME.colors.background,
+              opacity: 0.5,
+            }}
+          />
+        </View>
       </View>
     </View>
   );

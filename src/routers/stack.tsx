@@ -9,7 +9,6 @@ import {
 } from "@react-navigation/native-stack";
 import Home from "../screens/Home";
 import Login from "../screens/Login";
-import InfoPet from "../screens/InfoPet";
 import { APPTHEME } from "../styles/theme";
 import { ExempleTabs } from "../screens/ExempleTabs";
 
@@ -17,6 +16,9 @@ import AccountBoxImg from "../assets/account-box.svg";
 import CloseImg from "../assets/close.svg";
 import { ButtonIcon } from "../components/ButtonIcon";
 import { Config } from "../screens/Config";
+import { UserInfo } from "../screens/UserInfo";
+import PetInfo from "../screens/PetInfo";
+import { AdressInfo } from "../screens/AdressInfo";
 
 // Personalizando o thema padrão do React Navigate
 const theme: Theme = {
@@ -35,8 +37,10 @@ type StackNavigationProps = {
   // Ex: Home: {userId: string, username: string,...}
   Home: undefined;
   Login: undefined;
-  InfoPet: undefined;
+  PetInfo: undefined;
   Config: undefined;
+  UserInfo: undefined;
+  AdressInfo: undefined;
   ExempleTabs: undefined;
 };
 
@@ -57,10 +61,14 @@ export default function StackRouterComponent() {
   }}
   */
 
-  // usar em headerStyle quando for o header com background azul
-  const styleTitleBackgroundBlue = {
+  // usar em headerStyle quando for o header com background azul ou text Label Lg
+  const styleTitleLabelLg = {
     fontFamily: APPTHEME.font.label.lg,
     fontSize: APPTHEME.fontsize.label.lg,
+  };
+  const styleTitleBodyLg = {
+    fontFamily: APPTHEME.font.body,
+    fontSize: APPTHEME.fontsize.body.lg,
   };
 
   return (
@@ -69,14 +77,16 @@ export default function StackRouterComponent() {
         screenOptions={{
           headerTitleAlign: "center",
           statusBarTranslucent: true,
+          headerShadowVisible: false,
           statusBarStyle: "dark",
-          // animation: "fade"
+          animation: "fade_from_bottom",
         }}
       >
         <Stack.Screen
-          name="Seus pets"
+          name="Home"
           component={Home}
           options={{
+            title: "Seus pets",
             headerRight: () => (
               <ButtonIcon
                 route="Config"
@@ -92,8 +102,7 @@ export default function StackRouterComponent() {
           options={{
             title: "Informações do usuário",
             headerStyle: { backgroundColor: theme.colors.primary },
-            headerShadowVisible: false,
-            headerTitleStyle: styleTitleBackgroundBlue,
+            headerTitleStyle: styleTitleLabelLg,
             headerTintColor: theme.colors.background,
             statusBarStyle: "light",
             headerLeft: () => (
@@ -102,7 +111,25 @@ export default function StackRouterComponent() {
             animation: "slide_from_left",
           }}
         />
-        <Stack.Screen name="InfoPet" component={InfoPet} />
+        <Stack.Screen
+          name="UserInfo"
+          component={UserInfo}
+          options={{
+            title: "Meus dados",
+            headerTitleStyle: styleTitleBodyLg,
+            headerStyle: { backgroundColor: APPTHEME.colors.background },
+          }}
+        />
+        <Stack.Screen
+          name="AdressInfo"
+          component={AdressInfo}
+          options={{
+            title: "Meu endereço",
+            headerTitleStyle: styleTitleBodyLg,
+            headerStyle: { backgroundColor: APPTHEME.colors.background },
+          }}
+        />
+        <Stack.Screen name="PetInfo" component={PetInfo} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="ExempleTabs" component={ExempleTabs} />
       </Stack.Navigator>

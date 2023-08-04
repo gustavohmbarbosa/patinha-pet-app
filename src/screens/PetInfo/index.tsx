@@ -5,7 +5,7 @@ import { StackRouterProps } from "../../routers/stack";
 
 import { styles } from "./styles";
 
-export default function InfoPet() {
+export default function PetInfo() {
   // para fazer a navegação
   const navigaton = useNavigation<StackRouterProps>();
 
