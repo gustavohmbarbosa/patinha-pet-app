@@ -9,9 +9,16 @@ import {
 } from "@react-navigation/native-stack";
 import Home from "../screens/Home";
 import Login from "../screens/Login";
-import InfoPet from "../screens/InfoPet";
 import { APPTHEME } from "../styles/theme";
 import { ExempleTabs } from "../screens/ExempleTabs";
+
+import AccountBoxImg from "../assets/account-box.svg";
+import CloseImg from "../assets/close.svg";
+import { ButtonIcon } from "../components/ButtonIcon";
+import { Config } from "../screens/Config";
+import { UserInfo } from "../screens/UserInfo";
+import PetInfo from "../screens/PetInfo";
+import { AdressInfo } from "../screens/AdressInfo";
 
 // Personalizando o thema padrão do React Navigate
 const theme: Theme = {
@@ -30,7 +37,10 @@ type StackNavigationProps = {
   // Ex: Home: {userId: string, username: string,...}
   Home: undefined;
   Login: undefined;
-  InfoPet: undefined;
+  PetInfo: undefined;
+  Config: undefined;
+  UserInfo: undefined;
+  AdressInfo: undefined;
   ExempleTabs: undefined;
 };
 
@@ -50,11 +60,76 @@ export default function StackRouterComponent() {
     headerTitleAlign: "center",
   }}
   */
+
+  // usar em headerStyle quando for o header com background azul ou text Label Lg
+  const styleTitleLabelLg = {
+    fontFamily: APPTHEME.font.label.lg,
+    fontSize: APPTHEME.fontsize.label.lg,
+  };
+  const styleTitleBodyLg = {
+    fontFamily: APPTHEME.font.body,
+    fontSize: APPTHEME.fontsize.body.lg,
+  };
+
   return (
     <NavigationContainer theme={theme}>
-      <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="InfoPet" component={InfoPet} />
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: "center",
+          statusBarTranslucent: true,
+          headerShadowVisible: false,
+          statusBarStyle: "dark",
+          animation: "fade_from_bottom",
+        }}
+      >
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{
+            title: "Seus pets",
+            headerRight: () => (
+              <ButtonIcon
+                route="Config"
+                icon={<AccountBoxImg width={32} height={32} />}
+              />
+            ),
+          }}
+        />
+
+        <Stack.Screen
+          name="Config"
+          component={Config}
+          options={{
+            title: "Informações do usuário",
+            headerStyle: { backgroundColor: theme.colors.primary },
+            headerTitleStyle: styleTitleLabelLg,
+            headerTintColor: theme.colors.background,
+            statusBarStyle: "light",
+            headerLeft: () => (
+              <ButtonIcon icon={<CloseImg width={24} height={24} />} />
+            ),
+            animation: "slide_from_left",
+          }}
+        />
+        <Stack.Screen
+          name="UserInfo"
+          component={UserInfo}
+          options={{
+            title: "Meus dados",
+            headerTitleStyle: styleTitleBodyLg,
+            headerStyle: { backgroundColor: APPTHEME.colors.background },
+          }}
+        />
+        <Stack.Screen
+          name="AdressInfo"
+          component={AdressInfo}
+          options={{
+            title: "Meu endereço",
+            headerTitleStyle: styleTitleBodyLg,
+            headerStyle: { backgroundColor: APPTHEME.colors.background },
+          }}
+        />
+        <Stack.Screen name="PetInfo" component={PetInfo} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="ExempleTabs" component={ExempleTabs} />
       </Stack.Navigator>

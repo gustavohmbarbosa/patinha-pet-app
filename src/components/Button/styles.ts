@@ -5,7 +5,6 @@ export const styles = StyleSheet.create({
   container: {
     display: "flex",
     width: "100%",
-    paddingHorizontal: 16,
   },
   content: {
     height: 44,
@@ -19,6 +18,6 @@ export const styles = StyleSheet.create({
     fontSize: APPTHEME.fontsize.label.lg,
     lineHeight: APPTHEME.lineHeight.label.lg,
     letterSpacing: APPTHEME.letterSpacing.label.lg,
-    color: APPTHEME.colors.text.gray,
+    color: APPTHEME.colors.text.background,
   },
 });

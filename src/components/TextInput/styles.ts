@@ -5,7 +5,6 @@ export const styles = StyleSheet.create({
   container: {
     height: 56,
     width: "100%",
-    paddingHorizontal: 16,
   },
   textInput: {
     color: APPTHEME.colors.text.dark,
@@ -13,5 +12,9 @@ export const styles = StyleSheet.create({
   outlined: {
     borderRadius: 8,
     borderColor: APPTHEME.colors.primary,
+  },
+  outlinedError: {
+    borderRadius: 8,
+    borderColor: APPTHEME.colors.alert,
   },
 });

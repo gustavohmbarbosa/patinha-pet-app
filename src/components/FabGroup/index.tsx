@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { View } from "react-native";
+import React from "react";
 
 import { styles } from "./styles";
-import { FAB, PaperProvider, Portal } from "react-native-paper";
+import { FAB, Portal } from "react-native-paper";
 import { APPTHEME } from "../../styles/theme";
 
 type stateProps = {

@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { styles } from "./styles";
@@ -8,19 +7,35 @@ import { APPTHEME } from "../../styles/theme";
 type SelectProps = {
   placeholder: string;
   opcoes: string[];
+  value: string;
+  // de acordo com o onChange do useForm
+  onChange: (...event: any[]) => void;
+  error?: boolean;
 };
 
-export function Select({ opcoes, placeholder }: SelectProps) {
-  const [selectedValue, setselectedValue] = useState();
+export function Select({
+  opcoes,
+  placeholder,
+  value,
+  onChange,
+  error = false,
+}: SelectProps) {
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
+      <View
+        // aceita vários styles, nesse caso um fixo e um condicional
+        style={[styles.content, error ? styles.borderError : styles.border]}
+      >
         <Picker
-          selectedValue={selectedValue}
-          onValueChange={(itemValue, itemIndex) => setselectedValue(itemValue)}
-          style={selectedValue ? styles.select : {}}
-          // itemStyle={styles.item} // não consegui alterar o style, não apresenta mudança
-          dropdownIconColor={APPTHEME.colors.primary}
+          selectedValue={value}
+          onValueChange={onChange}
+          style={value ? styles.select : {}}
+          // não consegui alterar o style, não apresenta mudança
+          // mas sendo o natoivo nn tem problema, pode deixar assim
+          // itemStyle={styles.item}
+          dropdownIconColor={
+            error ? APPTHEME.colors.alert : APPTHEME.colors.text.dark
+          }
           placeholder={placeholder}
           prompt={placeholder}
         >

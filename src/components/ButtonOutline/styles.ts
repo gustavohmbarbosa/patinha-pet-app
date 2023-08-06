@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 16,
+    justifyContent: "space-between",
     borderColor: APPTHEME.colors.primary,
     width: 156,
   },

@@ -7,9 +7,13 @@ import { APPTHEME } from "../../styles/theme";
 
 type TabRootProps = {
   children: ReactNode;
+  backgroundColor?: string;
 };
 
-const TabRoot = ({ children }: TabRootProps) => {
+const TabRoot = ({
+  children,
+  backgroundColor = APPTHEME.colors.neutrals.white,
+}: TabRootProps) => {
   return (
     <TabPaper
       // defaultIndex={0} // default = 0
@@ -17,7 +21,7 @@ const TabRoot = ({ children }: TabRootProps) => {
       // showTextLabel={false } // true/false | default=false (KEEP PROVIDING LABEL WE USE IT AS KEY INTERNALLY + SCREEN READERS)
       // iconPosition // leading, top | default=leading
       style={{
-        backgroundColor: APPTHEME.colors.neutrals.white,
+        backgroundColor: backgroundColor,
       }} // works the same as AppBar in react-native-paper
       // dark={false} // works the same as AppBar in react-native-paper
       // theme={{}} // works the same as AppBar in react-native-paper
