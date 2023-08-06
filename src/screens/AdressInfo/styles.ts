@@ -16,6 +16,10 @@ export const styles = StyleSheet.create({
   box: {
     height: 16,
   },
+  contentCep: {
+    flexDirection: "row",
+    width: "100%",
+  },
   ContentRow: {
     flexDirection: "row",
     gap: 8,

@@ -34,7 +34,7 @@ export function Select({
           // mas sendo o natoivo nn tem problema, pode deixar assim
           // itemStyle={styles.item}
           dropdownIconColor={
-            error ? APPTHEME.colors.alert : APPTHEME.colors.primary
+            error ? APPTHEME.colors.alert : APPTHEME.colors.text.dark
           }
           placeholder={placeholder}
           prompt={placeholder}

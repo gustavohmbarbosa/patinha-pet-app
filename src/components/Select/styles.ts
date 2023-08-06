@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     borderColor: APPTHEME.colors.alert,
   },
   select: {
-    color: APPTHEME.colors.primary,
+    color: APPTHEME.colors.text.dark,
     fontFamily: APPTHEME.font.body,
     fontSize: APPTHEME.fontsize.body.lg,
     lineHeight: APPTHEME.lineHeight.body.lg,

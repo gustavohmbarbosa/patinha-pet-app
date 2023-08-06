@@ -1,14 +1,20 @@
 import React from "react";
-import { View } from "react-native";
+import { Alert, View, Text } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "../../components/Button";
 import { TextInput } from "../../components/TextInput";
+import { IconButton, TextInput as TextInputPaper } from "react-native-paper";
 import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { Select } from "../../components/Select";
 
+import { ButtonIcon } from "../../components/ButtonIcon";
 import { listUF } from "../../utils/uf";
-import { styles } from "./styles";
 import { maskCep } from "../../utils/masks";
+import { styles } from "./styles";
+import SearchImg from "../../assets/search.svg";
+import { getCep } from "../../lib/api/getCep";
+import { cepInfoProps } from "../../lib/types";
+import { APPTHEME } from "../../styles/theme";
 
 type FormDataProps = {
   cep: string;
@@ -25,6 +31,9 @@ export function AdressInfo() {
     control,
     handleSubmit,
     formState: { errors },
+    getValues,
+    setValue,
+    clearErrors,
   } = useForm<FormDataProps>({
     // informa os valores padrão dos campos
     defaultValues: {
@@ -38,7 +47,37 @@ export function AdressInfo() {
     },
   });
 
-  //função de submit do form
+  // função pra chamar a busca do cep somente caso haja cep completo
+  async function handleGetCep() {
+    const cep = getValues("cep");
+    if (cep.length === 9) {
+      try {
+        // tentativa na api
+        const cepInfo: cepInfoProps = await getCep(cep);
+
+        // ta feio, mas ta valendo kkkkk
+        // salva os dados e tira os erros nos campos correspondentes
+        setValue("cidade", cepInfo.localidade);
+        clearErrors("cidade");
+        setValue("uf", cepInfo.uf);
+        clearErrors("uf");
+        setValue("bairro", cepInfo.bairro);
+        clearErrors("bairro");
+        setValue("logradouro", cepInfo.logradouro);
+        clearErrors("logradouro");
+        setValue("complemento", cepInfo.complemento);
+        clearErrors("complemento");
+      } catch (error) {
+        // Alert.alert("título", "mensagem")
+        Alert.alert(
+          "Erro ao buscar o cep",
+          "Aconteceu um erro ao buscar o cep inserido, verifique e tente novamente."
+        );
+      }
+    }
+  }
+
+  // função de submit do form
   // necessário usar o do handleSbumit para obter os dados e executar a lógica que deseja
   const submit = handleSubmit((data) => console.log(data));
 
@@ -53,6 +92,7 @@ export function AdressInfo() {
               <TextInput
                 label="CEP"
                 value={value}
+                onBlur={handleGetCep}
                 // tamanho máximo com a máscara
                 maxLength={9}
                 // adicionando a mask do cep, necessário passar uma função por fora
@@ -61,6 +101,16 @@ export function AdressInfo() {
                   onChange(value);
                 }}
                 keyboardType="number-pad"
+                right={
+                  <TextInputPaper.Icon
+                    icon="magnify"
+                    color={
+                      errors.cep
+                        ? APPTHEME.colors.alert
+                        : APPTHEME.colors.primary
+                    }
+                  />
+                }
                 error={errors.cep ? true : false}
               />
             )}
