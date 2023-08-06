@@ -55,18 +55,13 @@ export function AdressInfo() {
         // tentativa na api
         const cepInfo: cepInfoProps = await getCep(cep);
 
-        // ta feio, mas ta valendo kkkkk
         // salva os dados e tira os erros nos campos correspondentes
         setValue("cidade", cepInfo.localidade);
-        clearErrors("cidade");
         setValue("uf", cepInfo.uf);
-        clearErrors("uf");
         setValue("bairro", cepInfo.bairro);
-        clearErrors("bairro");
         setValue("logradouro", cepInfo.logradouro);
-        clearErrors("logradouro");
         setValue("complemento", cepInfo.complemento);
-        clearErrors("complemento");
+        clearErrors(["cidade", "bairro", "uf", "logradouro", "complemento"]);
       } catch (error) {
         // Alert.alert("título", "mensagem")
         Alert.alert(
