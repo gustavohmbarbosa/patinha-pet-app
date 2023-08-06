@@ -21,20 +21,16 @@ export function Config() {
     {
       id: 1,
       title: "Meus dados",
-      subtitle: "Minhas informações de conta",
+      subtitle: "Nome e contato",
       icon: <InfoImg width={24} height={24} />,
-      onPress: () => {
-        navigation.push("UserInfo");
-      },
+      onPress: () => navigation.push("UserInfo"),
     },
     {
       id: 2,
       title: "Endereço",
-      subtitle: "Seu endereço cadastrado",
+      subtitle: "Meu endereço completo",
       icon: <PinImg width={24} height={24} />,
-      onPress: () => {
-        navigation.push("AdressInfo");
-      },
+      onPress: () => navigation.push("AdressInfo"),
     },
   ];
 
@@ -103,11 +99,10 @@ export function Config() {
             }}
           />
           <TouchableOpacity style={styles.button} onPress={() => {}}>
-            <View style={styles.buttonContent}>
+            <View style={styles.exitButtonContent} >
               <LogoutImg width={24} height={24} />
               <View>
                 <Text style={styles.title}>Sair</Text>
-                <Text style={styles.buttonText}>Fazer lougout</Text>
               </View>
             </View>
             <ChevronImg width={24} height={24} />

@@ -77,14 +77,10 @@ export function UserInfo() {
           render={({ field: { value, onChange } }) => (
             <TextInput
               label="Celular"
+              placeholder="(00) 00000-0000"
               value={value}
-              // define o número máximo contando com a máscara
               maxLength={15}
-              // passa o texto recebido pra máscara e depois faz a alteração
-              onChangeText={(text) => {
-                const value = maskCellphone(text);
-                onChange(value);
-              }}
+              onChangeText={(text) => onChange(maskCellphone(text))}
               keyboardType="phone-pad"
             />
           )}

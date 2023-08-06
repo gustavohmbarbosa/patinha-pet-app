@@ -1,15 +1,29 @@
 export function maskCep(value: string) {
-  // código regex
-  value = value.replace(/\D/g, ""); // só pega números
-  // pega os 5 primeiros digitos e separa do resto, após junta os dois gurpos com um hífen
-  value = value.replace(/^(\d{5})(\d)/, "$1-$2");
-  return value;
+  return value.replace(/\D/g, "").replace(/^(\d{5})(\d)/, "$1-$2");
 }
 
 export function maskCellphone(value: string) {
-  // código regex
-  value = value.replace(/\D/g, ""); // só pega números
-  // pega os 2 primeiros digitos e separa, pega os seguinte 5 e separa, pega o resto, após junta os grupos
-  value = value.replace(/^(\d{2})(\d{5})(\d)/, "($1) $2-$3");
-  return value;
+  const maskedValue = value.replace(/\D/g, '');
+  
+  if (!value.length || !maskedValue.length) {
+    return '';
+  }
+
+  if (maskedValue.length > 11) {
+    return maskedValue.slice(0, 11);
+  }
+  
+  if (maskedValue.length <= 2) {
+    return `(${maskedValue}`;
+  }
+  
+  if (maskedValue.length <= 7) {
+    return `(${maskedValue.slice(0, 2)}) ${maskedValue.slice(2)}`;
+  }
+  
+  if (maskedValue.length <= 11) {
+    return `(${maskedValue.slice(0, 2)}) ${maskedValue.slice(2, 7)}-${maskedValue.slice(7)}`;
+  }
+
+  return `(${maskedValue.slice(0, 2)}) ${maskedValue.slice(2, 7)}-${maskedValue.slice(7, 11)}`;
 }

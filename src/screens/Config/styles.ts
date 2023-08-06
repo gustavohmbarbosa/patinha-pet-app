@@ -53,6 +53,12 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     gap: 16,
   },
+  exitButtonContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
+    paddingVertical: 10
+  },
   buttonText: {
     fontFamily: APPTHEME.font.label.md,
     fontSize: APPTHEME.fontsize.label.md,
