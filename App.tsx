@@ -9,9 +9,9 @@ import {
   Quicksand_500Medium,
   Quicksand_600SemiBold,
 } from "@expo-google-fonts/quicksand";
-import { View, Text } from "react-native";
-import { APPTHEME } from "./src/styles/theme";
 import { Loading } from "./src/components/Loading";
+import { APPTHEME } from "./src/styles/theme";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 // definição de tema do react native paper
 const theme: MD3Theme = {
@@ -34,13 +34,16 @@ export default function App() {
   return (
     // usando o React Native Paper - material ui
     <PaperProvider theme={theme}>
-      {fontsLoaded ? (
-        /* component de rotas */
-
-        <StackRouterComponent />
-      ) : (
-        <Loading />
-      )}
+      {/* componente para manter a página com a função de scroll ao usar o teclado,
+        além de não esconder o campo caso esteja muito em baixo da tela */}
+      <KeyboardAwareScrollView contentContainerStyle={{ minHeight: "100%" }}>
+        {fontsLoaded ? (
+          /* component de rotas */
+          <StackRouterComponent />
+        ) : (
+          <Loading />
+        )}
+      </KeyboardAwareScrollView>
     </PaperProvider>
   );
 }

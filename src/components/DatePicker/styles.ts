@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { APPTHEME } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
-  container: { display: "flex", width: "100%", paddingHorizontal: 16 },
+  container: { display: "flex", width: "100%" },
   content: {
     flexDirection: "row-reverse",
     width: "100%",

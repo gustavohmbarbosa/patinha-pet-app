@@ -4,6 +4,7 @@ export const APPTHEME = {
     background: "#E3EBEE",
     primary: "#006184",
     secondary: "#D66853",
+    alert: "#FF1B1C",
     neutrals: {
       white: "#FFFFFF",
       bgColor75: "#E3EBEEBF", // 75%

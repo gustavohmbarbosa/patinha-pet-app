@@ -4,12 +4,19 @@ import { APPTHEME } from "../../styles/theme";
 export const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingHorizontal: 16,
+    height: 50,
   },
+
   content: {
     borderWidth: 1,
-    borderColor: APPTHEME.colors.primary,
     borderRadius: 8,
+    height: 50,
+  },
+  border: {
+    borderColor: APPTHEME.colors.primary,
+  },
+  borderError: {
+    borderColor: APPTHEME.colors.alert,
   },
   select: {
     color: APPTHEME.colors.primary,
