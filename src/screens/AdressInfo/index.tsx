@@ -22,8 +22,8 @@ type FormDataProps = {
   cidade: string;
   bairro: string;
   logradouro: string;
-  numero: string;
-  complemento: string;
+  numero?: string;
+  complemento?: string;
 };
 
 export function AdressInfo() {

@@ -83,6 +83,12 @@ export default function StackRouterComponent() {
         }}
       >
         <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ statusBarStyle: "light", headerShown: false }}
+        />
+
+        <Stack.Screen
           name="Home"
           component={Home}
           options={{
@@ -130,7 +136,6 @@ export default function StackRouterComponent() {
           }}
         />
         <Stack.Screen name="PetInfo" component={PetInfo} />
-        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="ExempleTabs" component={ExempleTabs} />
       </Stack.Navigator>
     </NavigationContainer>
