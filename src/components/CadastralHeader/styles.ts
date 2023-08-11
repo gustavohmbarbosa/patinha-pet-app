@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: APPTHEME.colors.primary,
     overflow: "hidden",
-    height: "70%",
+    height: "100%",
     alignItems: "flex-start",
     justifyContent: "flex-end",
   },
@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     position: "absolute",
     opacity: 0.25,
     left: -110,
-    top: -30,
+    top: -15,
   },
   headerText: {
     gap: 10,

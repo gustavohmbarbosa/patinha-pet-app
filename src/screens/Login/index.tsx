@@ -36,7 +36,9 @@ function Login() {
   });
   return (
     <View style={styles.container}>
-      <CadastralHeader />
+      <View style={styles.header}>
+        <CadastralHeader />
+      </View>
       <View style={styles.content}>
         <View style={styles.form}>
           <View style={styles.input}>
@@ -53,8 +55,6 @@ function Login() {
                 />
               )}
               rules={{
-                // aqui coloca todos as regras do input, se é obrigatório, tamanho, etc
-                // se nn tiver nenhuma regra, só tirar esse atributo
                 required: true,
               }}
             />

@@ -5,6 +5,9 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  header: {
+    maxHeight: "60%",
+  },
   content: {
     flex: 1,
     padding: 16,
@@ -35,11 +38,6 @@ export const styles = StyleSheet.create({
     lineHeight: APPTHEME.lineHeight.body.sm,
     letterSpacing: APPTHEME.letterSpacing.body.sm,
     color: APPTHEME.colors.text.dark,
-  },
-  barra: {
-    width: 83,
-    height: 1,
-    backgroundColor: APPTHEME.colors.neutrals.black5,
   },
   foot: {
     flexDirection: "row",
