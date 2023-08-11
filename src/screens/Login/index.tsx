@@ -1,31 +1,18 @@
 import { Text, TouchableOpacity, View } from "react-native";
 
-import LogoImg from "../../assets/logo.svg";
 import GoogleImg from "../../assets/google.svg";
 import { styles } from "./styles";
 import { ButtonOutline } from "../../components/ButtonOutline";
 import { useNavigation } from "@react-navigation/native";
 import { StackRouterProps } from "../../routers/stack";
+import { CadastralHeader } from "../../components/CadastralHeader";
 
 export default function Login() {
   const navigation = useNavigation<StackRouterProps>();
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <LogoImg
-          style={styles.logo}
-          width={"150%"}
-          height={400}
-          rotation={-15}
-        />
-        <View style={styles.headerText}>
-          <Text style={styles.headerTitle}>Login</Text>
-          <Text style={styles.headerSubtitle}>
-            Realize seu login ou registre-se
-          </Text>
-        </View>
-      </View>
+      <CadastralHeader />
       <View style={styles.content}>
         <View style={styles.options}>
           <View style={styles.divider}>
