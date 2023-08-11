@@ -5,10 +5,8 @@ export const withKeyboardAwareScrollView =
   ({ ...props }) =>
     (
       <KeyboardAwareScrollView
-        automaticallyAdjustKeyboardInsets
-        automaticallyAdjustContentInsets
         style={{ flex: 1 }}
-        contentContainerStyle={{ minHeight: "100%" }}
+        contentContainerStyle={{ flexGrow: 1 }}
       >
         <Component {...(props as P)} />
       </KeyboardAwareScrollView>

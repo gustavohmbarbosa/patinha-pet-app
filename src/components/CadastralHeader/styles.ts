@@ -3,7 +3,6 @@ import { APPTHEME } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
   header: {
-    display: "flex",
     padding: 16,
     backgroundColor: APPTHEME.colors.primary,
     overflow: "hidden",
