@@ -226,21 +226,6 @@ function AdressInfo() {
             />
           </View>
         </View>
-        <View style={styles.large}>
-          <Controller
-            name="complemento"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <TextInput
-                label="Complemento"
-                value={value}
-                onChangeText={onChange}
-              />
-            )}
-            // não é obrigatório
-            // rules={{ required: true }}
-          />
-        </View>
       </View>
       <Button onPress={submit}>Salvar</Button>
     </View>

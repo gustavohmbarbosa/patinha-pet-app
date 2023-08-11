@@ -28,7 +28,7 @@ export default function Config() {
     {
       id: 2,
       title: "Endereço",
-      subtitle: "Meu endereço completo",
+      subtitle: "Meu endereço atual",
       icon: <PinImg width={24} height={24} />,
       onPress: () => navigation.push("AdressInfo"),
     },
