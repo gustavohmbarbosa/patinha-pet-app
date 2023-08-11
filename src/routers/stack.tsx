@@ -7,18 +7,19 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
+import { APPTHEME } from "../styles/theme";
+import { ButtonIcon } from "../components/ButtonIcon";
+
 import Home from "../screens/Home";
 import Login from "../screens/Login";
-import { APPTHEME } from "../styles/theme";
-import { ExempleTabs } from "../screens/ExempleTabs";
+import UserInfo from "../screens/UserInfo";
+import { Config } from "../screens/Config";
+import PetInfo from "../screens/PetInfo";
+import AdressInfo from "../screens/AdressInfo";
+import ExempleTabs from "../screens/ExempleTabs";
 
 import AccountBoxImg from "../assets/account-box.svg";
 import CloseImg from "../assets/close.svg";
-import { ButtonIcon } from "../components/ButtonIcon";
-import { Config } from "../screens/Config";
-import { UserInfo } from "../screens/UserInfo";
-import PetInfo from "../screens/PetInfo";
-import { AdressInfo } from "../screens/AdressInfo";
 
 // Personalizando o thema padrão do React Navigate
 const theme: Theme = {

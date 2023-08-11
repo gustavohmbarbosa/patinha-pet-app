@@ -5,7 +5,7 @@ import { styles } from "./styles";
 import { Tabs } from "../../components/Tabs";
 import { Select } from "../../components/Select";
 
-export function ExempleTabs() {
+export default function ExempleTabs() {
   // apenas para teste do select
   const raca = [
     "Poodle",

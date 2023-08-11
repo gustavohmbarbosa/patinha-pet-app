@@ -12,11 +12,16 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 32,
   },
-  options: {
+  form: {
     flex: 1,
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
     gap: 32,
+  },
+  input: {
+    width: "100%",
+    gap: 4,
   },
   divider: {
     flexDirection: "row",

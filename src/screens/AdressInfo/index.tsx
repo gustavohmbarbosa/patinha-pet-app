@@ -1,20 +1,20 @@
 import React from "react";
-import { Alert, View, Text } from "react-native";
+import { Alert, View } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "../../components/Button";
 import { TextInput } from "../../components/TextInput";
-import { IconButton, TextInput as TextInputPaper } from "react-native-paper";
+import { TextInput as TextInputPaper } from "react-native-paper";
 import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { Select } from "../../components/Select";
 
-import { ButtonIcon } from "../../components/ButtonIcon";
 import { listUF } from "../../utils/uf";
 import { maskCep } from "../../utils/masks";
 import { styles } from "./styles";
-import SearchImg from "../../assets/search.svg";
 import { getCep } from "../../lib/api/getCep";
 import { cepInfoProps } from "../../lib/types";
 import { APPTHEME } from "../../styles/theme";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
 
 type FormDataProps = {
   cep: string;
@@ -26,7 +26,7 @@ type FormDataProps = {
   complemento?: string;
 };
 
-export function AdressInfo() {
+function AdressInfo() {
   const {
     control,
     handleSubmit,
@@ -246,3 +246,5 @@ export function AdressInfo() {
     </View>
   );
 }
+
+export default withKeyboardAwareScrollView(AdressInfo);

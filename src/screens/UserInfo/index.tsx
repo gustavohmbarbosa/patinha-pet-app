@@ -7,6 +7,7 @@ import { Button } from "../../components/Button";
 import { TextInput } from "../../components/TextInput";
 import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { maskCellphone } from "../../utils/masks";
+import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
 
 // faz a tipagem dos dados que terá no fomrulário
 type FormDataProps = {
@@ -14,8 +15,7 @@ type FormDataProps = {
   sobrenome: string;
   celular: string;
 };
-
-export function UserInfo() {
+function UserInfo() {
   // o que vai fazer o gerenciamento dos dados e entender os erros dos inputs
   const {
     control,
@@ -90,3 +90,5 @@ export function UserInfo() {
     </View>
   );
 }
+
+export default withKeyboardAwareScrollView(UserInfo);
