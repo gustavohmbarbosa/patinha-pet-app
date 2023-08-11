@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: APPTHEME.colors.primary,
     overflow: "hidden",
-    height: 324,
+    height: "70%",
     alignItems: "flex-start",
     justifyContent: "flex-end",
   },

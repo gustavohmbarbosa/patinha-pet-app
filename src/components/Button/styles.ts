@@ -16,7 +16,6 @@ export const styles = StyleSheet.create({
   label: {
     fontFamily: APPTHEME.font.label.lg,
     fontSize: APPTHEME.fontsize.label.lg,
-    lineHeight: APPTHEME.lineHeight.label.lg,
     letterSpacing: APPTHEME.letterSpacing.label.lg,
     color: APPTHEME.colors.text.background,
   },

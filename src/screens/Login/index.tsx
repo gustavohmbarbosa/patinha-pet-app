@@ -9,10 +9,8 @@ import { TextInput } from "../../components/TextInput";
 import { TextInput as TextInputPaper } from "react-native-paper";
 import { InvalidFormText } from "../../components/Form/InvalidFormText";
 
-import EyeImg from "../../assets/eye-off.svg";
 import { styles } from "./styles";
 import { APPTHEME } from "../../styles/theme";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
 import { useState } from "react";
 
@@ -60,7 +58,7 @@ function Login() {
                 required: true,
               }}
             />
-            {errors.email && <InvalidFormText title="Email necessário!" />}
+            {errors.email && <InvalidFormText title="Informe o e-mail" />}
           </View>
           <View style={styles.input}>
             <Controller
@@ -84,10 +82,10 @@ function Login() {
               )}
               rules={{ required: true }}
             />
-            {errors.password && <InvalidFormText title="Senha necessária!" />}
+            {errors.password && <InvalidFormText title="Informe a senha" />}
           </View>
 
-          <Button onPress={submit}>Submit</Button>
+          <Button onPress={submit}>Login</Button>
         </View>
 
         <View style={styles.foot}>
