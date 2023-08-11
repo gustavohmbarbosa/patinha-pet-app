@@ -1,20 +1,101 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+import { Controller, useForm } from "react-hook-form";
+import { useNavigation } from "@react-navigation/native";
+import { StackRouterProps } from "../../routers/stack";
 
-export default function Login() {
+import { CadastralHeader } from "../../components/CadastralHeader";
+import { Button } from "../../components/Button";
+import { TextInput } from "../../components/TextInput";
+import { TextInput as TextInputPaper } from "react-native-paper";
+import { InvalidFormText } from "../../components/Form/InvalidFormText";
+
+import { styles } from "./styles";
+import { APPTHEME } from "../../styles/theme";
+import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
+import { useState } from "react";
+
+type FormDataProps = {
+  email: string;
+  password: string;
+};
+
+function Login() {
+  const [showPassword, setShowPassword] = useState(false);
+  const navigation = useNavigation<StackRouterProps>();
+
+  const {
+    control,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormDataProps>();
+
+  const submit = handleSubmit((data) => {
+    console.log(data);
+    navigation.push("Home");
+  });
   return (
     <View style={styles.container}>
-      <Text>Página Login</Text>
-      <StatusBar style="auto" />
+      <CadastralHeader />
+      <View style={styles.content}>
+        <View style={styles.form}>
+          <View style={styles.input}>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextInput
+                  label="E-mail"
+                  value={value}
+                  onChangeText={onChange}
+                  error={errors.email ? true : false}
+                  keyboardType="email-address"
+                />
+              )}
+              rules={{
+                // aqui coloca todos as regras do input, se é obrigatório, tamanho, etc
+                // se nn tiver nenhuma regra, só tirar esse atributo
+                required: true,
+              }}
+            />
+            {errors.email && <InvalidFormText title="Informe o e-mail" />}
+          </View>
+          <View style={styles.input}>
+            <Controller
+              name="password"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <TextInput
+                  label="Senha"
+                  value={value}
+                  onChangeText={onChange}
+                  autoCapitalize="none"
+                  secureTextEntry={!showPassword}
+                  right={
+                    <TextInputPaper.Icon
+                      icon={!showPassword ? "eye-off-outline" : "eye-outline"}
+                      onPress={() => setShowPassword(!showPassword)}
+                      color={APPTHEME.colors.primary}
+                    />
+                  }
+                />
+              )}
+              rules={{ required: true }}
+            />
+            {errors.password && <InvalidFormText title="Informe a senha" />}
+          </View>
+
+          <Button onPress={submit}>Login</Button>
+        </View>
+
+        <View style={styles.foot}>
+          <Text style={styles.footTitle}>Primeiro acesso?</Text>
+          <TouchableOpacity style={styles.footButton} activeOpacity={0.6}>
+            <Text style={styles.secondary}>Registre-se</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+export default withKeyboardAwareScrollView(Login);

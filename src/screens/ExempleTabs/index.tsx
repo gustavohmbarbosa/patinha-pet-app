@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 
 import { styles } from "./styles";
 import { Tabs } from "../../components/Tabs";
 import { Select } from "../../components/Select";
 
-export function ExempleTabs() {
+export default function ExempleTabs() {
   // apenas para teste do select
   const raca = [
     "Poodle",
@@ -23,13 +23,22 @@ export function ExempleTabs() {
     "Collie",
   ];
 
+  const [selectedRaca, setSelectedRaca] = useState("");
+
   return (
     <View style={styles.container}>
       {/* necessário usar no minimo 2 Tabs.screen, se não dará erro e tbm não é necessário. */}
       <Tabs.root>
         <Tabs.screen label="Mapa">
           <View style={{ flex: 1, paddingVertical: 16 }}>
-            <Select opcoes={raca} placeholder="Qual a raça?" />
+            <Select
+              value={selectedRaca}
+              onChange={(item) => {
+                setSelectedRaca(item);
+              }}
+              opcoes={raca}
+              placeholder="Qual a raça?"
+            />
           </View>
         </Tabs.screen>
         <Tabs.screen label="Tarefas">

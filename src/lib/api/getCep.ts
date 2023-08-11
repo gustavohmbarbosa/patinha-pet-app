@@ -13,19 +13,17 @@ type retornoProps = {
 };
 
 export async function getCep(cep: string) {
-  // remover a mascara caso esteja
-  const cepNoMask = cep.split("-").join("");
+  const cepNoMask = cep.replace(/\D/g, "");
 
-  // fazer a tentativa da busca da api - https://viacep.com.br/
   try {
     const retorno = await fetch(`https://viacep.com.br/ws/${cepNoMask}/json/`);
     const cepInfo: retornoProps = await retorno.json();
 
     if (cepInfo.erro) {
       throw new Error("Cep inexistente!");
-    } else {
-      return cepInfo;
     }
+    
+    return cepInfo;
   } catch (error) {
     throw new Error("Erro ao buscar cep, verifique o cep inserido.");
   }

@@ -11,7 +11,7 @@ import ChevronImg from "../../assets/chevron-white.svg";
 import { useNavigation } from "@react-navigation/native";
 import { StackRouterProps } from "../../routers/stack";
 
-export function Config() {
+export default function Config() {
   const navigation = useNavigation<StackRouterProps>();
 
   // botões de opções
@@ -28,7 +28,7 @@ export function Config() {
     {
       id: 2,
       title: "Endereço",
-      subtitle: "Meu endereço completo",
+      subtitle: "Meu endereço atual",
       icon: <PinImg width={24} height={24} />,
       onPress: () => navigation.push("AdressInfo"),
     },
@@ -99,7 +99,7 @@ export function Config() {
             }}
           />
           <TouchableOpacity style={styles.button} onPress={() => {}}>
-            <View style={styles.exitButtonContent} >
+            <View style={styles.exitButtonContent}>
               <LogoutImg width={24} height={24} />
               <View>
                 <Text style={styles.title}>Sair</Text>

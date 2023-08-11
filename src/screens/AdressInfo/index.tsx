@@ -1,20 +1,19 @@
 import React from "react";
-import { Alert, View, Text } from "react-native";
+import { View } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "../../components/Button";
 import { TextInput } from "../../components/TextInput";
-import { IconButton, TextInput as TextInputPaper } from "react-native-paper";
+import { TextInput as TextInputPaper } from "react-native-paper";
 import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { Select } from "../../components/Select";
 
-import { ButtonIcon } from "../../components/ButtonIcon";
 import { listUF } from "../../utils/uf";
 import { maskCep } from "../../utils/masks";
 import { styles } from "./styles";
-import SearchImg from "../../assets/search.svg";
 import { getCep } from "../../lib/api/getCep";
 import { cepInfoProps } from "../../lib/types";
 import { APPTHEME } from "../../styles/theme";
+import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
 
 type FormDataProps = {
   cep: string;
@@ -22,11 +21,11 @@ type FormDataProps = {
   cidade: string;
   bairro: string;
   logradouro: string;
-  numero: string;
-  complemento: string;
+  numero?: string;
+  complemento?: string;
 };
 
-export function AdressInfo() {
+function AdressInfo() {
   const {
     control,
     handleSubmit,
@@ -34,6 +33,7 @@ export function AdressInfo() {
     getValues,
     setValue,
     clearErrors,
+    setError
   } = useForm<FormDataProps>({
     // informa os valores padrão dos campos
     defaultValues: {
@@ -52,22 +52,17 @@ export function AdressInfo() {
     const cep = getValues("cep");
     if (cep.length === 9) {
       try {
-        // tentativa na api
         const cepInfo: cepInfoProps = await getCep(cep);
 
-        // salva os dados e tira os erros nos campos correspondentes
         setValue("cidade", cepInfo.localidade);
         setValue("uf", cepInfo.uf);
         setValue("bairro", cepInfo.bairro);
         setValue("logradouro", cepInfo.logradouro);
         setValue("complemento", cepInfo.complemento);
-        clearErrors(["cidade", "bairro", "uf", "logradouro", "complemento"]);
+        
+        clearErrors();
       } catch (error) {
-        // Alert.alert("título", "mensagem")
-        Alert.alert(
-          "Erro ao buscar o cep",
-          "Aconteceu um erro ao buscar o cep inserido, verifique e tente novamente."
-        );
+        setError("cep", { message: "Cep não encontrado" });
       }
     }
   }
@@ -87,13 +82,10 @@ export function AdressInfo() {
               <TextInput
                 label="CEP"
                 value={value}
-                onBlur={handleGetCep}
-                // tamanho máximo com a máscara
                 maxLength={9}
-                // adicionando a mask do cep, necessário passar uma função por fora
                 onChangeText={(text) => {
-                  const value = maskCep(text);
-                  onChange(value);
+                  onChange(maskCep(text));
+                  handleGetCep();
                 }}
                 keyboardType="number-pad"
                 right={
@@ -111,7 +103,7 @@ export function AdressInfo() {
             )}
             rules={{ required: true }}
           />
-          {errors.cep && <InvalidFormText title="Insira o Cep!" />}
+          {errors.cep && <InvalidFormText title={errors.cep.message || "Informe um Cep válido"} />}
         </View>
         <View style={styles.ContentRow}>
           <View style={styles.large}>
@@ -129,7 +121,7 @@ export function AdressInfo() {
               rules={{ required: true }}
             />
             {errors.cidade ? (
-              <InvalidFormText title="Insira a cidade!" />
+              <InvalidFormText title="Informe a cidade" />
             ) : errors.uf ? (
               <View style={styles.box} />
             ) : (
@@ -152,7 +144,7 @@ export function AdressInfo() {
               rules={{ required: true }}
             />
             {errors.uf ? (
-              <InvalidFormText title="Insira a UF!" />
+              <InvalidFormText title="Informe a UF" />
             ) : errors.cidade ? (
               <View style={styles.box} />
             ) : (
@@ -174,7 +166,7 @@ export function AdressInfo() {
             )}
             rules={{ required: true }}
           />
-          {errors.bairro && <InvalidFormText title="Insira o bairro!" />}
+          {errors.bairro && <InvalidFormText title="Informe o bairro" />}
         </View>
         <View style={styles.input}>
           <Controller
@@ -191,7 +183,7 @@ export function AdressInfo() {
             rules={{ required: true }}
           />
           {errors.logradouro && (
-            <InvalidFormText title="Insira o logradouro!" />
+            <InvalidFormText title="Informe o logradouro" />
           )}
         </View>
         <View style={styles.ContentRow}>
@@ -226,23 +218,10 @@ export function AdressInfo() {
             />
           </View>
         </View>
-        <View style={styles.large}>
-          <Controller
-            name="complemento"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <TextInput
-                label="Complemento"
-                value={value}
-                onChangeText={onChange}
-              />
-            )}
-            // não é obrigatório
-            // rules={{ required: true }}
-          />
-        </View>
       </View>
       <Button onPress={submit}>Salvar</Button>
     </View>
   );
 }
+
+export default withKeyboardAwareScrollView(AdressInfo);
