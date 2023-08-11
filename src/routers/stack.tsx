@@ -13,7 +13,7 @@ import { ButtonIcon } from "../components/ButtonIcon";
 import Home from "../screens/Home";
 import Login from "../screens/Login";
 import UserInfo from "../screens/UserInfo";
-import { Config } from "../screens/Config";
+import Config from "../screens/Config";
 import PetInfo from "../screens/PetInfo";
 import AdressInfo from "../screens/AdressInfo";
 import ExempleTabs from "../screens/ExempleTabs";
