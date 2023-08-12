@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 24,
     paddingHorizontal: 16,
     justifyContent: "space-between",
+    gap: 64,
   },
   contentInputs: {
     gap: 16,

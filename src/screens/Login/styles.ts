@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { APPTHEME } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
@@ -35,11 +35,6 @@ export const styles = StyleSheet.create({
     lineHeight: APPTHEME.lineHeight.body.sm,
     letterSpacing: APPTHEME.letterSpacing.body.sm,
     color: APPTHEME.colors.text.dark,
-  },
-  barra: {
-    width: 83,
-    height: 1,
-    backgroundColor: APPTHEME.colors.neutrals.black5,
   },
   foot: {
     flexDirection: "row",
