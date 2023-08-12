@@ -1,15 +1,9 @@
 import { Dimensions, StyleSheet } from "react-native";
 import { APPTHEME } from "../../styles/theme";
 
-const windowHeight = Dimensions.get("window").height;
-const maxHeightHeader = Math.round(windowHeight * 0.6);
-
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
-    maxHeight: maxHeightHeader,
   },
   content: {
     flex: 1,

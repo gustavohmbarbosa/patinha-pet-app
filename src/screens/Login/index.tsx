@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, Text, TouchableOpacity, View } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 import { StackRouterProps } from "../../routers/stack";
@@ -20,6 +20,9 @@ type FormDataProps = {
 };
 
 function Login() {
+  const windowHeight = Dimensions.get("window").height;
+  const maxHeightHeader = Math.round(windowHeight * 0.6);
+
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation<StackRouterProps>();
 
@@ -36,8 +39,8 @@ function Login() {
   });
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <CadastralHeader />
+      <View style={{ maxHeight: maxHeightHeader }}>
+        <CadastralHeader maxHeightHeader={maxHeightHeader} />
       </View>
       <View style={styles.content}>
         <View style={styles.form}>
