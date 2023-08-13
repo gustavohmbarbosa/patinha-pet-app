@@ -9,20 +9,19 @@ import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { maskCellphone } from "../../utils/masks";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
 
-// faz a tipagem dos dados que terá no fomrulário
 type FormDataProps = {
   nome: string;
   sobrenome: string;
+  email: string;
+  senha: string;
   celular: string;
-};
-function UserInfo() {
-  // o que vai fazer o gerenciamento dos dados e entender os erros dos inputs
+}
+function SingUp() {
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<FormDataProps>({
-    // informa os valores padrão dos campos
     defaultValues: {
       nome: "",
       sobrenome: "",
@@ -30,8 +29,6 @@ function UserInfo() {
     },
   });
 
-  //função de submit do form
-  // necessário usar o do handleSbumit para obter os dados e executar a lógica que deseja
   const submit = handleSubmit((data) => console.log(data));
 
   return (
@@ -71,6 +68,45 @@ function UserInfo() {
             <InvalidFormText title="Insira o seu sobrenome!" />
           )}
         </View>
+        <View style={styles.input}>
+          <Controller
+            name="email"
+            control={control}
+            render={({ field: { value, onChange } }) => (
+              <TextInput
+                label="Email"
+                placeholder="example@email.com"
+                value={value}
+                onChangeText={onChange}
+                error={errors.email ? true : false}
+              />
+            )}
+            rules={{ required: true }}
+          />
+          {errors.email && (
+            <InvalidFormText title="O email não é válido!" />
+          )}
+        </View>
+        <View style={styles.input}>
+          <Controller
+            name="senha"
+            control={control}
+            render={({ field: { value, onChange } }) => (
+              <TextInput
+                label="Senha"
+                value={value}
+                maxLength={12}
+                onChangeText={onChange}
+                error={errors.senha ? true : false}
+                secureTextEntry={true}
+              />
+            )}
+            rules={{ required: true, minLength:6 }}
+          />
+          {errors.senha && (
+            <InvalidFormText title="Senha inválida" />
+          )}
+        </View>
         <Controller
           name="celular"
           control={control}
@@ -91,4 +127,4 @@ function UserInfo() {
   );
 }
 
-export default withKeyboardAwareScrollView(UserInfo);
+export default withKeyboardAwareScrollView(SingUp);

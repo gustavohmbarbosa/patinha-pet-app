@@ -10,6 +10,8 @@ import {
 import { APPTHEME } from "../styles/theme";
 import { ButtonIcon } from "../components/ButtonIcon";
 
+import SignUpAdressInfo from "../screens/SignUpAdressInfo";
+import SignUpUserInfo from "../screens/SignUpUserInfo";
 import Home from "../screens/Home";
 import Login from "../screens/Login";
 import UserInfo from "../screens/UserInfo";
@@ -36,6 +38,8 @@ const theme: Theme = {
 type StackNavigationProps = {
   // caso seja necessário algum dado para a página, pode ser exclarecido aqui, se não passa undefined
   // Ex: Home: {userId: string, username: string,...}
+  SignUpAdressInfo: undefined;
+  SignUpUserInfo: undefined;
   Home: undefined;
   Login: undefined;
   PetInfo: undefined;
@@ -83,6 +87,25 @@ export default function StackRouterComponent() {
           animation: "fade_from_bottom",
         }}
       >
+        <Stack.Screen
+            name="SignUpAdressInfo"
+            component={SignUpAdressInfo}
+            options={{
+              title: "Registre-se",
+              headerTitleStyle: styleTitleBodyLg,
+              headerStyle: { backgroundColor: APPTHEME.colors.background },
+            }}
+          />
+        <Stack.Screen
+            name="SingUpUserInfo"
+            component={SignUpUserInfo}
+            options={{
+              title: "Registre-se",
+              headerTitleStyle: styleTitleBodyLg,
+              headerStyle: { backgroundColor: APPTHEME.colors.background },
+            }}
+          />
+        
         <Stack.Screen
           name="Login"
           component={Login}
