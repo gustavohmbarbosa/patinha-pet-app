@@ -88,24 +88,24 @@ export default function StackRouterComponent() {
         }}
       >
         <Stack.Screen
-            name="SignUpAdressInfo"
-            component={SignUpAdressInfo}
-            options={{
-              title: "Registre-se",
-              headerTitleStyle: styleTitleBodyLg,
-              headerStyle: { backgroundColor: APPTHEME.colors.background },
-            }}
-          />
+          name="SignUpAdressInfo"
+          component={SignUpAdressInfo}
+          options={{
+            title: "Registre-se",
+            headerTitleStyle: styleTitleBodyLg,
+            headerStyle: { backgroundColor: APPTHEME.colors.background },
+          }}
+        />
         <Stack.Screen
-            name="SingUpUserInfo"
-            component={SignUpUserInfo}
-            options={{
-              title: "Registre-se",
-              headerTitleStyle: styleTitleBodyLg,
-              headerStyle: { backgroundColor: APPTHEME.colors.background },
-            }}
-          />
-        
+          name="SingUpUserInfo"
+          component={SignUpUserInfo}
+          options={{
+            title: "Registre-se",
+            headerTitleStyle: styleTitleBodyLg,
+            headerStyle: { backgroundColor: APPTHEME.colors.background },
+          }}
+        />
+
         <Stack.Screen
           name="Login"
           component={Login}

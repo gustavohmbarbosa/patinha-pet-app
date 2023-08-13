@@ -26,7 +26,6 @@ type FormDataProps = {
   complemento: string;
 };
 
-
 function SignUpAdressInfo() {
   const {
     control,
@@ -71,7 +70,6 @@ function SignUpAdressInfo() {
     }
   }
 
-
   return (
     <View style={styles.container}>
       <View style={styles.contentInputs}>
@@ -105,7 +103,9 @@ function SignUpAdressInfo() {
             rules={{ required: true }}
           />
           {errors.cep && (
-            <InvalidFormText title={errors.cep.message || "Informe um Cep válido"} />
+            <InvalidFormText
+              title={errors.cep.message || "Informe um Cep válido"}
+            />
           )}
         </View>
         <View style={styles.ContentRow}>
@@ -219,23 +219,24 @@ function SignUpAdressInfo() {
         </View>
       </View>
       <View>
-      <Button
+        <Button
           onPress={() => {
             submit();
-            setValidateOnSubmit(true); 
+            setValidateOnSubmit(true);
           }}
         >
           Criar conta
         </Button>
-      <ButtonOutline
-        onPress={() => {
-          submit();
-          setValidateOnSubmit(false);
-        }}
-      >Preencher depois</ButtonOutline>
-    </View>
+        <ButtonOutline
+          onPress={() => {
+            submit();
+            setValidateOnSubmit(false);
+          }}
+        >
+          Preencher depois
+        </ButtonOutline>
       </View>
-     
+    </View>
   );
 }
 
