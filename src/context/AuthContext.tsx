@@ -25,9 +25,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     setisUserLoading(true);
     try {
       const response = await api.post("login", { email, password });
-      console.log(response.status);
-      console.log(response.data);
-      const data: UserProps = JSON.parse(response.data);
+      const data: UserProps = response.data;
       setUser(data);
     } catch (error) {
       Alert.alert("Não autorizado", "Dado(s) inválidos.");
@@ -40,7 +38,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
   return (
     <AuthContext.Provider value={{ user, isUserLoading, login, signUp }}>
-      {isUserLoading ? <Loading /> : <>{children}</>}
+      {children}
     </AuthContext.Provider>
   );
 }

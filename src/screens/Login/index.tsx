@@ -27,7 +27,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation<StackRouterProps>();
 
-  const { login } = useAuth();
+  const { login, isUserLoading } = useAuth();
 
   const {
     control,
@@ -37,8 +37,7 @@ function Login() {
   } = useForm<FormDataProps>();
 
   const submit = handleSubmit(async (data) => {
-    console.log(data);
-    await login(getValues("email"), getValues("password"));
+    await login(data.email, data.password);
   });
   return (
     <View style={styles.container}>
@@ -91,7 +90,9 @@ function Login() {
             {errors.password && <InvalidFormText title="Informe a senha" />}
           </View>
 
-          <Button onPress={submit}>Login</Button>
+          <Button onPress={submit} loading={isUserLoading}>
+            Login
+          </Button>
         </View>
 
         <View style={styles.foot}>
