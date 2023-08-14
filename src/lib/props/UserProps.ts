@@ -9,10 +9,12 @@ export type AdressUserProps = {
 
 export type UserProps = {
   token: string;
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  adress: AdressUserProps | null;
+  user: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    adress?: AdressUserProps | null;
+  };
 };

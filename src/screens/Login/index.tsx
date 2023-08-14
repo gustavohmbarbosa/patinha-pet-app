@@ -13,6 +13,7 @@ import { styles } from "./styles";
 import { APPTHEME } from "../../styles/theme";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
 import { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
 
 type FormDataProps = {
   email: string;
@@ -26,6 +27,8 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation<StackRouterProps>();
 
+  const { login } = useAuth();
+
   const {
     control,
     getValues,
@@ -33,9 +36,9 @@ function Login() {
     formState: { errors },
   } = useForm<FormDataProps>();
 
-  const submit = handleSubmit((data) => {
+  const submit = handleSubmit(async (data) => {
     console.log(data);
-    navigation.push("Home");
+    await login();
   });
   return (
     <View style={styles.container}>

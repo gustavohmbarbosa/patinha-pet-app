@@ -12,15 +12,6 @@ Não precisa baixar pois já ta nas dependências
 
 ## Rodar na sua máquina
 
-### Crie um arquivo `.env` no diretório princial
-
-```bash
-
-# colocar url do server correto em um arquivo .env no diretório principal
-BASE_SERVER_URL="http://localhost:8080"
-
-```
-
 ### No terminal
 
 ```bash

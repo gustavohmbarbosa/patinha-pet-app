@@ -22,6 +22,7 @@ import ExempleTabs from "../screens/ExempleTabs";
 
 import AccountBoxImg from "../assets/account-box.svg";
 import CloseImg from "../assets/close.svg";
+import { useAuth } from "../hooks/useAuth";
 
 // Personalizando o thema padrão do React Navigate
 const theme: Theme = {
@@ -76,6 +77,8 @@ export default function StackRouterComponent() {
     fontSize: APPTHEME.fontsize.body.lg,
   };
 
+  const { user } = useAuth();
+
   return (
     <NavigationContainer theme={theme}>
       <Stack.Navigator
@@ -87,7 +90,68 @@ export default function StackRouterComponent() {
           animation: "fade_from_bottom",
         }}
       >
-        <Stack.Screen
+        {user.token ? (
+          <>
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{
+                title: "Seus pets",
+                headerRight: () => (
+                  <ButtonIcon
+                    route="Config"
+                    icon={<AccountBoxImg width={32} height={32} />}
+                  />
+                ),
+              }}
+            />
+
+            <Stack.Screen
+              name="Config"
+              component={Config}
+              options={{
+                title: "Informações do usuário",
+                headerStyle: { backgroundColor: theme.colors.primary },
+                headerTitleStyle: styleTitleLabelLg,
+                headerTintColor: theme.colors.background,
+                statusBarStyle: "light",
+                headerLeft: () => (
+                  <ButtonIcon icon={<CloseImg width={24} height={24} />} />
+                ),
+                animation: "slide_from_left",
+              }}
+            />
+            <Stack.Screen
+              name="UserInfo"
+              component={UserInfo}
+              options={{
+                title: "Meus dados",
+                headerTitleStyle: styleTitleBodyLg,
+                headerStyle: { backgroundColor: APPTHEME.colors.background },
+              }}
+            />
+            <Stack.Screen
+              name="AdressInfo"
+              component={AdressInfo}
+              options={{
+                title: "Meu endereço",
+                headerTitleStyle: styleTitleBodyLg,
+                headerStyle: { backgroundColor: APPTHEME.colors.background },
+              }}
+            />
+            <Stack.Screen name="PetInfo" component={PetInfo} />
+            <Stack.Screen name="ExempleTabs" component={ExempleTabs} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{ statusBarStyle: "light", headerShown: false }}
+            />
+          </>
+        )}
+        {/* <Stack.Screen
           name="SignUpAdressInfo"
           component={SignUpAdressInfo}
           options={{
@@ -104,63 +168,7 @@ export default function StackRouterComponent() {
             headerTitleStyle: styleTitleBodyLg,
             headerStyle: { backgroundColor: APPTHEME.colors.background },
           }}
-        />
-
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{ statusBarStyle: "light", headerShown: false }}
-        />
-
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            title: "Seus pets",
-            headerRight: () => (
-              <ButtonIcon
-                route="Config"
-                icon={<AccountBoxImg width={32} height={32} />}
-              />
-            ),
-          }}
-        />
-
-        <Stack.Screen
-          name="Config"
-          component={Config}
-          options={{
-            title: "Informações do usuário",
-            headerStyle: { backgroundColor: theme.colors.primary },
-            headerTitleStyle: styleTitleLabelLg,
-            headerTintColor: theme.colors.background,
-            statusBarStyle: "light",
-            headerLeft: () => (
-              <ButtonIcon icon={<CloseImg width={24} height={24} />} />
-            ),
-            animation: "slide_from_left",
-          }}
-        />
-        <Stack.Screen
-          name="UserInfo"
-          component={UserInfo}
-          options={{
-            title: "Meus dados",
-            headerTitleStyle: styleTitleBodyLg,
-            headerStyle: { backgroundColor: APPTHEME.colors.background },
-          }}
-        />
-        <Stack.Screen
-          name="AdressInfo"
-          component={AdressInfo}
-          options={{
-            title: "Meu endereço",
-            headerTitleStyle: styleTitleBodyLg,
-            headerStyle: { backgroundColor: APPTHEME.colors.background },
-          }}
-        />
-        <Stack.Screen name="PetInfo" component={PetInfo} />
-        <Stack.Screen name="ExempleTabs" component={ExempleTabs} />
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

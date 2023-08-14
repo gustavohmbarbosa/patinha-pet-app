@@ -8,7 +8,7 @@ import { TextInput as TextInputPaper } from "react-native-paper";
 import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { Select } from "../../components/Select";
 
-import { getCep } from "../../lib/api/getCep";
+import { getCep } from "../../services/getCep";
 import { cepInfoProps } from "../../lib/types";
 import { APPTHEME } from "../../styles/theme";
 import { styles } from "./styles";

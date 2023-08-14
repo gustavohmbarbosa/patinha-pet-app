@@ -10,7 +10,7 @@ import { Select } from "../../components/Select";
 import { listUF } from "../../utils/uf";
 import { maskCep } from "../../utils/masks";
 import { styles } from "./styles";
-import { getCep } from "../../lib/api/getCep";
+import { getCep } from "../../services/getCep";
 import { cepInfoProps } from "../../lib/types";
 import { APPTHEME } from "../../styles/theme";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
@@ -33,7 +33,7 @@ function AdressInfo() {
     getValues,
     setValue,
     clearErrors,
-    setError
+    setError,
   } = useForm<FormDataProps>({
     // informa os valores padrão dos campos
     defaultValues: {
@@ -59,7 +59,7 @@ function AdressInfo() {
         setValue("bairro", cepInfo.bairro);
         setValue("logradouro", cepInfo.logradouro);
         setValue("complemento", cepInfo.complemento);
-        
+
         clearErrors();
       } catch (error) {
         setError("cep", { message: "Cep não encontrado" });
@@ -103,7 +103,11 @@ function AdressInfo() {
             )}
             rules={{ required: true }}
           />
-          {errors.cep && <InvalidFormText title={errors.cep.message || "Informe um Cep válido"} />}
+          {errors.cep && (
+            <InvalidFormText
+              title={errors.cep.message || "Informe um Cep válido"}
+            />
+          )}
         </View>
         <View style={styles.ContentRow}>
           <View style={styles.large}>
