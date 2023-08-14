@@ -38,7 +38,7 @@ function Login() {
 
   const submit = handleSubmit(async (data) => {
     console.log(data);
-    await login();
+    await login(getValues("email"), getValues("password"));
   });
   return (
     <View style={styles.container}>
