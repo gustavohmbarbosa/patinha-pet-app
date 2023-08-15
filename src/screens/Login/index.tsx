@@ -80,6 +80,7 @@ function Login() {
                   value={value}
                   onChangeText={onChange}
                   autoCapitalize="none"
+                  error={errors.password ? true : false}
                   secureTextEntry={!showPassword}
                   right={
                     <TextInputPaper.Icon

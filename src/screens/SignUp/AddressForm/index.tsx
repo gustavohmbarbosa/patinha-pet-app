@@ -1,32 +1,41 @@
 import React, { useState } from "react";
 import { View } from "react-native";
 import { Controller, useForm } from "react-hook-form";
-import { Button } from "../../Button";
-import { ButtonOutline } from "../../ButtonOutline";
-import { TextInput } from "../../TextInput";
 import { TextInput as TextInputPaper } from "react-native-paper";
-import { InvalidFormText } from "../InvalidFormText";
-import { Select } from "../../Select";
+import { Button } from "../../../components/Button";
+import { ButtonOutline } from "../../../components/ButtonOutline";
+import { TextInput } from "../../../components/TextInput";
+import { InvalidFormText } from "../../../components/Form/InvalidFormText";
+import { Select } from "../../../components/Select";
+import { withKeyboardAwareScrollView } from "../../../components/withKeyboardAwareScrollView";
+import { NewUserProps } from "../../../lib/props/NewUserProps";
+import { AddressUserProps } from "../../../lib/props/UserProps";
+import { cepInfoProps } from "../../../lib/types";
 
 import { getCep } from "../../../services/getCep";
-import { cepInfoProps } from "../../../lib/types";
-import { APPTHEME } from "../../../styles/theme";
-import { styles } from "./styles";
-import { withKeyboardAwareScrollView } from "../../withKeyboardAwareScrollView";
 import { maskCep } from "../../../utils/masks";
+import { styles } from "./styles";
+import { APPTHEME } from "../../../styles/theme";
 import { listUF } from "../../../utils/uf";
 
-type FormDataProps = {
-  cep: string;
-  uf: string;
-  cidade: string;
-  bairro: string;
-  logradouro: string;
-  numero: string;
-  complemento: string;
+type AddressFormProps = {
+  newUser: NewUserProps;
+  setNewUser: (user: NewUserProps) => void;
 };
 
-function SignUpAddressForm() {
+type FormDataProps = {
+  zipCode: string;
+  state: string;
+  city: string;
+  neighborhood: string;
+  street: string;
+  number: string;
+  complement: string;
+};
+
+function AddressForm({ newUser, setNewUser }: AddressFormProps) {
+  const [newAdress, setNewAdress] = useState<AddressUserProps | null>(null);
+
   const {
     control,
     handleSubmit,
@@ -35,37 +44,29 @@ function SignUpAddressForm() {
     setValue,
     clearErrors,
     setError,
-  } = useForm<FormDataProps>({
-    defaultValues: {
-      cep: "",
-      uf: "",
-      cidade: "",
-      bairro: "",
-      logradouro: "",
-      numero: "",
-      complemento: "",
-    },
-  });
+  } = useForm<FormDataProps>();
 
-  const submit = handleSubmit((data) => console.log(data));
+  const submit = handleSubmit((dados) => {
+    console.log(dados);
+  });
 
   const [validateOnSubmit, setValidateOnSubmit] = useState(true);
 
   async function handleGetCep() {
-    const cep = getValues("cep");
+    const cep = getValues("zipCode");
     if (cep.length === 9) {
       try {
         const cepInfo: cepInfoProps = await getCep(cep);
 
-        setValue("cidade", cepInfo.localidade);
-        setValue("uf", cepInfo.uf);
-        setValue("bairro", cepInfo.bairro);
-        setValue("logradouro", cepInfo.logradouro);
-        setValue("complemento", cepInfo.complemento);
+        setValue("city", cepInfo.localidade);
+        setValue("state", cepInfo.uf);
+        setValue("neighborhood", cepInfo.bairro);
+        setValue("street", cepInfo.logradouro);
+        setValue("complement", cepInfo.complemento);
 
         clearErrors();
       } catch (error) {
-        setError("cep", { message: "Cep não encontrado" });
+        setError("zipCode", { message: "Cep não encontrado" });
       }
     }
   }
@@ -75,7 +76,7 @@ function SignUpAddressForm() {
       <View style={styles.contentInputs}>
         <View style={styles.input}>
           <Controller
-            name="cep"
+            name="zipCode"
             control={control}
             render={({ field: { value, onChange } }) => (
               <TextInput
@@ -91,41 +92,41 @@ function SignUpAddressForm() {
                   <TextInputPaper.Icon
                     icon="magnify"
                     color={
-                      errors.cep
+                      errors.zipCode
                         ? APPTHEME.colors.alert
                         : APPTHEME.colors.primary
                     }
                   />
                 }
-                error={errors.cep ? true : false}
+                error={errors.zipCode ? true : false}
               />
             )}
             rules={{ required: true }}
           />
-          {errors.cep && (
+          {errors.zipCode && (
             <InvalidFormText
-              title={errors.cep.message || "Informe um Cep válido"}
+              title={errors.zipCode.message || "Informe um Cep válido"}
             />
           )}
         </View>
         <View style={styles.ContentRow}>
           <View style={styles.large}>
             <Controller
-              name="cidade"
+              name="city"
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextInput
                   label="Cidade"
                   value={value}
                   onChangeText={onChange}
-                  error={errors.cidade ? true : false}
+                  error={errors.city ? true : false}
                 />
               )}
               rules={{ required: true }}
             />
-            {errors.cidade ? (
+            {errors.city ? (
               <InvalidFormText title="Informe a cidade" />
-            ) : errors.uf ? (
+            ) : errors.state ? (
               <View style={styles.box} />
             ) : (
               <></>
@@ -133,7 +134,7 @@ function SignUpAddressForm() {
           </View>
           <View style={styles.small}>
             <Controller
-              name="uf"
+              name="state"
               control={control}
               render={({ field: { value, onChange } }) => (
                 <Select
@@ -141,14 +142,14 @@ function SignUpAddressForm() {
                   placeholder="UF"
                   value={value}
                   onChange={onChange}
-                  error={errors.uf ? true : false}
+                  error={errors.state ? true : false}
                 />
               )}
               rules={{ required: true }}
             />
-            {errors.uf ? (
+            {errors.state ? (
               <InvalidFormText title="Informe a UF" />
-            ) : errors.cidade ? (
+            ) : errors.city ? (
               <View style={styles.box} />
             ) : (
               <></>
@@ -157,42 +158,40 @@ function SignUpAddressForm() {
         </View>
         <View style={styles.input}>
           <Controller
-            name="bairro"
+            name="neighborhood"
             control={control}
             render={({ field: { value, onChange } }) => (
               <TextInput
                 label="Bairro"
                 value={value}
                 onChangeText={onChange}
-                error={errors.bairro ? true : false}
+                error={errors.neighborhood ? true : false}
               />
             )}
             rules={{ required: true }}
           />
-          {errors.bairro && <InvalidFormText title="Informe o bairro" />}
+          {errors.neighborhood && <InvalidFormText title="Informe o bairro" />}
         </View>
         <View style={styles.input}>
           <Controller
-            name="logradouro"
+            name="street"
             control={control}
             render={({ field: { value, onChange } }) => (
               <TextInput
                 label="Logradouro"
                 value={value}
                 onChangeText={onChange}
-                error={errors.logradouro ? true : false}
+                error={errors.street ? true : false}
               />
             )}
             rules={{ required: true }}
           />
-          {errors.logradouro && (
-            <InvalidFormText title="Informe o logradouro" />
-          )}
+          {errors.street && <InvalidFormText title="Informe o logradouro" />}
         </View>
         <View style={styles.ContentRow}>
           <View style={styles.small}>
             <Controller
-              name="numero"
+              name="number"
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextInput
@@ -205,7 +204,7 @@ function SignUpAddressForm() {
           </View>
           <View style={styles.large}>
             <Controller
-              name="complemento"
+              name="complement"
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextInput
@@ -219,14 +218,7 @@ function SignUpAddressForm() {
         </View>
       </View>
       <View>
-        <Button
-          onPress={() => {
-            submit();
-            setValidateOnSubmit(true);
-          }}
-        >
-          Criar conta
-        </Button>
+        <Button onPress={submit}>Criar conta</Button>
         <ButtonOutline
           onPress={() => {
             submit();
@@ -240,4 +232,4 @@ function SignUpAddressForm() {
   );
 }
 
-export default withKeyboardAwareScrollView(SignUpAddressForm);
+export default withKeyboardAwareScrollView(AddressForm);

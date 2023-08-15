@@ -8,15 +8,17 @@ import { APPTHEME } from "../../styles/theme";
 type TabRootProps = {
   children: ReactNode;
   backgroundColor?: string;
-  disabled?: boolean;
+  disabledSwipe?: boolean;
   onChangeIndex?: (newIndex: number) => void;
+  headerVisible?: boolean;
 };
 
 const TabRoot = ({
   children,
   backgroundColor = APPTHEME.colors.neutrals.white,
-  disabled = false,
+  disabledSwipe = false,
   onChangeIndex = () => {},
+  headerVisible = true,
 }: TabRootProps) => {
   return (
     <TabPaper
@@ -24,15 +26,21 @@ const TabRoot = ({
       uppercase={false} // true/false | default=true | labels are uppercase
       // showTextLabel={false } // true/false | default=false (KEEP PROVIDING LABEL WE USE IT AS KEY INTERNALLY + SCREEN READERS)
       // iconPosition // leading, top | default=leading
-      style={{
-        backgroundColor: backgroundColor,
-      }} // works the same as AppBar in react-native-paper
+      style={
+        headerVisible
+          ? {
+              backgroundColor: backgroundColor,
+            }
+          : {
+              display: "none",
+            }
+      } // works the same as AppBar in react-native-paper
       // dark={false} // works the same as AppBar in react-native-paper
       // theme={{}} // works the same as AppBar in react-native-paper
       // mode="scrollable" // fixed, scrollable | default=fixed
       onChangeIndex={onChangeIndex} // react on index change
       // showLeadingSpace={true} //  (default=true) show leading space in scrollable tabs inside the header
-      disableSwipe={disabled} // (default=false) disable swipe to left/right gestures
+      disableSwipe={disabledSwipe} // (default=false) disable swipe to left/right gestures
     >
       {children}
     </TabPaper>

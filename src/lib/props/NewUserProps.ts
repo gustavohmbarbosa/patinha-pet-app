@@ -1,4 +1,4 @@
-import { AdressUserProps } from "./UserProps";
+import { AddressUserProps } from "./UserProps";
 
 export type NewUserProps = {
   firstName: string;
@@ -6,5 +6,5 @@ export type NewUserProps = {
   phone: string;
   email: string;
   password: string;
-  adress: AdressUserProps | null;
+  address: AddressUserProps | null;
 };

@@ -1,4 +1,4 @@
-export type AdressUserProps = {
+export type AddressUserProps = {
   zipCode: string;
   city: string;
   state: string;
@@ -15,6 +15,6 @@ export type UserProps = {
     lastName: string;
     email: string;
     phone: string;
-    adress?: AdressUserProps | null;
+    address?: AddressUserProps | null;
   };
 };

@@ -150,7 +150,11 @@ export default function StackRouterComponent() {
             <Stack.Screen
               name="SignUp"
               component={SignUp}
-              options={{ statusBarStyle: "light", headerShown: false }}
+              options={{
+                statusBarStyle: "light",
+                headerShown: false,
+                animation: "slide_from_right",
+              }}
             />
           </>
         )}
