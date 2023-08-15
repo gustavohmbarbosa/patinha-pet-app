@@ -14,6 +14,7 @@ import { APPTHEME } from "../../styles/theme";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
+import { FooterText } from "../../components/Form/FooterText";
 
 type FormDataProps = {
   email: string;
@@ -42,7 +43,11 @@ function Login() {
   return (
     <View style={styles.container}>
       <View style={{ maxHeight: maxHeightHeader }}>
-        <CadastralHeader maxHeightHeader={maxHeightHeader} />
+        <CadastralHeader
+          maxHeightHeader={maxHeightHeader}
+          title="Login"
+          subtitle="Bem vindo de volta"
+        />
       </View>
       <View style={styles.content}>
         <View style={styles.form}>
@@ -95,12 +100,13 @@ function Login() {
           </Button>
         </View>
 
-        <View style={styles.foot}>
-          <Text style={styles.footTitle}>Primeiro acesso?</Text>
-          <TouchableOpacity style={styles.footButton} activeOpacity={0.6}>
-            <Text style={styles.secondary}>Registre-se</Text>
-          </TouchableOpacity>
-        </View>
+        <FooterText
+          text="Primeiro acesso?"
+          buttonText="Registre-se"
+          onPress={() => {
+            navigation.push("SignUp");
+          }}
+        />
       </View>
     </View>
   );

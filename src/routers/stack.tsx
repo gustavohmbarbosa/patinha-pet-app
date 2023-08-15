@@ -10,8 +10,6 @@ import {
 import { APPTHEME } from "../styles/theme";
 import { ButtonIcon } from "../components/ButtonIcon";
 
-import SignUpAdressInfo from "../screens/SignUpAdressInfo";
-import SignUpUserInfo from "../screens/SignUpUserInfo";
 import Home from "../screens/Home";
 import Login from "../screens/Login";
 import UserInfo from "../screens/UserInfo";
@@ -23,6 +21,7 @@ import ExempleTabs from "../screens/ExempleTabs";
 import AccountBoxImg from "../assets/account-box.svg";
 import CloseImg from "../assets/close.svg";
 import { useAuth } from "../hooks/useAuth";
+import { SignUp } from "../screens/SignUp";
 
 // Personalizando o thema padrão do React Navigate
 const theme: Theme = {
@@ -39,10 +38,9 @@ const theme: Theme = {
 type StackNavigationProps = {
   // caso seja necessário algum dado para a página, pode ser exclarecido aqui, se não passa undefined
   // Ex: Home: {userId: string, username: string,...}
-  SignUpAdressInfo: undefined;
-  SignUpUserInfo: undefined;
   Home: undefined;
   Login: undefined;
+  SignUp: undefined;
   PetInfo: undefined;
   Config: undefined;
   UserInfo: undefined;
@@ -149,26 +147,13 @@ export default function StackRouterComponent() {
               component={Login}
               options={{ statusBarStyle: "light", headerShown: false }}
             />
+            <Stack.Screen
+              name="SignUp"
+              component={SignUp}
+              options={{ statusBarStyle: "light", headerShown: false }}
+            />
           </>
         )}
-        {/* <Stack.Screen
-          name="SignUpAdressInfo"
-          component={SignUpAdressInfo}
-          options={{
-            title: "Registre-se",
-            headerTitleStyle: styleTitleBodyLg,
-            headerStyle: { backgroundColor: APPTHEME.colors.background },
-          }}
-        />
-        <Stack.Screen
-          name="SingUpUserInfo"
-          component={SignUpUserInfo}
-          options={{
-            title: "Registre-se",
-            headerTitleStyle: styleTitleBodyLg,
-            headerStyle: { backgroundColor: APPTHEME.colors.background },
-          }}
-        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

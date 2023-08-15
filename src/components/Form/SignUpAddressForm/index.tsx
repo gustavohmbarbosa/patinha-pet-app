@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { View, ScrollView } from "react-native";
+import { View } from "react-native";
 import { Controller, useForm } from "react-hook-form";
-import { Button } from "../../components/Button";
-import { ButtonOutline } from "../../components/ButtonOutline";
-import { TextInput } from "../../components/TextInput";
+import { Button } from "../../Button";
+import { ButtonOutline } from "../../ButtonOutline";
+import { TextInput } from "../../TextInput";
 import { TextInput as TextInputPaper } from "react-native-paper";
-import { InvalidFormText } from "../../components/Form/InvalidFormText";
-import { Select } from "../../components/Select";
+import { InvalidFormText } from "../InvalidFormText";
+import { Select } from "../../Select";
 
-import { getCep } from "../../services/getCep";
-import { cepInfoProps } from "../../lib/types";
-import { APPTHEME } from "../../styles/theme";
+import { getCep } from "../../../services/getCep";
+import { cepInfoProps } from "../../../lib/types";
+import { APPTHEME } from "../../../styles/theme";
 import { styles } from "./styles";
-import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
-import { maskCep } from "../../utils/masks";
-import { listUF } from "../../utils/uf";
+import { withKeyboardAwareScrollView } from "../../withKeyboardAwareScrollView";
+import { maskCep } from "../../../utils/masks";
+import { listUF } from "../../../utils/uf";
 
 type FormDataProps = {
   cep: string;
@@ -26,7 +26,7 @@ type FormDataProps = {
   complemento: string;
 };
 
-function SignUpAdressInfo() {
+function SignUpAddressForm() {
   const {
     control,
     handleSubmit,
@@ -240,4 +240,4 @@ function SignUpAdressInfo() {
   );
 }
 
-export default withKeyboardAwareScrollView(SignUpAdressInfo);
+export default withKeyboardAwareScrollView(SignUpAddressForm);

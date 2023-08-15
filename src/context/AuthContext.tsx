@@ -27,6 +27,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       const response = await api.post("login", { email, password });
       const data: UserProps = response.data;
       setUser(data);
+      console.log(data);
     } catch (error) {
       Alert.alert("Não autorizado", "Dado(s) inválidos.");
     } finally {

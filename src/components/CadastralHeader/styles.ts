@@ -10,6 +10,12 @@ export const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "flex-end",
   },
+  button: {
+    zIndex: 10,
+    flex: 1,
+    marginTop: 25,
+    alignSelf: "flex-start",
+  },
   logo: {
     position: "absolute",
     opacity: 0.25,
