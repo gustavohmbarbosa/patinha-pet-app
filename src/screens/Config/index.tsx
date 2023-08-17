@@ -103,7 +103,7 @@ export default function Config() {
               opacity: 0.5,
             }}
           />
-          <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <TouchableOpacity style={styles.button} onPress={logOut}>
             <View style={styles.exitButtonContent}>
               <LogoutImg width={24} height={24} />
               <View>

@@ -2,6 +2,7 @@ export type AddressUserProps = {
   zipCode: string | null;
   city: string | null;
   state: string | null;
+  street: string | null;
   neighborhood: string | null;
   number: string | null;
   complement: string | null;

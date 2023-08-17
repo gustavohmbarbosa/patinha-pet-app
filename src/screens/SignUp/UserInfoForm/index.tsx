@@ -6,7 +6,7 @@ import { Button } from "../../../components/Button";
 import { TextInput } from "../../../components/TextInput";
 import { InvalidFormText } from "../../../components/Form/InvalidFormText";
 import { withKeyboardAwareScrollView } from "../../../components/withKeyboardAwareScrollView";
-import { maskCellphone } from "../../../utils/masks";
+import { maskCellphone, removeMask } from "../../../utils/masks";
 
 import { NewUserProps } from "../../../lib/props/NewUserProps";
 import { styles } from "./styles";
@@ -32,10 +32,7 @@ function UserInfoForm({ newUser, setNewUser }: UserInfoFormProps) {
   const goTo = useTabNavigation();
 
   const submit = handleSubmit((data) => {
-    var phoneNoMask = data.phone;
-    if (phoneNoMask && phoneNoMask.length > 0) {
-      phoneNoMask = phoneNoMask.replace(/\D/g, "");
-    }
+    const phoneNoMask = removeMask(data.phone);
 
     setNewUser({
       ...newUser,

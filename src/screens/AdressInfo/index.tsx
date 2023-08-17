@@ -8,24 +8,18 @@ import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { Select } from "../../components/Select";
 
 import { listUF } from "../../utils/uf";
-import { maskCep } from "../../utils/masks";
+import { maskCep, removeMask } from "../../utils/masks";
 import { styles } from "./styles";
 import { getCep } from "../../services/getCep";
 import { cepInfoProps } from "../../lib/types";
 import { APPTHEME } from "../../styles/theme";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
-
-type FormDataProps = {
-  cep: string;
-  uf: string;
-  cidade: string;
-  bairro: string;
-  logradouro: string;
-  numero?: string;
-  complemento?: string;
-};
+import { UpdateUserAddressProps } from "../../lib/props/UpdateUserProps";
+import { useAuth } from "../../hooks/useAuth";
 
 function AdressInfo() {
+  const { user, updateUserAddress, isUserLoading } = useAuth();
+
   const {
     control,
     handleSubmit,
@@ -34,49 +28,64 @@ function AdressInfo() {
     setValue,
     clearErrors,
     setError,
-  } = useForm<FormDataProps>({
-    // informa os valores padrão dos campos
+  } = useForm<UpdateUserAddressProps>({
     defaultValues: {
-      cep: "",
-      uf: "",
-      cidade: "",
-      bairro: "",
-      logradouro: "",
-      numero: "",
-      complemento: "",
+      zipCode: user.user.address.zipCode || "",
+      city: user.user.address.city || "",
+      state: user.user.address.state || "",
+      neighborhood: user.user.address.neighborhood || "",
+      street: user.user.address.street || "",
+      number: user.user.address.number,
+      complement: user.user.address.complement,
     },
   });
 
-  // função pra chamar a busca do cep somente caso haja cep completo
   async function handleGetCep() {
-    const cep = getValues("cep");
-    if (cep.length === 9) {
+    const zipCode = getValues("zipCode");
+    if (zipCode.length === 9) {
       try {
-        const cepInfo: cepInfoProps = await getCep(cep);
+        const cepInfo: cepInfoProps = await getCep(zipCode);
 
-        setValue("cidade", cepInfo.localidade);
-        setValue("uf", cepInfo.uf);
-        setValue("bairro", cepInfo.bairro);
-        setValue("logradouro", cepInfo.logradouro);
-        setValue("complemento", cepInfo.complemento);
+        setValue("city", cepInfo.localidade);
+        setValue("state", cepInfo.uf);
+        setValue("neighborhood", cepInfo.bairro);
+        setValue("street", cepInfo.logradouro);
+        setValue("complement", cepInfo.complemento);
 
         clearErrors();
       } catch (error) {
-        setError("cep", { message: "Cep não encontrado" });
+        setError("zipCode", { message: "Cep não encontrado" });
       }
     }
   }
+  console.log(
+    getValues("zipCode"),
+    getValues("state"),
+    getValues("city"),
+    getValues("neighborhood"),
+    getValues("street"),
+    getValues("number"),
+    getValues("complement")
+  );
 
-  // função de submit do form
-  // necessário usar o do handleSbumit para obter os dados e executar a lógica que deseja
-  const submit = handleSubmit((data) => console.log(data));
+  console.log(user.user.address);
+  const submit = handleSubmit(async (data) => {
+    const zipCode = removeMask(data.zipCode);
+
+    await updateUserAddress({
+      ...data,
+      zipCode: zipCode,
+      number: data.number === "" ? null : data.number,
+      complement: data.complement === "" ? null : data.complement,
+    });
+  });
 
   return (
     <View style={styles.container}>
       <View style={styles.contentInputs}>
         <View style={styles.input}>
           <Controller
-            name="cep"
+            name="zipCode"
             control={control}
             render={({ field: { value, onChange } }) => (
               <TextInput
@@ -92,41 +101,41 @@ function AdressInfo() {
                   <TextInputPaper.Icon
                     icon="magnify"
                     color={
-                      errors.cep
+                      errors.zipCode
                         ? APPTHEME.colors.alert
                         : APPTHEME.colors.primary
                     }
                   />
                 }
-                error={errors.cep ? true : false}
+                error={errors.zipCode ? true : false}
               />
             )}
             rules={{ required: true }}
           />
-          {errors.cep && (
+          {errors.zipCode && (
             <InvalidFormText
-              title={errors.cep.message || "Informe um Cep válido"}
+              title={errors.zipCode.message || "Informe um Cep válido"}
             />
           )}
         </View>
         <View style={styles.ContentRow}>
           <View style={styles.large}>
             <Controller
-              name="cidade"
+              name="city"
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextInput
                   label="Cidade"
                   value={value}
                   onChangeText={onChange}
-                  error={errors.cidade ? true : false}
+                  error={errors.city ? true : false}
                 />
               )}
               rules={{ required: true }}
             />
-            {errors.cidade ? (
+            {errors.city ? (
               <InvalidFormText title="Informe a cidade" />
-            ) : errors.uf ? (
+            ) : errors.state ? (
               <View style={styles.box} />
             ) : (
               <></>
@@ -134,7 +143,7 @@ function AdressInfo() {
           </View>
           <View style={styles.small}>
             <Controller
-              name="uf"
+              name="state"
               control={control}
               render={({ field: { value, onChange } }) => (
                 <Select
@@ -142,14 +151,14 @@ function AdressInfo() {
                   placeholder="UF"
                   value={value}
                   onChange={onChange}
-                  error={errors.uf ? true : false}
+                  error={errors.state ? true : false}
                 />
               )}
               rules={{ required: true }}
             />
-            {errors.uf ? (
+            {errors.state ? (
               <InvalidFormText title="Informe a UF" />
-            ) : errors.cidade ? (
+            ) : errors.city ? (
               <View style={styles.box} />
             ) : (
               <></>
@@ -158,72 +167,68 @@ function AdressInfo() {
         </View>
         <View style={styles.input}>
           <Controller
-            name="bairro"
+            name="neighborhood"
             control={control}
             render={({ field: { value, onChange } }) => (
               <TextInput
                 label="Bairro"
                 value={value}
                 onChangeText={onChange}
-                error={errors.bairro ? true : false}
+                error={errors.neighborhood ? true : false}
               />
             )}
             rules={{ required: true }}
           />
-          {errors.bairro && <InvalidFormText title="Informe o bairro" />}
+          {errors.neighborhood && <InvalidFormText title="Informe o bairro" />}
         </View>
         <View style={styles.input}>
           <Controller
-            name="logradouro"
+            name="street"
             control={control}
             render={({ field: { value, onChange } }) => (
               <TextInput
                 label="Logradouro"
                 value={value}
                 onChangeText={onChange}
-                error={errors.logradouro ? true : false}
+                error={errors.street ? true : false}
               />
             )}
             rules={{ required: true }}
           />
-          {errors.logradouro && (
-            <InvalidFormText title="Informe o logradouro" />
-          )}
+          {errors.street && <InvalidFormText title="Informe o logradouro" />}
         </View>
         <View style={styles.ContentRow}>
           <View style={styles.small}>
             <Controller
-              name="numero"
+              name="number"
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextInput
                   label="Número"
-                  value={value}
+                  value={value ? value : ""}
                   onChangeText={onChange}
                 />
               )}
-              // não é obrigatório
-              // rules={{ required: true }}
             />
           </View>
           <View style={styles.large}>
             <Controller
-              name="complemento"
+              name="complement"
               control={control}
               render={({ field: { value, onChange } }) => (
                 <TextInput
                   label="Complemento"
-                  value={value}
+                  value={value ? value : ""}
                   onChangeText={onChange}
                 />
               )}
-              // não é obrigatório
-              // rules={{ required: true }}
             />
           </View>
         </View>
       </View>
-      <Button onPress={submit}>Salvar</Button>
+      <Button onPress={submit} loading={isUserLoading}>
+        Salvar
+      </Button>
     </View>
   );
 }

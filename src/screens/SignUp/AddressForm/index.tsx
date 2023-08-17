@@ -14,7 +14,7 @@ import {
 import { cepInfoProps } from "../../../lib/types";
 
 import { getCep } from "../../../services/getCep";
-import { maskCep } from "../../../utils/masks";
+import { maskCep, removeMask } from "../../../utils/masks";
 import { styles } from "./styles";
 import { APPTHEME } from "../../../styles/theme";
 import { listUF } from "../../../utils/uf";
@@ -39,8 +39,7 @@ function AddressForm({ newUser }: AddressFormProps) {
   } = useForm<NewAddressUserProps>();
 
   const submit = handleSubmit((data) => {
-    var cepNoMask = data.zipCode;
-    cepNoMask = cepNoMask.replace(/\D/g, "");
+    const cepNoMask = removeMask(data.zipCode);
 
     signUp({
       ...newUser,
@@ -50,8 +49,8 @@ function AddressForm({ newUser }: AddressFormProps) {
         state: data.state,
         neighborhood: data.neighborhood,
         street: data.street,
-        complement: data.complement,
-        number: data.number,
+        complement: data.complement === "" ? undefined : data.complement,
+        number: data.number === "" ? undefined : data.number,
       },
     });
   });
