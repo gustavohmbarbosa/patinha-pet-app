@@ -30,18 +30,12 @@ export default function Home() {
       <View style={styles.container}>
         <FabGroup />
         <Text>Página Home </Text>
-        <Button
-          onPress={() => {
-            navigaton.navigate("Login");
-          }}
-        >
-          ir para Login
-        </Button>
+
         <TextInput label={"Nome"} />
 
         <Button
           onPress={() => {
-            navigaton.navigate("ExempleTabs");
+            navigaton.push("ExempleTabs");
           }}
         >
           ir para ExempleTabs

@@ -13,7 +13,7 @@ export type NewAddressUserProps = {
 export type NewUserProps = {
   firstName: string;
   lastName: string;
-  phone?: string | null;
+  phone: string;
   email: string;
   password: string;
   address: NewAddressUserProps | null;

@@ -8,14 +8,16 @@ import { TextInput } from "../../components/TextInput";
 import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { maskCellphone } from "../../utils/masks";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
+import { useAuth } from "../../hooks/useAuth";
 
 // faz a tipagem dos dados que terá no fomrulário
 type FormDataProps = {
-  nome: string;
-  sobrenome: string;
-  celular: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
 };
 function UserInfo() {
+  const { user } = useAuth();
   // o que vai fazer o gerenciamento dos dados e entender os erros dos inputs
   const {
     control,
@@ -24,9 +26,9 @@ function UserInfo() {
   } = useForm<FormDataProps>({
     // informa os valores padrão dos campos
     defaultValues: {
-      nome: "",
-      sobrenome: "",
-      celular: "",
+      firstName: user.user.firstName,
+      lastName: user.user.lastName,
+      phone: user.user.lastName,
     },
   });
 
@@ -39,40 +41,40 @@ function UserInfo() {
       <View style={styles.contentInputs}>
         <View style={styles.input}>
           <Controller
-            name="nome"
+            name="firstName"
             control={control}
             render={({ field: { value, onChange } }) => (
               <TextInput
                 label="Nome"
                 value={value}
                 onChangeText={onChange}
-                error={errors.nome ? true : false}
+                error={errors.firstName ? true : false}
               />
             )}
             rules={{ required: true }}
           />
-          {errors.nome && <InvalidFormText title="Insira o seu nome!" />}
+          {errors.firstName && <InvalidFormText title="Insira o seu nome!" />}
         </View>
         <View style={styles.input}>
           <Controller
-            name="sobrenome"
+            name="lastName"
             control={control}
             render={({ field: { value, onChange } }) => (
               <TextInput
                 label="Sobrenome"
                 value={value}
                 onChangeText={onChange}
-                error={errors.sobrenome ? true : false}
+                error={errors.lastName ? true : false}
               />
             )}
             rules={{ required: true }}
           />
-          {errors.sobrenome && (
+          {errors.lastName && (
             <InvalidFormText title="Insira o seu sobrenome!" />
           )}
         </View>
         <Controller
-          name="celular"
+          name="phone"
           control={control}
           render={({ field: { value, onChange } }) => (
             <TextInput

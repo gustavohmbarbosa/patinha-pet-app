@@ -3,12 +3,14 @@ import { UserProps } from "../lib/props/UserProps";
 import { api } from "../services/api";
 import { Alert } from "react-native";
 import { NewUserProps } from "../lib/props/NewUserProps";
+import { isAxiosError, AxiosError } from "axios";
 
 export type AuthContextDataProps = {
   user: UserProps;
   isUserLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   signUp: (data: NewUserProps) => Promise<void>;
+  logOut: () => void;
 };
 
 export type AuthContextProviderProps = {
@@ -23,35 +25,55 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
   async function login(email: string, password: string) {
     setisUserLoading(true);
-    try {
-      const response = await api.post("login", { email, password });
-      const data: UserProps = response.data;
-      setUser(data);
-      console.log(data);
-    } catch (error) {
-      Alert.alert("Não autorizado", "Dado(s) inválidos.");
-    } finally {
-      setisUserLoading(false);
-    }
+    await api
+      .post("login", { email, password })
+      .then((response) => {
+        const data: UserProps = response.data;
+        setUser(data);
+      })
+      .catch(() => {
+        Alert.alert(`Não autenticado`, `Email e/ou senha inválido(s)`);
+      })
+      .finally(() => {
+        setisUserLoading(false);
+      });
   }
 
   async function signUp(newUser: NewUserProps) {
     setisUserLoading(true);
-    try {
-      const response = await api.post("signUp", newUser);
-      const data = response.data;
-      // setUser(data);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-      Alert.alert("Não autorizado", "Dado(s) inválidos.");
-    } finally {
-      setisUserLoading(false);
-    }
+
+    await api
+      .post("signUp", newUser)
+      .then((response) => {
+        const data: UserProps = response.data;
+        setUser(data);
+      })
+      .catch((error: Error | AxiosError) => {
+        if (isAxiosError(error)) {
+          Alert.alert(
+            `Error ${error.response?.status}`,
+            `${error.response?.data.message}`
+          );
+        } else {
+          Alert.alert(
+            `Error`,
+            `Algo de errado aconteceu, verifique os dados inseridos.`
+          );
+        }
+      })
+      .finally(() => {
+        setisUserLoading(false);
+      });
+  }
+
+  function logOut() {
+    setUser({} as UserProps);
   }
 
   return (
-    <AuthContext.Provider value={{ user, isUserLoading, login, signUp }}>
+    <AuthContext.Provider
+      value={{ user, isUserLoading, login, signUp, logOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

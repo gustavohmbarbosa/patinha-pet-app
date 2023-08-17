@@ -19,7 +19,7 @@ type UserInfoFormProps = {
 type FormDataProps = {
   firstName: string;
   lastName: string;
-  phone?: string;
+  phone: string;
 };
 function UserInfoForm({ newUser, setNewUser }: UserInfoFormProps) {
   const {
@@ -41,7 +41,7 @@ function UserInfoForm({ newUser, setNewUser }: UserInfoFormProps) {
       ...newUser,
       firstName: data.firstName.trim(),
       lastName: data.lastName.trim(),
-      phone: phoneNoMask ? phoneNoMask : null,
+      phone: phoneNoMask,
     });
 
     goTo(1);
@@ -102,16 +102,20 @@ function UserInfoForm({ newUser, setNewUser }: UserInfoFormProps) {
               validate: {
                 value: () => {
                   const password = getValues("phone");
-                  return (
-                    password === undefined ||
-                    (password !== undefined &&
-                      (password.length === 0 || password.length === 15))
-                  );
+                  return password.length === 15;
                 },
+              },
+              required: {
+                value: true,
+                message: "Insira o celular",
               },
             }}
           />
-          {errors.phone && <InvalidFormText title="Insira o número completo" />}
+          {errors.phone && (
+            <InvalidFormText
+              title={errors.phone.message || "Insira o número completo"}
+            />
+          )}
         </View>
       </View>
       <Button onPress={submit}>Proximo</Button>

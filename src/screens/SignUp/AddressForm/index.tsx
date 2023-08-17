@@ -23,10 +23,9 @@ import { FooterText } from "../../../components/Form/FooterText";
 
 type AddressFormProps = {
   newUser: NewUserProps;
-  setNewUser: (user: NewUserProps) => void;
 };
 
-function AddressForm({ newUser, setNewUser }: AddressFormProps) {
+function AddressForm({ newUser }: AddressFormProps) {
   const { signUp, isUserLoading } = useAuth();
 
   const {
@@ -41,8 +40,9 @@ function AddressForm({ newUser, setNewUser }: AddressFormProps) {
 
   const submit = handleSubmit((data) => {
     var cepNoMask = data.zipCode;
-    cepNoMask = cepNoMask.replace(/\d/g, "");
-    setNewUser({
+    cepNoMask = cepNoMask.replace(/\D/g, "");
+
+    signUp({
       ...newUser,
       address: {
         zipCode: cepNoMask,
@@ -54,14 +54,10 @@ function AddressForm({ newUser, setNewUser }: AddressFormProps) {
         number: data.number,
       },
     });
-
-    signUp(newUser);
   });
 
   const submitWithoutAdress = () => {
-    setNewUser({ ...newUser, address: null });
-
-    signUp(newUser);
+    signUp({ ...newUser, address: null });
   };
 
   async function handleGetCep() {
@@ -114,7 +110,13 @@ function AddressForm({ newUser, setNewUser }: AddressFormProps) {
                 error={errors.zipCode ? true : false}
               />
             )}
-            rules={{ required: true }}
+            rules={{
+              required: { value: true, message: "Informe o cep" },
+              validate: () => {
+                const zipCode = getValues("zipCode");
+                return zipCode.length === 9;
+              },
+            }}
           />
           {errors.zipCode && (
             <InvalidFormText

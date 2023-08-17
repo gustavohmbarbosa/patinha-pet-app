@@ -1,8 +1,8 @@
 export type AddressUserProps = {
-  zipCode: string;
-  city: string;
-  state: string;
-  neighborhood: string;
+  zipCode: string | null;
+  city: string | null;
+  state: string | null;
+  neighborhood: string | null;
   number: string | null;
   complement: string | null;
 };
@@ -14,7 +14,7 @@ export type UserProps = {
     firstName: string;
     lastName: string;
     email: string;
-    phone: string | null;
-    address: AddressUserProps | null;
+    phone: string;
+    address: AddressUserProps;
   };
 };

@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { Dimensions, View } from "react-native";
 
 import { styles } from "./styles";
@@ -51,7 +51,7 @@ export function SignUp() {
         subtitle: "Informe seu endereço atual",
         goBack: "tabs",
       },
-      page: <AddressForm newUser={newUser} setNewUser={setNewUser} />,
+      page: <AddressForm newUser={newUser} />,
     },
   ];
 
