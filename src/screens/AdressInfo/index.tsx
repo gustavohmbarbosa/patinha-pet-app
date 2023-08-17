@@ -58,17 +58,7 @@ function AdressInfo() {
       }
     }
   }
-  console.log(
-    getValues("zipCode"),
-    getValues("state"),
-    getValues("city"),
-    getValues("neighborhood"),
-    getValues("street"),
-    getValues("number"),
-    getValues("complement")
-  );
 
-  console.log(user.user.address);
   const submit = handleSubmit(async (data) => {
     const zipCode = removeMask(data.zipCode);
 
