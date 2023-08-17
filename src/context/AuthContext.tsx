@@ -1,14 +1,14 @@
 import { createContext, ReactNode, useState } from "react";
 import { UserProps } from "../lib/props/UserProps";
 import { api } from "../services/api";
-import { Loading } from "../components/Loading";
 import { Alert } from "react-native";
+import { NewUserProps } from "../lib/props/NewUserProps";
 
 export type AuthContextDataProps = {
   user: UserProps;
   isUserLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  signUp: () => Promise<void>;
+  signUp: (data: NewUserProps) => Promise<void>;
 };
 
 export type AuthContextProviderProps = {
@@ -35,7 +35,20 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     }
   }
 
-  async function signUp() {}
+  async function signUp(newUser: NewUserProps) {
+    setisUserLoading(true);
+    try {
+      const response = await api.post("signUp", newUser);
+      const data = response.data;
+      // setUser(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Não autorizado", "Dado(s) inválidos.");
+    } finally {
+      setisUserLoading(false);
+    }
+  }
 
   return (
     <AuthContext.Provider value={{ user, isUserLoading, login, signUp }}>

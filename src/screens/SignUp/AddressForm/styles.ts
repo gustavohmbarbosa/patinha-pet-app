@@ -32,4 +32,13 @@ export const styles = StyleSheet.create({
   small: {
     width: 128,
   },
+  buttonFooterContent: {
+    gap: 16,
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  buttonFooter: {
+    fontSize: 14,
+    textDecorationLine: "underline",
+  },
 });

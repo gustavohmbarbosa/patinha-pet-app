@@ -7,6 +7,7 @@ export const withKeyboardAwareScrollView =
       <KeyboardAwareScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
       >
         <Component {...(props as P)} />
       </KeyboardAwareScrollView>

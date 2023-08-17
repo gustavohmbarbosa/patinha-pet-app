@@ -4,7 +4,7 @@ import { APPTHEME } from "../../../styles/theme";
 export const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingHorizontal: 4,
+    paddingHorizontal: 8,
     flexDirection: "row",
     gap: 8,
     alignItems: "center",

@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { View } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { TextInput as TextInputPaper } from "react-native-paper";
 import { Button } from "../../../components/Button";
-import { ButtonOutline } from "../../../components/ButtonOutline";
 import { TextInput } from "../../../components/TextInput";
 import { InvalidFormText } from "../../../components/Form/InvalidFormText";
 import { Select } from "../../../components/Select";
 import { withKeyboardAwareScrollView } from "../../../components/withKeyboardAwareScrollView";
-import { NewUserProps } from "../../../lib/props/NewUserProps";
-import { AddressUserProps } from "../../../lib/props/UserProps";
+import {
+  NewAddressUserProps,
+  NewUserProps,
+} from "../../../lib/props/NewUserProps";
 import { cepInfoProps } from "../../../lib/types";
 
 import { getCep } from "../../../services/getCep";
@@ -17,24 +18,16 @@ import { maskCep } from "../../../utils/masks";
 import { styles } from "./styles";
 import { APPTHEME } from "../../../styles/theme";
 import { listUF } from "../../../utils/uf";
+import { useAuth } from "../../../hooks/useAuth";
+import { FooterText } from "../../../components/Form/FooterText";
 
 type AddressFormProps = {
   newUser: NewUserProps;
   setNewUser: (user: NewUserProps) => void;
 };
 
-type FormDataProps = {
-  zipCode: string;
-  state: string;
-  city: string;
-  neighborhood: string;
-  street: string;
-  number: string;
-  complement: string;
-};
-
 function AddressForm({ newUser, setNewUser }: AddressFormProps) {
-  const [newAdress, setNewAdress] = useState<AddressUserProps | null>(null);
+  const { signUp, isUserLoading } = useAuth();
 
   const {
     control,
@@ -44,13 +37,32 @@ function AddressForm({ newUser, setNewUser }: AddressFormProps) {
     setValue,
     clearErrors,
     setError,
-  } = useForm<FormDataProps>();
+  } = useForm<NewAddressUserProps>();
 
-  const submit = handleSubmit((dados) => {
-    console.log(dados);
+  const submit = handleSubmit((data) => {
+    var cepNoMask = data.zipCode;
+    cepNoMask = cepNoMask.replace(/\d/g, "");
+    setNewUser({
+      ...newUser,
+      address: {
+        zipCode: cepNoMask,
+        city: data.city,
+        state: data.state,
+        neighborhood: data.neighborhood,
+        street: data.street,
+        complement: data.complement,
+        number: data.number,
+      },
+    });
+
+    signUp(newUser);
   });
 
-  const [validateOnSubmit, setValidateOnSubmit] = useState(true);
+  const submitWithoutAdress = () => {
+    setNewUser({ ...newUser, address: null });
+
+    signUp(newUser);
+  };
 
   async function handleGetCep() {
     const cep = getValues("zipCode");
@@ -96,6 +108,7 @@ function AddressForm({ newUser, setNewUser }: AddressFormProps) {
                         ? APPTHEME.colors.alert
                         : APPTHEME.colors.primary
                     }
+                    onPress={handleGetCep}
                   />
                 }
                 error={errors.zipCode ? true : false}
@@ -217,16 +230,17 @@ function AddressForm({ newUser, setNewUser }: AddressFormProps) {
           </View>
         </View>
       </View>
-      <View>
-        <Button onPress={submit}>Criar conta</Button>
-        <ButtonOutline
-          onPress={() => {
-            submit();
-            setValidateOnSubmit(false);
-          }}
-        >
-          Preencher depois
-        </ButtonOutline>
+      <View style={styles.buttonFooterContent}>
+        <Button onPress={submit} loading={isUserLoading}>
+          Criar conta
+        </Button>
+        <FooterText
+          buttonText="Criar conta sem endereço"
+          buttonTextStyle={styles.buttonFooter}
+          text=""
+          onPress={submitWithoutAdress}
+          disabled={isUserLoading}
+        />
       </View>
     </View>
   );

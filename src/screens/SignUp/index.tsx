@@ -24,10 +24,9 @@ export function SignUp() {
   const windowHeight = Dimensions.get("window").height;
   const maxHeightHeader = Math.round(windowHeight * 0.3);
 
-  const [headerIndex, setHeaderIndex] = useState(0);
-
-  const [addressDisabled, setAddressDisabled] = useState(true);
-  const [newUser, setNewUser] = useState<NewUserProps>({} as NewUserProps);
+  const [newUser, setNewUser] = useState<NewUserProps>({
+    address: null,
+  } as NewUserProps);
 
   const headerOptions: headerOptionsProps[] = [
     {
@@ -55,31 +54,23 @@ export function SignUp() {
       page: <AddressForm newUser={newUser} setNewUser={setNewUser} />,
     },
   ];
+
   return (
     <View style={styles.container}>
-      <Tabs.root
-        headerVisible={false}
-        disabledSwipe
-        onChangeIndex={(index) => {
-          setHeaderIndex(index);
-        }}
-      >
+      <Tabs.root headerVisible={false} disabledSwipe>
         {headerOptions.map(({ header, page }, index) => {
           return (
-            <Tabs.screen key={index} label="">
-              <View style={styles.container}>
-                <View style={{ maxHeight: maxHeightHeader }}>
-                  <CadastralHeader
-                    maxHeightHeader={maxHeightHeader}
-                    title={header.title}
-                    subtitle={header.subtitle}
-                    goBack={header.goBack}
-                  />
-                </View>
-
-                {page}
+            <View key={index} style={styles.container}>
+              <View style={{ maxHeight: maxHeightHeader }}>
+                <CadastralHeader
+                  maxHeightHeader={maxHeightHeader}
+                  title={header.title}
+                  subtitle={header.subtitle}
+                  goBack={header.goBack}
+                />
               </View>
-            </Tabs.screen>
+              <Tabs.screen label="">{page}</Tabs.screen>
+            </View>
           );
         })}
       </Tabs.root>

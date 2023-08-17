@@ -19,22 +19,31 @@ type UserInfoFormProps = {
 type FormDataProps = {
   firstName: string;
   lastName: string;
-  phone: string;
+  phone?: string;
 };
 function UserInfoForm({ newUser, setNewUser }: UserInfoFormProps) {
   const {
     control,
     handleSubmit,
+    getValues,
     formState: { errors },
-  } = useForm<FormDataProps>({
-    defaultValues: {
-      phone: "",
-    },
-  });
+  } = useForm<FormDataProps>();
 
   const goTo = useTabNavigation();
 
-  const submit = handleSubmit(() => {
+  const submit = handleSubmit((data) => {
+    var phoneNoMask = data.phone;
+    if (phoneNoMask && phoneNoMask.length > 0) {
+      phoneNoMask = phoneNoMask.replace(/\D/g, "");
+    }
+
+    setNewUser({
+      ...newUser,
+      firstName: data.firstName.trim(),
+      lastName: data.lastName.trim(),
+      phone: phoneNoMask ? phoneNoMask : null,
+    });
+
     goTo(1);
   });
 
@@ -49,10 +58,7 @@ function UserInfoForm({ newUser, setNewUser }: UserInfoFormProps) {
               <TextInput
                 label="Nome"
                 value={value}
-                onChangeText={(text) => {
-                  setNewUser({ ...newUser, firstName: text });
-                  onChange(text);
-                }}
+                onChangeText={onChange}
                 error={errors.firstName ? true : false}
               />
             )}
@@ -68,10 +74,7 @@ function UserInfoForm({ newUser, setNewUser }: UserInfoFormProps) {
               <TextInput
                 label="Sobrenome"
                 value={value}
-                onChangeText={(text) => {
-                  setNewUser({ ...newUser, lastName: text });
-                  onChange(text);
-                }}
+                onChangeText={onChange}
                 error={errors.lastName ? true : false}
               />
             )}
@@ -81,23 +84,35 @@ function UserInfoForm({ newUser, setNewUser }: UserInfoFormProps) {
             <InvalidFormText title="Insira o seu sobrenome!" />
           )}
         </View>
-        <Controller
-          name="phone"
-          control={control}
-          render={({ field: { value, onChange } }) => (
-            <TextInput
-              label="Celular"
-              placeholder="(00) 00000-0000"
-              value={value}
-              maxLength={15}
-              onChangeText={(text) => {
-                setNewUser({ ...newUser, phone: text });
-                onChange(maskCellphone(text));
-              }}
-              keyboardType="phone-pad"
-            />
-          )}
-        />
+        <View style={styles.input}>
+          <Controller
+            name="phone"
+            control={control}
+            render={({ field: { value, onChange } }) => (
+              <TextInput
+                label="Celular"
+                placeholder="(00) 00000-0000"
+                value={value}
+                maxLength={15}
+                onChangeText={(text) => onChange(maskCellphone(text))}
+                keyboardType="phone-pad"
+              />
+            )}
+            rules={{
+              validate: {
+                value: () => {
+                  const password = getValues("phone");
+                  return (
+                    password === undefined ||
+                    (password !== undefined &&
+                      (password.length === 0 || password.length === 15))
+                  );
+                },
+              },
+            }}
+          />
+          {errors.phone && <InvalidFormText title="Insira o número completo" />}
+        </View>
       </View>
       <Button onPress={submit}>Proximo</Button>
     </View>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { View } from "react-native";
 
 import { styles } from "./styles";
@@ -7,11 +7,11 @@ import { Button } from "../../../components/Button";
 import { TextInput } from "../../../components/TextInput";
 import { TextInput as TextInputPaper } from "react-native-paper";
 import { InvalidFormText } from "../../../components/Form/InvalidFormText";
-import { maskCellphone } from "../../../utils/masks";
 import { withKeyboardAwareScrollView } from "../../../components/withKeyboardAwareScrollView";
 import { NewUserProps } from "../../../lib/props/NewUserProps";
 import { APPTHEME } from "../../../styles/theme";
 import { useTabNavigation } from "react-native-paper-tabs";
+import { regexEmail, regexPassword } from "../../../utils/regex";
 
 type UserCredentialFormProps = {
   newUser: NewUserProps;
@@ -29,12 +29,14 @@ function UserCredentialForm({ newUser, setNewUser }: UserCredentialFormProps) {
   const {
     control,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<FormDataProps>();
 
   const goTo = useTabNavigation();
 
-  const submit = handleSubmit(() => {
+  const submit = handleSubmit((data) => {
+    setNewUser({ ...newUser, email: data.email, password: data.password });
     goTo(2);
   });
 
@@ -50,16 +52,23 @@ function UserCredentialForm({ newUser, setNewUser }: UserCredentialFormProps) {
                 label="Email"
                 placeholder="example@email.com"
                 value={value}
-                onChangeText={(text) => {
-                  setNewUser({ ...newUser, email: text });
-                  onChange(text);
-                }}
+                onChangeText={onChange}
                 error={errors.email ? true : false}
               />
             )}
-            rules={{ required: true }}
+            rules={{
+              required: true,
+              pattern: {
+                value: regexEmail,
+                message: "Insira um email válido",
+              },
+            }}
           />
-          {errors.email && <InvalidFormText title="O email não é válido!" />}
+          {errors.email && (
+            <InvalidFormText
+              title={errors.email.message || "Insira um email"}
+            />
+          )}
         </View>
         <View style={styles.input}>
           <Controller
@@ -82,9 +91,20 @@ function UserCredentialForm({ newUser, setNewUser }: UserCredentialFormProps) {
                 }
               />
             )}
-            rules={{ required: true, minLength: 6 }}
+            rules={{
+              required: true,
+              pattern: {
+                value: regexPassword,
+                message:
+                  "A senha precisa de:\n 1 letra maiúscula\n 1 letra minúscula\n 1 caractere especial\n 1 número\n Ter no mínimo 8 dígitos",
+              },
+            }}
           />
-          {errors.password && <InvalidFormText title="Senha inválida" />}
+          {errors.password && (
+            <InvalidFormText
+              title={errors.password.message || "Senha inválida"}
+            />
+          )}
         </View>
         <View style={styles.input}>
           <Controller
@@ -111,6 +131,11 @@ function UserCredentialForm({ newUser, setNewUser }: UserCredentialFormProps) {
               required: {
                 message: "Confirmação de senha necessária",
                 value: true,
+              },
+              validate: {
+                value: () => {
+                  return getValues("confirmPassword") === getValues("password");
+                },
               },
             }}
           />

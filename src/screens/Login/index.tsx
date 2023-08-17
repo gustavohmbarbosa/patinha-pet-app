@@ -1,4 +1,4 @@
-import { Dimensions, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, View } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 import { StackRouterProps } from "../../routers/stack";
@@ -15,6 +15,7 @@ import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareS
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { FooterText } from "../../components/Form/FooterText";
+import { regexEmail } from "../../utils/regex";
 
 type FormDataProps = {
   email: string;
@@ -66,9 +67,17 @@ function Login() {
               )}
               rules={{
                 required: true,
+                pattern: {
+                  value: regexEmail,
+                  message: "Insira um e-mail válido",
+                },
               }}
             />
-            {errors.email && <InvalidFormText title="Informe o e-mail" />}
+            {errors.email && (
+              <InvalidFormText
+                title={errors.email.message || "Informe o e-mail"}
+              />
+            )}
           </View>
           <View style={styles.input}>
             <Controller

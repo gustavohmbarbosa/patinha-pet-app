@@ -3,8 +3,8 @@ export type AddressUserProps = {
   city: string;
   state: string;
   neighborhood: string;
-  number: number;
-  complement: string;
+  number: string | null;
+  complement: string | null;
 };
 
 export type UserProps = {
@@ -14,7 +14,7 @@ export type UserProps = {
     firstName: string;
     lastName: string;
     email: string;
-    phone: string;
-    address?: AddressUserProps | null;
+    phone: string | null;
+    address: AddressUserProps | null;
   };
 };
