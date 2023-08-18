@@ -8,6 +8,7 @@ import {
   UpdateUserAddressProps,
   UpdateUserContactProps,
 } from "../lib/props/UpdateUserProps";
+import { errorHandler } from "../utils/errorHandler";
 
 export type AuthContextDataProps = {
   user: UserProps;
@@ -59,18 +60,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         const data: UserProps = response.data;
         setUser(data);
       })
-      .catch((error: Error | AxiosError) => {
-        if (isAxiosError(error)) {
-          Alert.alert(
-            `Error ${error.response?.status}`,
-            `${error.response?.data.message}`
-          );
-        } else {
-          Alert.alert(
-            `Error`,
-            `Algo de errado aconteceu, verifique os dados inseridos.`
-          );
-        }
+      .catch((err) => {
+        errorHandler(err);
       })
       .finally(() => {
         setisUserLoading(false);
@@ -93,22 +84,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
           },
         });
       })
-      .catch((error: Error | AxiosError) => {
-        if (isAxiosError(error)) {
-          Alert.alert(
-            `Error ${error.response?.status}`,
-            `${
-              error.response?.data.message
-                ? error.response?.data.message
-                : "Não autenticado"
-            }`
-          );
-        } else {
-          Alert.alert(
-            `Error`,
-            `Algo de errado aconteceu, verifique os dados inseridos.`
-          );
-        }
+      .catch((err) => {
+        errorHandler(err);
       })
       .finally(() => {
         setisUserLoading(false);
@@ -129,22 +106,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
           },
         });
       })
-      .catch((error: Error | AxiosError) => {
-        if (isAxiosError(error)) {
-          Alert.alert(
-            `Error ${error.response?.status}`,
-            `${
-              error.response?.data.message
-                ? error.response?.data.message
-                : "Não autenticado"
-            }`
-          );
-        } else {
-          Alert.alert(
-            `Error`,
-            `Algo de errado aconteceu, verifique os dados inseridos.`
-          );
-        }
+      .catch((err) => {
+        errorHandler(err);
       })
       .finally(() => {
         setisUserLoading(false);

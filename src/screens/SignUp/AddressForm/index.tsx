@@ -61,8 +61,10 @@ function AddressForm({ newUser }: AddressFormProps) {
 
   async function handleGetCep() {
     const cep = getValues("zipCode");
+    console.log(cep);
     if (cep.length === 9) {
       try {
+        console.log("ent");
         const cepInfo: cepInfoProps = await getCep(cep);
 
         setValue("city", cepInfo.localidade);
