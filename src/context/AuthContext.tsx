@@ -58,6 +58,9 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       .post("signUp", newUser)
       .then((response) => {
         const data: UserProps = response.data;
+        api.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${response.data.token}`;
         setUser(data);
       })
       .catch((err) => {
