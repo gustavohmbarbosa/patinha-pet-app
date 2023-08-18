@@ -11,6 +11,7 @@ import {
 } from "@expo-google-fonts/quicksand";
 import { Loading } from "./src/components/Loading";
 import { APPTHEME } from "./src/styles/theme";
+import { AuthContextProvider } from "./src/context/AuthContext";
 
 // definição de tema do react native paper
 const theme: MD3Theme = {
@@ -35,7 +36,9 @@ export default function App() {
     <PaperProvider theme={theme}>
       {fontsLoaded ? (
         /* component de rotas */
-        <StackRouterComponent />
+        <AuthContextProvider>
+          <StackRouterComponent />
+        </AuthContextProvider>
       ) : (
         <Loading />
       )}

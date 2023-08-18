@@ -14,7 +14,7 @@ type retornoProps = {
 
 export async function getCep(cep: string) {
   const cepNoMask = cep.replace(/\D/g, "");
-
+  console.log(cepNoMask);
   try {
     const retorno = await fetch(`https://viacep.com.br/ws/${cepNoMask}/json/`);
     const cepInfo: retornoProps = await retorno.json();
@@ -22,7 +22,7 @@ export async function getCep(cep: string) {
     if (cepInfo.erro) {
       throw new Error("Cep inexistente!");
     }
-    
+
     return cepInfo;
   } catch (error) {
     throw new Error("Erro ao buscar cep, verifique o cep inserido.");

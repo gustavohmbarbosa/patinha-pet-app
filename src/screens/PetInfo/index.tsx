@@ -18,7 +18,6 @@ export default function PetInfo() {
           navigaton.navigate("Home");
         }}
       />
-      <StatusBar style="auto" />
     </View>
   );
 }

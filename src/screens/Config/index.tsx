@@ -10,9 +10,12 @@ import PinImg from "../../assets/pin.svg";
 import ChevronImg from "../../assets/chevron-white.svg";
 import { useNavigation } from "@react-navigation/native";
 import { StackRouterProps } from "../../routers/stack";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function Config() {
   const navigation = useNavigation<StackRouterProps>();
+
+  const { user, logOut } = useAuth();
 
   // botões de opções
   // como só há o botão de dados e sair coloquei junto, porém se for adicionar mais
@@ -52,8 +55,10 @@ export default function Config() {
           size={80}
         />
         <View style={styles.headerText}>
-          <Text style={styles.title}>Johnny Doe</Text>
-          <Text style={styles.subtitle}>johnny.doe@example.com</Text>
+          <Text style={styles.title}>
+            {user.user.firstName + " " + user.user.lastName}
+          </Text>
+          <Text style={styles.subtitle}>{user.user.email}</Text>
         </View>
       </View>
       <View style={styles.content}>
@@ -98,7 +103,7 @@ export default function Config() {
               opacity: 0.5,
             }}
           />
-          <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <TouchableOpacity style={styles.button} onPress={logOut}>
             <View style={styles.exitButtonContent}>
               <LogoutImg width={24} height={24} />
               <View>

@@ -1,24 +1,32 @@
 import React from "react";
 import { View } from "react-native";
 import { Controller, useForm } from "react-hook-form";
-import { Button } from "../../components/Button";
-import { TextInput } from "../../components/TextInput";
 import { TextInput as TextInputPaper } from "react-native-paper";
-import { InvalidFormText } from "../../components/Form/InvalidFormText";
-import { Select } from "../../components/Select";
+import { Button } from "../../../components/Button";
+import { TextInput } from "../../../components/TextInput";
+import { InvalidFormText } from "../../../components/Form/InvalidFormText";
+import { Select } from "../../../components/Select";
+import { withKeyboardAwareScrollView } from "../../../components/withKeyboardAwareScrollView";
+import {
+  NewAddressUserProps,
+  NewUserProps,
+} from "../../../lib/props/NewUserProps";
+import { cepInfoProps } from "../../../lib/types";
 
-import { listUF } from "../../utils/uf";
-import { maskCep, removeMask } from "../../utils/masks";
+import { getCep } from "../../../services/getCep";
+import { maskCep, removeMask } from "../../../utils/masks";
 import { styles } from "./styles";
-import { getCep } from "../../services/getCep";
-import { cepInfoProps } from "../../lib/types";
-import { APPTHEME } from "../../styles/theme";
-import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
-import { UpdateUserAddressProps } from "../../lib/props/UpdateUserProps";
-import { useAuth } from "../../hooks/useAuth";
+import { APPTHEME } from "../../../styles/theme";
+import { listUF } from "../../../utils/uf";
+import { useAuth } from "../../../hooks/useAuth";
+import { FooterText } from "../../../components/Form/FooterText";
 
-function AdressInfo() {
-  const { user, updateUserAddress, isUserLoading } = useAuth();
+type AddressFormProps = {
+  newUser: NewUserProps;
+};
+
+function AddressForm({ newUser }: AddressFormProps) {
+  const { signUp, isUserLoading } = useAuth();
 
   const {
     control,
@@ -28,23 +36,36 @@ function AdressInfo() {
     setValue,
     clearErrors,
     setError,
-  } = useForm<UpdateUserAddressProps>({
-    defaultValues: {
-      zipCode: user.user.address.zipCode || "",
-      city: user.user.address.city || "",
-      state: user.user.address.state || "",
-      neighborhood: user.user.address.neighborhood || "",
-      street: user.user.address.street || "",
-      number: user.user.address.number,
-      complement: user.user.address.complement,
-    },
+  } = useForm<NewAddressUserProps>();
+
+  const submit = handleSubmit((data) => {
+    const cepNoMask = removeMask(data.zipCode);
+
+    signUp({
+      ...newUser,
+      address: {
+        zipCode: cepNoMask,
+        city: data.city,
+        state: data.state,
+        neighborhood: data.neighborhood,
+        street: data.street,
+        complement: data.complement === "" ? undefined : data.complement,
+        number: data.number === "" ? undefined : data.number,
+      },
+    });
   });
 
+  const submitWithoutAdress = () => {
+    signUp({ ...newUser, address: null });
+  };
+
   async function handleGetCep() {
-    const zipCode = getValues("zipCode");
-    if (zipCode.length === 9) {
+    const cep = getValues("zipCode");
+    console.log(cep);
+    if (cep.length === 9) {
       try {
-        const cepInfo: cepInfoProps = await getCep(zipCode);
+        console.log("ent");
+        const cepInfo: cepInfoProps = await getCep(cep);
 
         setValue("city", cepInfo.localidade);
         setValue("state", cepInfo.uf);
@@ -58,17 +79,6 @@ function AdressInfo() {
       }
     }
   }
-
-  const submit = handleSubmit(async (data) => {
-    const zipCode = removeMask(data.zipCode);
-
-    await updateUserAddress({
-      ...data,
-      zipCode: zipCode,
-      number: data.number === "" ? null : data.number,
-      complement: data.complement === "" ? null : data.complement,
-    });
-  });
 
   return (
     <View style={styles.container}>
@@ -95,12 +105,19 @@ function AdressInfo() {
                         ? APPTHEME.colors.alert
                         : APPTHEME.colors.primary
                     }
+                    onPress={handleGetCep}
                   />
                 }
                 error={errors.zipCode ? true : false}
               />
             )}
-            rules={{ required: true }}
+            rules={{
+              required: { value: true, message: "Informe o cep" },
+              validate: () => {
+                const zipCode = getValues("zipCode");
+                return zipCode.length === 9;
+              },
+            }}
           />
           {errors.zipCode && (
             <InvalidFormText
@@ -195,7 +212,7 @@ function AdressInfo() {
               render={({ field: { value, onChange } }) => (
                 <TextInput
                   label="Número"
-                  value={value ? value : ""}
+                  value={value}
                   onChangeText={onChange}
                 />
               )}
@@ -208,7 +225,7 @@ function AdressInfo() {
               render={({ field: { value, onChange } }) => (
                 <TextInput
                   label="Complemento"
-                  value={value ? value : ""}
+                  value={value}
                   onChangeText={onChange}
                 />
               )}
@@ -216,11 +233,20 @@ function AdressInfo() {
           </View>
         </View>
       </View>
-      <Button onPress={submit} loading={isUserLoading}>
-        Salvar
-      </Button>
+      <View style={styles.buttonFooterContent}>
+        <Button onPress={submit} loading={isUserLoading}>
+          Criar conta
+        </Button>
+        <FooterText
+          buttonText="Criar conta sem endereço"
+          buttonTextStyle={styles.buttonFooter}
+          text=""
+          onPress={submitWithoutAdress}
+          disabled={isUserLoading}
+        />
+      </View>
     </View>
   );
 }
 
-export default withKeyboardAwareScrollView(AdressInfo);
+export default withKeyboardAwareScrollView(AddressForm);

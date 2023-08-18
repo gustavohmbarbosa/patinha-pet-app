@@ -1,4 +1,4 @@
-import { Dimensions, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, View } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 import { StackRouterProps } from "../../routers/stack";
@@ -13,6 +13,9 @@ import { styles } from "./styles";
 import { APPTHEME } from "../../styles/theme";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
 import { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
+import { FooterText } from "../../components/Form/FooterText";
+import { regexEmail } from "../../utils/regex";
 
 type FormDataProps = {
   email: string;
@@ -26,6 +29,8 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation<StackRouterProps>();
 
+  const { login, isUserLoading } = useAuth();
+
   const {
     control,
     getValues,
@@ -33,14 +38,17 @@ function Login() {
     formState: { errors },
   } = useForm<FormDataProps>();
 
-  const submit = handleSubmit((data) => {
-    console.log(data);
-    navigation.push("Home");
+  const submit = handleSubmit(async (data) => {
+    await login(data.email, data.password);
   });
   return (
     <View style={styles.container}>
       <View style={{ maxHeight: maxHeightHeader }}>
-        <CadastralHeader maxHeightHeader={maxHeightHeader} />
+        <CadastralHeader
+          maxHeightHeader={maxHeightHeader}
+          title="Login"
+          subtitle="Bem vindo de volta"
+        />
       </View>
       <View style={styles.content}>
         <View style={styles.form}>
@@ -59,9 +67,17 @@ function Login() {
               )}
               rules={{
                 required: true,
+                pattern: {
+                  value: regexEmail,
+                  message: "Insira um e-mail válido",
+                },
               }}
             />
-            {errors.email && <InvalidFormText title="Informe o e-mail" />}
+            {errors.email && (
+              <InvalidFormText
+                title={errors.email.message || "Informe o e-mail"}
+              />
+            )}
           </View>
           <View style={styles.input}>
             <Controller
@@ -73,6 +89,7 @@ function Login() {
                   value={value}
                   onChangeText={onChange}
                   autoCapitalize="none"
+                  error={errors.password ? true : false}
                   secureTextEntry={!showPassword}
                   right={
                     <TextInputPaper.Icon
@@ -88,15 +105,18 @@ function Login() {
             {errors.password && <InvalidFormText title="Informe a senha" />}
           </View>
 
-          <Button onPress={submit}>Login</Button>
+          <Button onPress={submit} loading={isUserLoading}>
+            Login
+          </Button>
         </View>
 
-        <View style={styles.foot}>
-          <Text style={styles.footTitle}>Primeiro acesso?</Text>
-          <TouchableOpacity style={styles.footButton} activeOpacity={0.6}>
-            <Text style={styles.secondary}>Registre-se</Text>
-          </TouchableOpacity>
-        </View>
+        <FooterText
+          text="Primeiro acesso?"
+          buttonText="Registre-se"
+          onPress={() => {
+            navigation.push("SignUp");
+          }}
+        />
       </View>
     </View>
   );

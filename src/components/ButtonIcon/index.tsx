@@ -6,18 +6,28 @@ import { StackRouterProps } from "../../routers/stack";
 type ButtonIconProps = TouchableOpacityProps & {
   icon: ReactNode;
   route?: "Config";
+  onPress?: () => void;
 };
 
 // user route caso deseje que a função do navegador seja ir para alguma tela, se não será goBack padrão
-export function ButtonIcon({ icon, route, ...props }: ButtonIconProps) {
+export function ButtonIcon({
+  icon,
+  route,
+  onPress,
+  ...props
+}: ButtonIconProps) {
   const navigation = useNavigation<StackRouterProps>();
   return (
     <TouchableOpacity
       {...props}
       activeOpacity={0.6}
-      onPress={() => {
-        route ? navigation.push(route) : navigation.goBack();
-      }}
+      onPress={
+        onPress
+          ? onPress
+          : () => {
+              route ? navigation.push(route) : navigation.goBack();
+            }
+      }
     >
       {icon}
     </TouchableOpacity>

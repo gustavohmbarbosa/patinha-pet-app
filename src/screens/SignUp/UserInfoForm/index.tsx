@@ -1,38 +1,47 @@
 import { View } from "react-native";
-
-import { styles } from "./styles";
+import { useTabNavigation } from "react-native-paper-tabs";
 import { Controller, useForm } from "react-hook-form";
-import { Button } from "../../components/Button";
-import { TextInput } from "../../components/TextInput";
-import { InvalidFormText } from "../../components/Form/InvalidFormText";
-import { maskCellphone, removeMask } from "../../utils/masks";
-import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
-import { useAuth } from "../../hooks/useAuth";
-import { UpdateUserContactProps } from "../../lib/props/UpdateUserProps";
 
-function UserInfo() {
-  const { user, updateUserContact, isUserLoading } = useAuth();
-  // o que vai fazer o gerenciamento dos dados e entender os erros dos inputs
+import { Button } from "../../../components/Button";
+import { TextInput } from "../../../components/TextInput";
+import { InvalidFormText } from "../../../components/Form/InvalidFormText";
+import { withKeyboardAwareScrollView } from "../../../components/withKeyboardAwareScrollView";
+import { maskCellphone, removeMask } from "../../../utils/masks";
+
+import { NewUserProps } from "../../../lib/props/NewUserProps";
+import { styles } from "./styles";
+
+type UserInfoFormProps = {
+  newUser: NewUserProps;
+  setNewUser: (newUser: NewUserProps) => void;
+};
+
+type FormDataProps = {
+  firstName: string;
+  lastName: string;
+  phone: string;
+};
+function UserInfoForm({ newUser, setNewUser }: UserInfoFormProps) {
   const {
     control,
     handleSubmit,
     getValues,
     formState: { errors },
-  } = useForm<UpdateUserContactProps>({
-    // informa os valores padrão dos campos
-    defaultValues: {
-      firstName: user.user.firstName,
-      lastName: user.user.lastName,
-      phone: maskCellphone(user.user.phone),
-    },
-  });
+  } = useForm<FormDataProps>();
 
-  // função de submit do form
-  // necessário usar o do handleSbumit para obter os dados e executar a lógica que deseja
-  const submit = handleSubmit(async (data) => {
-    const phone = removeMask(data.phone);
+  const goTo = useTabNavigation();
 
-    await updateUserContact({ ...data, phone: phone });
+  const submit = handleSubmit((data) => {
+    const phoneNoMask = removeMask(data.phone);
+
+    setNewUser({
+      ...newUser,
+      firstName: data.firstName.trim(),
+      lastName: data.lastName.trim(),
+      phone: phoneNoMask,
+    });
+
+    goTo(1);
   });
 
   return (
@@ -106,11 +115,9 @@ function UserInfo() {
           )}
         </View>
       </View>
-      <Button onPress={submit} loading={isUserLoading}>
-        Salvar
-      </Button>
+      <Button onPress={submit}>Proximo</Button>
     </View>
   );
 }
 
-export default withKeyboardAwareScrollView(UserInfo);
+export default withKeyboardAwareScrollView(UserInfoForm);
