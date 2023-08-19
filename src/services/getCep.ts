@@ -14,7 +14,6 @@ type retornoProps = {
 
 export async function getCep(cep: string) {
   const cepNoMask = cep.replace(/\D/g, "");
-  console.log(cepNoMask);
   try {
     const retorno = await fetch(`https://viacep.com.br/ws/${cepNoMask}/json/`);
     const cepInfo: retornoProps = await retorno.json();
