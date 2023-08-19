@@ -17,7 +17,7 @@ export const APPTHEME = {
       white: "#FFFFFF",
       white50: "#FFFFFF80", // 50%
       black100: "#000000", //100%
-      black25: "#00000040", //25%
+      black25: "#A1A6A8", //25%
       black50: "#00000080", //50%
       dark: "#04181F",
       background: "#E3EBEE",

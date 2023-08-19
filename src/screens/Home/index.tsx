@@ -23,7 +23,7 @@ export default function Home() {
   // para fazer a navegação
   const navigaton = useNavigation<StackRouterProps>();
   const [switchOn, setSwitchOn] = useState(false);
-  const [pet, setPet] = useState<RadioTypePetProps>("dog");
+  const [pet, setPet] = useState<RadioTypePetProps>("DOG");
 
   return (
     <Portal.Host>
@@ -50,7 +50,6 @@ export default function Home() {
         </ButtonOutline>
         <Switch value={switchOn} onValueChange={() => setSwitchOn(!switchOn)} />
         <RadioPet pet={pet} setPet={setPet} />
-        <DatePicker />
       </View>
     </Portal.Host>
   );

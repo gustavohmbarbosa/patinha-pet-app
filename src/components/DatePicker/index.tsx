@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { View, Text } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { TextInput } from "../TextInput";
 import { Button as ButtonPaper } from "react-native-paper";
 import { styles } from "./styles";
-import { ButtonOutline } from "../ButtonOutline";
 import CalendarImg from "../../assets/calendar-range.svg";
-import { Button } from "../Button";
 
-export function DatePicker() {
+type DatePickerProps = {
+  onChange: (date: Date) => void;
+};
+
+export function DatePicker({ onChange }: DatePickerProps) {
   const [date, setDate] = useState(new Date());
   const [dateText, setDateText] = useState("");
   const [show, setShow] = useState(false);
@@ -39,6 +40,7 @@ export function DatePicker() {
             const currentDate = selectedDate || date;
             setShow(false);
             setDate(currentDate);
+            onChange(currentDate);
 
             const fDate = new Date(currentDate);
             const fText = `${
