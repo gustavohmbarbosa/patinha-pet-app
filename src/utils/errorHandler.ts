@@ -1,30 +1,35 @@
-import { isAxiosError } from "axios";
+import { AxiosResponse, isAxiosError } from "axios";
 import { Alert } from "react-native";
 import { BackUserErrorProps } from "../lib/props/ErrorProps";
 
-const alertError = (cod: number | string, backError: BackUserErrorProps) => {
+const alertError = (apiError: AxiosResponse<any, any>) => {
+  if (apiError.status === 403)
+    return Alert.alert(
+      "Não autenticado",
+      "Verifique os dados inseridos ou tente novamente mais tarde."
+    );
+  var messageError = "";
+  const errors = apiError.data.errors;
+  if (errors) {
+    const keys = Object.keys(errors);
+    console.log(keys);
+    keys.forEach((key) => {
+      messageError = `${messageError}\n- ${errors[key]}`;
+    });
+  } else {
+    messageError = `${apiError.data.message}`;
+  }
+
   return Alert.alert(
-    `Erro cod. ${cod}`,
-    `${backError.message}${
-      backError.error?.email ? `\n- ${backError.error.email}` : ""
-    }${backError.error?.firstName ? `\n- ${backError.error.firstName}` : ""}${
-      backError.error?.lastName ? `\n- ${backError.error.lastName}` : ""
-    }${backError.error?.password ? `\n- ${backError.error.password}` : ""}${
-      backError.error?.phone ? `\n- ${backError.error.phone}` : ""
-    }${backError.error?.zipCode ? `\n- ${backError.error.zipCode}` : ""}${
-      backError.error?.city ? `\n- ${backError.error.city}` : ""
-    }${backError.error?.street ? `\n- ${backError.error.street}` : ""}${
-      backError.error?.state ? `\n- ${backError.error.state}` : ""
-    }${
-      backError.error?.neighborhood ? `\n- ${backError.error.neighborhood}` : ""
-    }`
+    `Cod ${apiError.status} - ${apiError.data.message}`,
+    messageError
   );
 };
 
 export const errorHandler = (error: unknown) => {
-  if (isAxiosError<BackUserErrorProps>(error)) {
+  if (isAxiosError(error)) {
     if (error.response) {
-      alertError(error.response.status, error.response.data);
+      alertError(error.response);
     }
   }
 };

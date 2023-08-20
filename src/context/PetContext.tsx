@@ -36,7 +36,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
         setPets(data);
       })
       .catch((err: AxiosError) => {
-        if (err.response?.status !== 422) {
+        if (err.response?.status !== 404) {
           errorHandler(err);
         }
       })

@@ -42,8 +42,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
         setUser(data);
       })
-      .catch(() => {
-        Alert.alert(`Não autenticado`, `Email e/ou senha inválido(s)`);
+      .catch((err) => {
+        errorHandler(err);
       })
       .finally(() => {
         setisUserLoading(false);
