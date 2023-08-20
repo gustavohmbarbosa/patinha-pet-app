@@ -1,6 +1,5 @@
 import { View, Text } from "react-native";
 import { Controller, useForm } from "react-hook-form";
-import { TextInput as TextInputPaper } from "react-native-paper";
 import { AvatarText } from "../../components/AvatarText";
 import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { TextInput } from "../../components/TextInput";
@@ -13,6 +12,10 @@ import { DatePicker } from "../../components/DatePicker";
 import { Button } from "../../components/Button";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
 import { maskNumberPositive } from "../../utils/masks";
+import { useState } from "react";
+import { catBreeds, dogBreeds } from "../../utils/breeds";
+import { api } from "../../services/api";
+import { errorHandler } from "../../utils/errorHandler";
 
 type FormNewPet = {
   name: string;
@@ -24,27 +27,37 @@ type FormNewPet = {
 };
 
 function NewPet() {
+  const [isDogBreeds, setIsDogBreeds] = useState(true);
+
   const {
     control,
-    getValues,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<FormNewPet>({ defaultValues: { type: "DOG" } });
 
   const submit = handleSubmit((data) => {
-    console.log(data);
     const newPet: NewPetProps = {
       ...data,
       height:
         data.height !== undefined && data.height !== ""
           ? Number(data.height)
-          : null,
+          : undefined,
       weight:
         data.weight !== undefined && data.weight !== ""
           ? Number(data.weight)
-          : null,
+          : undefined,
     };
     console.log(newPet);
+
+    api
+      .post("/pet/adicionar", newPet)
+      .then((retorno) => {
+        console.log("succes: ", retorno);
+      })
+      .catch((err) => {
+        errorHandler(err);
+      });
   });
 
   return (
@@ -81,7 +94,18 @@ function NewPet() {
             name="type"
             control={control}
             render={({ field: { value, onChange } }) => (
-              <RadioPet pet={value} setPet={onChange} />
+              <RadioPet
+                pet={value}
+                setPet={(data) => {
+                  if (data === "DOG") {
+                    setIsDogBreeds(true);
+                  } else {
+                    setIsDogBreeds(false);
+                  }
+                  setValue("race", "");
+                  onChange(data);
+                }}
+              />
             )}
             rules={{
               required: true,
@@ -94,7 +118,7 @@ function NewPet() {
             control={control}
             render={({ field: { value, onChange } }) => (
               <Select
-                opcoes={["alguma raça"]}
+                opcoes={isDogBreeds ? dogBreeds : catBreeds}
                 placeholder="Raça"
                 value={value}
                 onChange={onChange}

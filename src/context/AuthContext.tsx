@@ -3,7 +3,6 @@ import { UserProps } from "../lib/props/UserProps";
 import { api } from "../services/api";
 import { Alert } from "react-native";
 import { NewUserProps } from "../lib/props/NewUserProps";
-import { isAxiosError, AxiosError } from "axios";
 import {
   UpdateUserAddressProps,
   UpdateUserContactProps,

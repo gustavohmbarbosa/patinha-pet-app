@@ -1,5 +1,7 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { APPTHEME } from "../../styles/theme";
+
+const inputRowWidth = Dimensions.get("screen").width - 56;
 
 export const styles = StyleSheet.create({
   container: {
@@ -20,7 +22,7 @@ export const styles = StyleSheet.create({
     gap: 24,
   },
   inputRow: {
-    flexGrow: 1,
+    width: inputRowWidth / 2,
   },
   input: {
     gap: 4,
