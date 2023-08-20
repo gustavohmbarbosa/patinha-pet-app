@@ -12,6 +12,7 @@ import {
 import { Loading } from "./src/components/Loading";
 import { APPTHEME } from "./src/styles/theme";
 import { AuthContextProvider } from "./src/context/AuthContext";
+import { PetContextProvider } from "./src/context/PetContext";
 
 // definição de tema do react native paper
 const theme: MD3Theme = {
@@ -37,7 +38,9 @@ export default function App() {
       {fontsLoaded ? (
         /* component de rotas */
         <AuthContextProvider>
-          <StackRouterComponent />
+          <PetContextProvider>
+            <StackRouterComponent />
+          </PetContextProvider>
         </AuthContextProvider>
       ) : (
         <Loading />

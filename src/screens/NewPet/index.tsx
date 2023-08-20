@@ -14,8 +14,9 @@ import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareS
 import { maskNumberPositive } from "../../utils/masks";
 import { useState } from "react";
 import { catBreeds, dogBreeds } from "../../utils/breeds";
-import { api } from "../../services/api";
-import { errorHandler } from "../../utils/errorHandler";
+import { usePet } from "../../hooks/usePet";
+import { useNavigation } from "@react-navigation/native";
+import { StackRouterProps } from "../../routers/stack";
 
 type FormNewPet = {
   name: string;
@@ -29,6 +30,9 @@ type FormNewPet = {
 function NewPet() {
   const [isDogBreeds, setIsDogBreeds] = useState(true);
 
+  const navigation = useNavigation<StackRouterProps>();
+  const { addNewPet, isPetLoading } = usePet();
+
   const {
     control,
     setValue,
@@ -36,7 +40,7 @@ function NewPet() {
     formState: { errors },
   } = useForm<FormNewPet>({ defaultValues: { type: "DOG" } });
 
-  const submit = handleSubmit((data) => {
+  const submit = handleSubmit(async (data) => {
     const newPet: NewPetProps = {
       ...data,
       height:
@@ -50,14 +54,9 @@ function NewPet() {
     };
     console.log(newPet);
 
-    api
-      .post("/pet/adicionar", newPet)
-      .then((retorno) => {
-        console.log("succes: ", retorno);
-      })
-      .catch((err) => {
-        errorHandler(err);
-      });
+    await addNewPet(newPet).then(() => {
+      navigation.goBack();
+    });
   });
 
   return (
@@ -76,9 +75,7 @@ function NewPet() {
               <TextInput
                 label="Nome"
                 value={value}
-                maxLength={9}
                 onChangeText={onChange}
-                keyboardType="number-pad"
                 error={errors.name ? true : false}
               />
             )}
@@ -177,7 +174,9 @@ function NewPet() {
           </View>
         </View>
       </View>
-      <Button onPress={submit}>Adicionar</Button>
+      <Button onPress={submit} loading={isPetLoading}>
+        Adicionar
+      </Button>
     </View>
   );
 }
