@@ -2,7 +2,7 @@ export type PetProps = {
   id: Number;
   name: string;
   type: "DOG" | "CAT";
-  race: string;
+  breed: string;
   weight: number | null;
   height: number | null;
   birth: Date | null;

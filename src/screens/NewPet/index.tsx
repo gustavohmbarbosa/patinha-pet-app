@@ -21,7 +21,7 @@ import { StackRouterProps } from "../../routers/stack";
 type FormNewPet = {
   name: string;
   type: "CAT" | "DOG";
-  race: string;
+  breed: string;
   weight?: string;
   height?: string;
   birth?: Date;
@@ -98,7 +98,7 @@ function NewPet() {
                   } else {
                     setIsDogBreeds(false);
                   }
-                  setValue("race", "");
+                  setValue("breed", "");
                   onChange(data);
                 }}
               />
@@ -110,7 +110,7 @@ function NewPet() {
         </View>
         <View style={styles.input}>
           <Controller
-            name="race"
+            name="breed"
             control={control}
             render={({ field: { value, onChange } }) => (
               <Select
@@ -118,12 +118,12 @@ function NewPet() {
                 placeholder="Raça"
                 value={value}
                 onChange={onChange}
-                error={errors.race ? true : false}
+                error={errors.breed ? true : false}
               />
             )}
             rules={{ required: true }}
           />
-          {errors.race && <InvalidFormText title="Informe a raça" />}
+          {errors.breed && <InvalidFormText title="Informe a raça" />}
         </View>
         <View style={styles.input}>
           <Controller
