@@ -30,7 +30,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
   async function reloadPets() {
     setIsPetLoading(true);
     await api
-      .get("/pet")
+      .get("/pets")
       .then((response) => {
         const data: PetProps[] = response.data;
         setPets(data);
@@ -49,7 +49,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
     setIsPetLoading(true);
 
     await api
-      .post("/pet/adicionar", newPet)
+      .post("/pets", newPet)
       .then((retorno) => {
         const addedPet: PetProps = retorno.data;
         setPets([...pets, addedPet]);
