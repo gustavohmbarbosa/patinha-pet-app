@@ -1,3 +1,5 @@
+import { regexNumberPositive } from "./regex";
+
 export function maskCep(value: string) {
   return value.replace(/\D/g, "").replace(/^(\d{5})(\d)/, "$1-$2");
 }
@@ -36,4 +38,12 @@ export function maskCellphone(value: string) {
 
 export function removeMask(value: string) {
   return value.replace(/\D/g, "");
+}
+
+export function maskNumberPositive(value: string) {
+  const cleanedText = value.replace(/[^0-9.]/g, "");
+
+  if (regexNumberPositive.test(cleanedText)) {
+    return cleanedText;
+  }
 }

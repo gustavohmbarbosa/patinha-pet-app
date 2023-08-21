@@ -6,10 +6,8 @@ import { Tabs } from "../../components/Tabs";
 import UserInfoForm from "./UserInfoForm";
 import AddressForm from "./AddressForm";
 import { CadastralHeader } from "../../components/CadastralHeader";
-import { api } from "../../services/api";
 import { NewUserProps } from "../../lib/props/NewUserProps";
 import UserCredentialsForm from "./UserCredentialsForm";
-import { useTabIndex } from "react-native-paper-tabs";
 
 type headerOptionsProps = {
   header: {
@@ -20,7 +18,7 @@ type headerOptionsProps = {
   page: ReactNode;
 };
 
-export function SignUp() {
+export default function SignUp() {
   const windowHeight = Dimensions.get("window").height;
   const maxHeightHeader = Math.round(windowHeight * 0.3);
 

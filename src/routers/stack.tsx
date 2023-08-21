@@ -10,6 +10,8 @@ import {
 import { APPTHEME } from "../styles/theme";
 import { ButtonIcon } from "../components/ButtonIcon";
 
+import { useAuth } from "../hooks/useAuth";
+
 import Home from "../screens/Home";
 import Login from "../screens/Login";
 import UserInfo from "../screens/UserInfo";
@@ -17,11 +19,11 @@ import Config from "../screens/Config";
 import PetInfo from "../screens/PetInfo";
 import AdressInfo from "../screens/AdressInfo";
 import ExempleTabs from "../screens/ExempleTabs";
+import SignUp from "../screens/SignUp";
+import NewPet from "../screens/NewPet";
 
 import AccountBoxImg from "../assets/account-box.svg";
 import CloseImg from "../assets/close.svg";
-import { useAuth } from "../hooks/useAuth";
-import { SignUp } from "../screens/SignUp";
 
 // Personalizando o thema padrão do React Navigate
 const theme: Theme = {
@@ -41,6 +43,7 @@ type StackNavigationProps = {
   Home: undefined;
   Login: undefined;
   SignUp: undefined;
+  NewPet: undefined;
   PetInfo: undefined;
   Config: undefined;
   UserInfo: undefined;
@@ -135,6 +138,16 @@ export default function StackRouterComponent() {
                 title: "Meu endereço",
                 headerTitleStyle: styleTitleBodyLg,
                 headerStyle: { backgroundColor: APPTHEME.colors.background },
+              }}
+            />
+            <Stack.Screen
+              name="NewPet"
+              component={NewPet}
+              options={{
+                title: "Adicionar novo pet",
+                headerTitleStyle: styleTitleBodyLg,
+                headerStyle: { backgroundColor: APPTHEME.colors.background },
+                animation: "slide_from_right",
               }}
             />
             <Stack.Screen name="PetInfo" component={PetInfo} />

@@ -3,7 +3,6 @@ import { UserProps } from "../lib/props/UserProps";
 import { api } from "../services/api";
 import { Alert } from "react-native";
 import { NewUserProps } from "../lib/props/NewUserProps";
-import { isAxiosError, AxiosError } from "axios";
 import {
   UpdateUserAddressProps,
   UpdateUserContactProps,
@@ -43,8 +42,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
         setUser(data);
       })
-      .catch(() => {
-        Alert.alert(`Não autenticado`, `Email e/ou senha inválido(s)`);
+      .catch((err) => {
+        errorHandler(err);
       })
       .finally(() => {
         setisUserLoading(false);

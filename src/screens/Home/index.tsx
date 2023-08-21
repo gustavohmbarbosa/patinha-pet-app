@@ -6,30 +6,39 @@ import { StackRouterProps } from "../../routers/stack";
 import { styles } from "./styles";
 import { TextInput } from "../../components/TextInput";
 import { Button } from "../../components/Button";
-import { Loading } from "../../components/Loading";
 import { AvatarText } from "../../components/AvatarText";
 import { FabIcon } from "../../components/FabIcon";
 import GoogleImg from "../../assets/google.svg";
-import { APPTHEME } from "../../styles/theme";
 import { ButtonOutline } from "../../components/ButtonOutline";
 import { FabGroup } from "../../components/FabGroup";
 import { Portal } from "react-native-paper";
 import { Switch } from "../../components/Switch";
 import { RadioPet, RadioTypePetProps } from "../../components/RadioPet";
 import { useState } from "react";
-import { DatePicker } from "../../components/DatePicker";
+import { usePet } from "../../hooks/usePet";
 
 export default function Home() {
   // para fazer a navegação
   const navigaton = useNavigation<StackRouterProps>();
   const [switchOn, setSwitchOn] = useState(false);
-  const [pet, setPet] = useState<RadioTypePetProps>("dog");
+  const [pet, setPet] = useState<RadioTypePetProps>("DOG");
+
+  const { pets } = usePet();
 
   return (
     <Portal.Host>
       <View style={styles.container}>
         <FabGroup />
         <Text>Página Home </Text>
+
+        <Text>Pets do usuário: (só para confirmação)</Text>
+        {pets.map((data, index) => {
+          return (
+            <View key={index}>
+              <Text>{data.name}</Text>
+            </View>
+          );
+        })}
 
         <TextInput label={"Nome"} />
 
@@ -50,7 +59,6 @@ export default function Home() {
         </ButtonOutline>
         <Switch value={switchOn} onValueChange={() => setSwitchOn(!switchOn)} />
         <RadioPet pet={pet} setPet={setPet} />
-        <DatePicker />
       </View>
     </Portal.Host>
   );
