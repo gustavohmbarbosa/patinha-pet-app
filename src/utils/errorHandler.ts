@@ -12,7 +12,6 @@ const alertError = (apiError: AxiosResponse<any, any>) => {
   const errors = apiError.data.errors;
   if (errors) {
     const keys = Object.keys(errors);
-    console.log(keys);
     keys.forEach((key) => {
       messageError = `${messageError}\n- ${errors[key]}`;
     });

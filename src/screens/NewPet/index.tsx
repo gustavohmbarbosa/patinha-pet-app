@@ -52,7 +52,6 @@ function NewPet() {
           ? Number(data.weight)
           : undefined,
     };
-    console.log(newPet);
 
     await addNewPet(newPet).then(() => {
       navigation.goBack();
