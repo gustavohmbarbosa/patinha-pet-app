@@ -20,10 +20,7 @@ const alertError = (apiError: AxiosResponse<any, any>) => {
     messageError = `${apiError.data.message}`;
   }
 
-  return Alert.alert(
-    `Cod ${apiError.status} - ${apiError.data.message}`,
-    messageError
-  );
+  return Alert.alert(`${apiError.data.message}`, messageError);
 };
 
 export const errorHandler = (error: unknown) => {
