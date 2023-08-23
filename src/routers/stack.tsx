@@ -21,6 +21,7 @@ import AdressInfo from "../screens/AdressInfo";
 import ExempleTabs from "../screens/ExempleTabs";
 import SignUp from "../screens/SignUp";
 import NewPet from "../screens/NewPet";
+import NewVaccineDose from "../screens/NewVaccineDose";
 
 import AccountBoxImg from "../assets/account-box.svg";
 import CloseImg from "../assets/close.svg";
@@ -93,6 +94,7 @@ export default function StackRouterComponent() {
       >
         {user.token ? (
           <>
+    
             <Stack.Screen
               name="Home"
               component={Home}
@@ -148,6 +150,15 @@ export default function StackRouterComponent() {
                 headerTitleStyle: styleTitleBodyLg,
                 headerStyle: { backgroundColor: APPTHEME.colors.background },
                 animation: "slide_from_right",
+              }}
+            />
+            <Stack.Screen
+            name="NewVaccineDose" 
+            component={NewVaccineDose} 
+            options={{
+              title: "Nova Dose de Vacina", 
+              headerTitleStyle: styleTitleBodyLg,
+              headerStyle: { backgroundColor: APPTHEME.colors.background }
               }}
             />
             <Stack.Screen name="PetInfo" component={PetInfo} />
