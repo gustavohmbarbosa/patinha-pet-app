@@ -4,12 +4,15 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { Button as ButtonPaper } from "react-native-paper";
 import { styles } from "./styles";
 import CalendarImg from "../../assets/calendar-range.svg";
+import { APPTHEME } from "../../styles/theme";
+import { Path, Svg } from "react-native-svg";
 
 type DatePickerProps = {
   onChange: (date: Date) => void;
+  error?: boolean;
 };
 
-export function DatePicker({ onChange }: DatePickerProps) {
+export function DatePicker({ onChange, error = false }: DatePickerProps) {
   const [date, setDate] = useState(new Date());
   const [dateText, setDateText] = useState("");
   const [show, setShow] = useState(false);
@@ -19,13 +22,31 @@ export function DatePicker({ onChange }: DatePickerProps) {
       <View style={styles.container}>
         <ButtonPaper
           mode="outlined"
-          style={styles.button}
+          style={{
+            borderRadius: 8,
+            borderColor: error
+              ? APPTHEME.colors.alert
+              : APPTHEME.colors.primary,
+          }}
           contentStyle={styles.content}
           labelStyle={dateText == "" ? styles.placeholder : styles.label}
           onPress={() => {
             setShow(true);
           }}
-          icon={() => <CalendarImg />}
+          icon={() => (
+            <Svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              // xmlns="http://www.w3.org/2000/svg"
+            >
+              <Path
+                d="M9 10H7V12H9V10ZM13 10H11V12H13V10ZM17 10H15V12H17V10ZM19 3H18V1H16V3H8V1H6V3H5C3.89 3 3 3.9 3 5V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V5C21 4.46957 20.7893 3.96086 20.4142 3.58579C20.0391 3.21071 19.5304 3 19 3ZM19 19H5V8H19V19Z"
+                fill={error ? APPTHEME.colors.alert : APPTHEME.colors.primary}
+              />
+            </Svg>
+          )}
         >
           <Text>{dateText == "" ? "Quando nasceu?" : dateText}</Text>
         </ButtonPaper>

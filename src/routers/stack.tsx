@@ -46,6 +46,7 @@ type StackNavigationProps = {
   SignUp: undefined;
   NewPet: undefined;
   PetInfo: undefined;
+  NewVaccineDose: undefined;
   Config: undefined;
   UserInfo: undefined;
   AdressInfo: undefined;
@@ -94,7 +95,6 @@ export default function StackRouterComponent() {
       >
         {user.token ? (
           <>
-    
             <Stack.Screen
               name="Home"
               component={Home}
@@ -153,12 +153,12 @@ export default function StackRouterComponent() {
               }}
             />
             <Stack.Screen
-            name="NewVaccineDose" 
-            component={NewVaccineDose} 
-            options={{
-              title: "Nova Dose de Vacina", 
-              headerTitleStyle: styleTitleBodyLg,
-              headerStyle: { backgroundColor: APPTHEME.colors.background }
+              name="NewVaccineDose"
+              component={NewVaccineDose}
+              options={{
+                title: "Nova Dose de Vacina",
+                headerTitleStyle: styleTitleBodyLg,
+                headerStyle: { backgroundColor: APPTHEME.colors.background },
               }}
             />
             <Stack.Screen name="PetInfo" component={PetInfo} />

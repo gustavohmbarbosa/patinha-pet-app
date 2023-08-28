@@ -61,6 +61,7 @@ function Login() {
                   label="E-mail"
                   value={value}
                   onChangeText={onChange}
+                  autoCapitalize="none"
                   error={errors.email ? true : false}
                   keyboardType="email-address"
                 />

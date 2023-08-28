@@ -6,15 +6,8 @@ export const styles = StyleSheet.create({
   content: {
     flexDirection: "row-reverse",
     width: "100%",
-    height: 56,
-    // borderWidth: 1,
-    // borderRadius: 8,
-    // borderColor: APPTHEME.colors.primary,
+    height: 48,
     justifyContent: "space-between",
-  },
-  button: {
-    borderRadius: 8,
-    borderColor: APPTHEME.colors.primary,
   },
   label: {
     fontFamily: APPTHEME.font.body,

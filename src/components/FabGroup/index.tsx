@@ -36,7 +36,7 @@ export function FabGroup() {
             style: styles.subFab,
             color: APPTHEME.colors.primary,
             // ir para página de adicionar vacinação
-            onPress: () => console.log("ir vacinação"),
+            onPress: () => navigation.push("NewVaccineDose"),
           },
           {
             icon: "paw",
