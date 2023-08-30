@@ -3,16 +3,20 @@ import { View, Text } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Button as ButtonPaper } from "react-native-paper";
 import { styles } from "./styles";
-import CalendarImg from "../../assets/calendar-range.svg";
 import { APPTHEME } from "../../styles/theme";
 import { Path, Svg } from "react-native-svg";
 
 type DatePickerProps = {
+  placeholder: string;
   onChange: (date: Date) => void;
   error?: boolean;
 };
 
-export function DatePicker({ onChange, error = false }: DatePickerProps) {
+export function DatePicker({
+  onChange,
+  error = false,
+  placeholder,
+}: DatePickerProps) {
   const [date, setDate] = useState(new Date());
   const [dateText, setDateText] = useState("");
   const [show, setShow] = useState(false);
@@ -48,7 +52,9 @@ export function DatePicker({ onChange, error = false }: DatePickerProps) {
             </Svg>
           )}
         >
-          <Text>{dateText == "" ? "Quando nasceu?" : dateText}</Text>
+          <Text style={dateText == "" ? styles.placeholder : styles.label}>
+            {dateText == "" ? placeholder : dateText}
+          </Text>
         </ButtonPaper>
       </View>
       {show && (

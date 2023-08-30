@@ -13,12 +13,14 @@ import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { usePet } from "../../hooks/usePet";
 import { PetProps } from "../../lib/props/PetProps";
 import { VaccineProps } from "../../lib/props/VaccineProps";
+import { useNavigation } from "@react-navigation/native";
+import { StackRouterProps } from "../../routers/stack";
 
 type addVaccineDoseForm = {
   vaccine: VaccineProps;
   scheduledDate: Date;
   pet: PetProps;
-  vacinatedDate?: Date;
+  vaccinatedDate?: Date;
   dose?: string;
   locale?: string;
   batch?: string;
@@ -37,26 +39,29 @@ function NewVaccineDose() {
 
   const [additionalInfo, setAdditionalInfo] = useState(false);
   const [isDog, setIsDog] = useState(true);
-
-  const { pets, dogVaccines, catVaccines } = usePet();
-
   const [petSelect, setPetSelect] = useState<PetProps>({} as PetProps);
   const [vaccineSelect, setVaccineSelect] = useState<VaccineProps>(
     {} as VaccineProps
   );
 
+  const { pets, dogVaccines, catVaccines, addVaccineToPet, isPetLoading } =
+    usePet();
+
+  const navigation = useNavigation<StackRouterProps>();
+
   const submit = handleSubmit(async (data) => {
     var newVaccineDose: NewVaccineDoseProps = data;
     if (!additionalInfo) {
       newVaccineDose = {
-        // pet: data.pet,
         scheduledDate: data.scheduledDate,
-        // vaccineName: data.vaccineName,
       };
     }
-    console.log(newVaccineDose);
-    console.log("PET => ", data.pet.id);
-    console.log("Vaccina => ", data.vaccine.id);
+
+    await addVaccineToPet(petSelect.id, vaccineSelect.id, newVaccineDose).then(
+      () => {
+        navigation.goBack();
+      }
+    );
   });
 
   useEffect(() => {
@@ -132,6 +137,7 @@ function NewVaccineDose() {
               <DatePicker
                 onChange={onChange}
                 error={errors.scheduledDate ? true : false}
+                placeholder="Data marcada"
               />
             )}
             rules={{
@@ -160,10 +166,13 @@ function NewVaccineDose() {
           <>
             <View style={styles.input}>
               <Controller
-                name="vacinatedDate"
+                name="vaccinatedDate"
                 control={control}
                 render={({ field: { value, onChange } }) => (
-                  <DatePicker onChange={onChange} />
+                  <DatePicker
+                    onChange={onChange}
+                    placeholder="Data de vacinação"
+                  />
                 )}
               />
             </View>
@@ -260,7 +269,9 @@ function NewVaccineDose() {
           </>
         )}
       </View>
-      <Button onPress={submit}>Salvar</Button>
+      <Button onPress={submit} loading={isPetLoading}>
+        Salvar
+      </Button>
     </View>
   );
 }

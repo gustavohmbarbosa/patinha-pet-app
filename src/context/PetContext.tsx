@@ -6,6 +6,7 @@ import { NewPetProps } from "../lib/props/NewPetProps";
 import { PetProps } from "../lib/props/PetProps";
 import { AxiosError } from "axios";
 import { VaccineProps } from "../lib/props/VaccineProps";
+import { NewVaccineDoseProps } from "../lib/props/NewVaccineDoseProps";
 
 export type PetContextDataProps = {
   pets: PetProps[];
@@ -16,6 +17,11 @@ export type PetContextDataProps = {
   deletePet: () => Promise<void>;
   dogVaccines: VaccineProps[];
   catVaccines: VaccineProps[];
+  addVaccineToPet: (
+    petId: Number,
+    vaccineId: Number,
+    vaccineDose: NewVaccineDoseProps
+  ) => Promise<void>;
 };
 
 export type PetContextProviderProps = {
@@ -95,6 +101,21 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
       });
   }
 
+  async function addVaccineToPet(
+    petId: Number,
+    vaccineId: Number,
+    vaccineDose: NewVaccineDoseProps
+  ) {
+    setIsPetLoading(true);
+    await api
+      .post(`/pets/${petId}/vaccines/${vaccineId}/doses`, vaccineDose)
+      .then()
+      .catch((error) => errorHandler(error))
+      .finally(() => {
+        setIsPetLoading(false);
+      });
+  }
+
   useEffect(() => {
     if (user.token) {
       reloadPets();
@@ -116,6 +137,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
         deletePet,
         dogVaccines,
         catVaccines,
+        addVaccineToPet,
       }}
     >
       {children}

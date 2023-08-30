@@ -130,7 +130,7 @@ function NewPet() {
             name="birth"
             control={control}
             render={({ field: { value, onChange } }) => (
-              <DatePicker onChange={onChange} />
+              <DatePicker onChange={onChange} placeholder="Quando nasceu?" />
             )}
           />
         </View>
