@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { styles } from "./styles";
@@ -7,16 +7,17 @@ import { DatePicker } from "../../components/DatePicker";
 import { Select } from "../../components/Select";
 import { NewVaccineDoseProps } from "../../lib/props/NewVaccineDoseProps";
 import { Button } from "../../components/Button";
-import { ScrollView } from "react-native";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
 import { Switch } from "../../components/Switch";
 import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { usePet } from "../../hooks/usePet";
+import { PetProps } from "../../lib/props/PetProps";
+import { VaccineProps } from "../../lib/props/VaccineProps";
 
 type addVaccineDoseForm = {
-  vaccineName: string;
+  vaccine: VaccineProps;
   scheduledDate: Date;
-  pet: string;
+  pet: PetProps;
   vacinatedDate?: Date;
   dose?: string;
   locale?: string;
@@ -29,18 +30,20 @@ type addVaccineDoseForm = {
 function NewVaccineDose() {
   const {
     control,
-    setValue,
+    resetField,
     handleSubmit,
     formState: { errors },
   } = useForm<addVaccineDoseForm>();
 
   const [additionalInfo, setAdditionalInfo] = useState(false);
-  const [petId, setPetId] = useState(false);
-  const [vaccineId, setVaccineId] = useState(false);
-
-  const petOptions = ["Pet 1", "Pet 2", "Pet 3"];
+  const [isDog, setIsDog] = useState(true);
 
   const { pets, dogVaccines, catVaccines } = usePet();
+
+  const [petSelect, setPetSelect] = useState<PetProps>({} as PetProps);
+  const [vaccineSelect, setVaccineSelect] = useState<VaccineProps>(
+    {} as VaccineProps
+  );
 
   const submit = handleSubmit(async (data) => {
     var newVaccineDose: NewVaccineDoseProps = data;
@@ -52,7 +55,17 @@ function NewVaccineDose() {
       };
     }
     console.log(newVaccineDose);
+    console.log("PET => ", data.pet.id);
+    console.log("Vaccina => ", data.vaccine.id);
   });
+
+  useEffect(() => {
+    if (petSelect.type === "DOG") {
+      setIsDog(true);
+    } else {
+      setIsDog(false);
+    }
+  }, [petSelect]);
 
   return (
     <View style={styles.container}>
@@ -63,10 +76,17 @@ function NewVaccineDose() {
             control={control}
             render={({ field: { value, onChange } }) => (
               <Select
-                opcoes={petOptions}
+                opcoes={pets}
                 placeholder="Pet a ser vacinado"
-                value={value}
-                onChange={onChange}
+                value={petSelect}
+                onChange={(item: PetProps) => {
+                  if (petSelect.type !== item.type) {
+                    resetField("vaccine");
+                  }
+
+                  setPetSelect(item);
+                  onChange(item);
+                }}
                 error={errors.pet ? true : false}
               />
             )}
@@ -80,24 +100,27 @@ function NewVaccineDose() {
         </View>
         <View style={styles.input}>
           <Controller
-            name="vaccineName"
+            name="vaccine"
             control={control}
             render={({ field: { value, onChange } }) => (
-              <TextInput
-                label="Vacina"
+              <Select
+                opcoes={isDog ? dogVaccines : catVaccines}
                 placeholder="Vacina"
-                value={value as string}
-                onChangeText={onChange}
-                error={errors.vaccineName ? true : false}
+                value={vaccineSelect}
+                onChange={(item) => {
+                  setVaccineSelect(item);
+                  onChange(item);
+                }}
+                error={errors.vaccine ? true : false}
               />
             )}
             rules={{
               required: true,
             }}
           />
-          {errors.vaccineName && (
+          {errors.vaccine && (
             <InvalidFormText
-              title={errors.vaccineName.message || "Informe o nome da vacina"}
+              title={errors.vaccine.message || "Informe a vacina"}
             />
           )}
         </View>
