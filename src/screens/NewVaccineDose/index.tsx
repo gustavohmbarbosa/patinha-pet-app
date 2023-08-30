@@ -11,19 +11,20 @@ import { ScrollView } from "react-native";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
 import { Switch } from "../../components/Switch";
 import { InvalidFormText } from "../../components/Form/InvalidFormText";
+import { usePet } from "../../hooks/usePet";
 
-// type VaccineDoseFormData = {
-//   vaccineName: string;
-//   scheduledDate: Date;
-//   petToVaccinate: string;
-//   vacinatedDate: Date;
-//   dose: string;
-//   locale: string;
-//   batch: string;
-//   brand: string;
-//   professional: string;
-//   observation: string;
-// };
+type addVaccineDoseForm = {
+  vaccineName: string;
+  scheduledDate: Date;
+  pet: string;
+  vacinatedDate?: Date;
+  dose?: string;
+  locale?: string;
+  batch?: string;
+  brand?: string;
+  professional?: string;
+  observation?: string;
+};
 
 function NewVaccineDose() {
   const {
@@ -31,19 +32,23 @@ function NewVaccineDose() {
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<NewVaccineDoseProps>();
+  } = useForm<addVaccineDoseForm>();
 
   const [additionalInfo, setAdditionalInfo] = useState(false);
+  const [petId, setPetId] = useState(false);
+  const [vaccineId, setVaccineId] = useState(false);
 
   const petOptions = ["Pet 1", "Pet 2", "Pet 3"];
 
+  const { pets, dogVaccines, catVaccines } = usePet();
+
   const submit = handleSubmit(async (data) => {
-    var newVaccineDose = data;
+    var newVaccineDose: NewVaccineDoseProps = data;
     if (!additionalInfo) {
       newVaccineDose = {
-        pet: data.pet,
+        // pet: data.pet,
         scheduledDate: data.scheduledDate,
-        vaccineName: data.vaccineName,
+        // vaccineName: data.vaccineName,
       };
     }
     console.log(newVaccineDose);

@@ -5,6 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 import { NewPetProps } from "../lib/props/NewPetProps";
 import { PetProps } from "../lib/props/PetProps";
 import { AxiosError } from "axios";
+import { VaccineProps } from "../lib/props/VaccineProps";
 
 export type PetContextDataProps = {
   pets: PetProps[];
@@ -13,6 +14,8 @@ export type PetContextDataProps = {
   addNewPet: (newPet: NewPetProps) => Promise<void>;
   updatePet: () => Promise<void>;
   deletePet: () => Promise<void>;
+  dogVaccines: VaccineProps[];
+  catVaccines: VaccineProps[];
 };
 
 export type PetContextProviderProps = {
@@ -25,6 +28,8 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
   const { user } = useAuth();
 
   const [pets, setPets] = useState<PetProps[]>([]);
+  const [dogVaccines, setDogVaccines] = useState<VaccineProps[]>([]);
+  const [catVaccines, setCatVaccines] = useState<VaccineProps[]>([]);
   const [isPetLoading, setIsPetLoading] = useState(false);
 
   async function reloadPets() {
@@ -66,11 +71,39 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
 
   async function deletePet() {}
 
+  async function getVaccines() {
+    await api
+      .get("/vaccines")
+      .then((response) => {
+        const vaccines: VaccineProps[] = response.data;
+        var cat: VaccineProps[] = [];
+        var dog: VaccineProps[] = [];
+
+        vaccines.forEach((vaccine) => {
+          if (vaccine.petType === "DOG") {
+            dog.push(vaccine);
+          } else {
+            cat.push(vaccine);
+          }
+        });
+
+        setDogVaccines(dog);
+        setCatVaccines(cat);
+      })
+      .catch((error) => {
+        errorHandler(error);
+      });
+  }
+
   useEffect(() => {
     if (user.token) {
       reloadPets();
     }
   }, [user]);
+
+  useEffect(() => {
+    getVaccines();
+  }, []);
 
   return (
     <PetContext.Provider
@@ -81,6 +114,8 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
         addNewPet,
         updatePet,
         deletePet,
+        dogVaccines,
+        catVaccines,
       }}
     >
       {children}
