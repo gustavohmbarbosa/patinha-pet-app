@@ -159,6 +159,7 @@ export default function StackRouterComponent() {
                 title: "Nova Dose de Vacina",
                 headerTitleStyle: styleTitleBodyLg,
                 headerStyle: { backgroundColor: APPTHEME.colors.background },
+                animation: "slide_from_right",
               }}
             />
             <Stack.Screen name="PetInfo" component={PetInfo} />
