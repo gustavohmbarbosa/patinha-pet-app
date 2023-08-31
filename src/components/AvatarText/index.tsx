@@ -28,7 +28,7 @@ export function AvatarText({
       <AvatarPaper.Text
         {...props}
         size={size}
-        label={label}
+        label={label.toUpperCase()}
         style={{
           borderWidth: 2,
           borderColor: borderWhite

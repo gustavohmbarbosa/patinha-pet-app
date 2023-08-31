@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { StackRouterProps } from "../../routers/stack";
 
 import { styles } from "./styles";
@@ -16,6 +16,7 @@ import { Switch } from "../../components/Switch";
 import { RadioPet, RadioTypePetProps } from "../../components/RadioPet";
 import { useState } from "react";
 import { usePet } from "../../hooks/usePet";
+import { HeaderPets } from "../../components/HeaderPets";
 
 export default function Home() {
   // para fazer a navegação
@@ -27,39 +28,48 @@ export default function Home() {
 
   return (
     <Portal.Host>
-      <View style={styles.container}>
-        <FabGroup />
-        <Text>Página Home </Text>
+      <ScrollView>
+        <View style={styles.container}>
+          <FabGroup />
+          <HeaderPets />
 
-        <Text>Pets do usuário: (só para confirmação)</Text>
-        {pets.map((data, index) => {
-          return (
-            <View key={index}>
-              <Text>{data.name}</Text>
-            </View>
-          );
-        })}
+          <View style={styles.content}>
+            <Text>Página Home </Text>
 
-        <TextInput label={"Nome"} />
+            <Text>Pets do usuário: (só para confirmação)</Text>
+            {pets.map((data, index) => {
+              return (
+                <View key={index}>
+                  <Text>{data.name}</Text>
+                </View>
+              );
+            })}
 
-        <Button
-          onPress={() => {
-            navigaton.push("ExempleTabs");
-          }}
-        >
-          ir para ExempleTabs
-        </Button>
-        {/* <Loading /> */}
+            <TextInput label={"Nome"} />
 
-        <AvatarText label="LN" title="Luan" />
-        <FabIcon icon="hospital-box-outline" />
-        <StatusBar style="auto" />
-        <ButtonOutline icon={() => <GoogleImg />} onPress={() => {}}>
-          Google
-        </ButtonOutline>
-        <Switch value={switchOn} onValueChange={() => setSwitchOn(!switchOn)} />
-        <RadioPet pet={pet} setPet={setPet} />
-      </View>
+            <Button
+              onPress={() => {
+                navigaton.push("ExempleTabs");
+              }}
+            >
+              ir para ExempleTabs
+            </Button>
+            {/* <Loading /> */}
+
+            <AvatarText label="LN" title="Luan" />
+            <FabIcon icon="hospital-box-outline" />
+            <StatusBar style="auto" />
+            <ButtonOutline icon={() => <GoogleImg />} onPress={() => {}}>
+              Google
+            </ButtonOutline>
+            <Switch
+              value={switchOn}
+              onValueChange={() => setSwitchOn(!switchOn)}
+            />
+            <RadioPet pet={pet} setPet={setPet} />
+          </View>
+        </View>
+      </ScrollView>
     </Portal.Host>
   );
 }
