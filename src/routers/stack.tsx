@@ -16,7 +16,7 @@ import Home from "../screens/Home";
 import Login from "../screens/Login";
 import UserInfo from "../screens/UserInfo";
 import Config from "../screens/Config";
-import PetInfo from "../screens/PetInfo";
+import PetProfile from "../screens/PetProfile";
 import AdressInfo from "../screens/AdressInfo";
 import ExempleTabs from "../screens/ExempleTabs";
 import SignUp from "../screens/SignUp";
@@ -25,6 +25,7 @@ import NewVaccineDose from "../screens/NewVaccineDose";
 
 import AccountBoxImg from "../assets/account-box.svg";
 import CloseImg from "../assets/close.svg";
+import { PetProps } from "../lib/props/PetProps";
 
 // Personalizando o thema padrão do React Navigate
 const theme: Theme = {
@@ -38,14 +39,14 @@ const theme: Theme = {
 };
 
 // Tipagem por usar o typescript
-type StackNavigationProps = {
+export type StackNavigationProps = {
   // caso seja necessário algum dado para a página, pode ser exclarecido aqui, se não passa undefined
   // Ex: Home: {userId: string, username: string,...}
   Home: undefined;
   Login: undefined;
   SignUp: undefined;
   NewPet: undefined;
-  PetInfo: undefined;
+  PetProfile: { pet: PetProps }; // recebe os dados do pet - dai pega os dados de vacina pelo id
   NewVaccineDose: undefined;
   Config: undefined;
   UserInfo: undefined;
@@ -57,7 +58,7 @@ type StackNavigationProps = {
 export type StackRouterProps = NativeStackNavigationProp<StackNavigationProps>;
 
 // navegação em modo "pilha"
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<StackNavigationProps>();
 
 export default function StackRouterComponent() {
   // possível passar a cor/font/title/... do header a depender da tela
@@ -162,7 +163,7 @@ export default function StackRouterComponent() {
                 animation: "slide_from_right",
               }}
             />
-            <Stack.Screen name="PetInfo" component={PetInfo} />
+            <Stack.Screen name="PetProfile" component={PetProfile} />
             <Stack.Screen name="ExempleTabs" component={ExempleTabs} />
           </>
         ) : (
