@@ -2,12 +2,14 @@ import { View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { styles } from "./styles";
 import { APPTHEME } from "../../styles/theme";
+import { PetProps } from "../../lib/props/PetProps";
+import { VaccineProps } from "../../lib/props/VaccineProps";
 
 // tipagem temporária, haverá necessidade de muldaça de acordo com o tipo de raça e pet
 type SelectProps = {
   placeholder: string;
-  opcoes: string[];
-  value: string;
+  opcoes: string[] | PetProps[] | VaccineProps[];
+  value: string | PetProps | VaccineProps;
   // de acordo com o onChange do useForm
   onChange: (...event: any[]) => void;
   error?: boolean;
@@ -54,7 +56,7 @@ export function Select({
                 key={index + 1} // 0 será o default(placeholder)
                 // style={styles.item}// não consegui alterar o style, não apresenta mudança
                 fontFamily={APPTHEME.font.body}
-                label={item}
+                label={typeof item === "object" ? item.name : item}
                 value={item}
               />
             );

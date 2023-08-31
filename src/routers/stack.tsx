@@ -21,6 +21,7 @@ import AdressInfo from "../screens/AdressInfo";
 import ExempleTabs from "../screens/ExempleTabs";
 import SignUp from "../screens/SignUp";
 import NewPet from "../screens/NewPet";
+import NewVaccineDose from "../screens/NewVaccineDose";
 
 import AccountBoxImg from "../assets/account-box.svg";
 import CloseImg from "../assets/close.svg";
@@ -45,6 +46,7 @@ type StackNavigationProps = {
   SignUp: undefined;
   NewPet: undefined;
   PetInfo: undefined;
+  NewVaccineDose: undefined;
   Config: undefined;
   UserInfo: undefined;
   AdressInfo: undefined;
@@ -145,6 +147,16 @@ export default function StackRouterComponent() {
               component={NewPet}
               options={{
                 title: "Adicionar novo pet",
+                headerTitleStyle: styleTitleBodyLg,
+                headerStyle: { backgroundColor: APPTHEME.colors.background },
+                animation: "slide_from_right",
+              }}
+            />
+            <Stack.Screen
+              name="NewVaccineDose"
+              component={NewVaccineDose}
+              options={{
+                title: "Nova Dose de Vacina",
                 headerTitleStyle: styleTitleBodyLg,
                 headerStyle: { backgroundColor: APPTHEME.colors.background },
                 animation: "slide_from_right",

@@ -12,7 +12,7 @@ import { DatePicker } from "../../components/DatePicker";
 import { Button } from "../../components/Button";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
 import { maskNumberPositive } from "../../utils/masks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { catBreeds, dogBreeds } from "../../utils/breeds";
 import { usePet } from "../../hooks/usePet";
 import { useNavigation } from "@react-navigation/native";
@@ -29,12 +29,14 @@ type FormNewPet = {
 
 function NewPet() {
   const [isDogBreeds, setIsDogBreeds] = useState(true);
+  const [lellerPet, setLellerPet] = useState("");
 
   const navigation = useNavigation<StackRouterProps>();
   const { addNewPet, isPetLoading } = usePet();
 
   const {
     control,
+    getValues,
     setValue,
     handleSubmit,
     formState: { errors },
@@ -62,7 +64,7 @@ function NewPet() {
     <View style={styles.container}>
       <View style={styles.contentInputs}>
         <AvatarText
-          label="N"
+          label={lellerPet}
           size={104}
           backgroundColor={APPTHEME.colors.primary}
         />
@@ -74,7 +76,12 @@ function NewPet() {
               <TextInput
                 label="Nome"
                 value={value}
-                onChangeText={onChange}
+                onChangeText={(text) => {
+                  onChange(text);
+                  if (text.length > 0) {
+                    setLellerPet(text[0]);
+                  }
+                }}
                 error={errors.name ? true : false}
               />
             )}
@@ -130,7 +137,7 @@ function NewPet() {
             name="birth"
             control={control}
             render={({ field: { value, onChange } }) => (
-              <DatePicker onChange={onChange} />
+              <DatePicker onChange={onChange} placeholder="Quando nasceu?" />
             )}
           />
         </View>

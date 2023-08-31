@@ -51,6 +51,7 @@ function UserCredentialForm({ newUser, setNewUser }: UserCredentialFormProps) {
               <TextInput
                 label="Email"
                 placeholder="example@email.com"
+                autoCapitalize="none"
                 value={value}
                 onChangeText={onChange}
                 error={errors.email ? true : false}
