@@ -163,7 +163,19 @@ export default function StackRouterComponent() {
                 animation: "slide_from_right",
               }}
             />
-            <Stack.Screen name="PetProfile" component={PetProfile} />
+            <Stack.Screen
+              name="PetProfile"
+              component={PetProfile}
+              options={{
+                title: "Informações do Pet",
+                statusBarStyle: "light",
+                headerTitleStyle: styleTitleBodyLg,
+                headerStyle: {
+                  backgroundColor: APPTHEME.colors.primary,
+                },
+                headerTintColor: APPTHEME.colors.text.background,
+              }}
+            />
             <Stack.Screen name="ExempleTabs" component={ExempleTabs} />
           </>
         ) : (

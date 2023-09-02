@@ -8,8 +8,6 @@ import { TextInput } from "../../components/TextInput";
 import { Button } from "../../components/Button";
 import { AvatarText } from "../../components/AvatarText";
 import { FabIcon } from "../../components/FabIcon";
-import GoogleImg from "../../assets/google.svg";
-import { ButtonOutline } from "../../components/ButtonOutline";
 import { FabGroup } from "../../components/FabGroup";
 import { Portal } from "react-native-paper";
 import { Switch } from "../../components/Switch";
@@ -59,9 +57,6 @@ export default function Home() {
             <AvatarText label="LN" title="Luan" />
             <FabIcon icon="hospital-box-outline" />
             <StatusBar style="auto" />
-            <ButtonOutline icon={() => <GoogleImg />} onPress={() => {}}>
-              Google
-            </ButtonOutline>
             <Switch
               value={switchOn}
               onValueChange={() => setSwitchOn(!switchOn)}
