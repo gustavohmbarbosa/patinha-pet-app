@@ -3,6 +3,7 @@ import { TouchableOpacity, View, Text, FlatList } from "react-native";
 import { styles } from "./styles";
 import { useState } from "react";
 import { CardVaccine } from "../CardVaccine";
+import { FabIconBottom } from "../FabIconBottom";
 
 type TasksPetProps = {
   next: any[];
@@ -32,6 +33,7 @@ export function TasksPet({ next, expired, applied }: TasksPetProps) {
 
   return (
     <View style={styles.container}>
+      <FabIconBottom icon="pencil" onPress={() => {}} />
       <View style={styles.buttons}>
         {options.map((item, index) => {
           return (
