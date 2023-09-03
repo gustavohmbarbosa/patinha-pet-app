@@ -3,6 +3,7 @@ import { APPTHEME } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
   container: {
+    backgroundColor: APPTHEME.colors.background,
     flexDirection: "row",
     padding: 16,
     borderRadius: 8,

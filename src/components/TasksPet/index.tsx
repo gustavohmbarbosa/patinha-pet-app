@@ -4,7 +4,13 @@ import { styles } from "./styles";
 import { useState } from "react";
 import { CardVaccine } from "../CardVaccine";
 
-export function TasksPet() {
+type TasksPetProps = {
+  next: any[];
+  expired: any[];
+  applied: any[];
+};
+
+export function TasksPet({ next, expired, applied }: TasksPetProps) {
   const options = [
     {
       title: "Próximas",
@@ -22,8 +28,8 @@ export function TasksPet() {
       tasks: [],
     },
   ];
-
   const [option, setOption] = useState(options[0]);
+
   return (
     <View style={styles.container}>
       <View style={styles.buttons}>
