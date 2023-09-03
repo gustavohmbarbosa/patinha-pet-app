@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Button, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { StackNavigationProps, StackRouterProps } from "../../routers/stack";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { PetProps } from "../../lib/props/PetProps";
 import { ButtonTextIcon } from "../../components/ButtonTextIcon";
 import { AvatarText } from "../../components/AvatarText";
 import { Tabs } from "../../components/Tabs";
+import { TasksPet } from "../../components/TasksPet";
+import { TrackersPet } from "../../components/TrackersPet";
 
+import { calculateAge } from "../../utils/ageByBirth";
 import NeddleImg from "../../assets/needle.svg";
 import MapImg from "../../assets/map-marker-path.svg";
 import { APPTHEME } from "../../styles/theme";
 import { styles } from "./styles";
-import { calculateAge } from "../../utils/ageByBirth";
-import { TasksPet } from "../../components/TasksPet";
 
 type PetProfileProps = NativeStackScreenProps<
   StackNavigationProps,
@@ -64,10 +65,8 @@ function PetProfile({ route }: PetProfileProps) {
           <Tabs.screen label="Tarefas">
             <TasksPet applied={[]} next={[]} expired={[]} />
           </Tabs.screen>
-          <Tabs.screen label="Page 2">
-            <View
-              style={{ flex: 1, backgroundColor: APPTHEME.colors.background }}
-            ></View>
+          <Tabs.screen label="Rastreador">
+            <TrackersPet />
           </Tabs.screen>
         </Tabs.root>
       </View>
