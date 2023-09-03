@@ -10,6 +10,7 @@ export const APPTHEME = {
       bgColor75: "#E3EBEEBF", // 75%
       black100: "#000000", //100%
       black50: "#00000080", //50%
+      black30: "#0000004D", //30%
       black25: "#00000040", //25%
       black5: "#0000000D", //5%
     },

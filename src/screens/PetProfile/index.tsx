@@ -13,6 +13,7 @@ import MapImg from "../../assets/map-marker-path.svg";
 import { APPTHEME } from "../../styles/theme";
 import { styles } from "./styles";
 import { calculateAge } from "../../utils/ageByBirth";
+import { TasksPet } from "../../components/TasksPet";
 
 type PetProfileProps = NativeStackScreenProps<
   StackNavigationProps,
@@ -60,10 +61,8 @@ function PetProfile({ route }: PetProfileProps) {
       </View>
       <View style={styles.content}>
         <Tabs.root backgroundColor={APPTHEME.colors.primary}>
-          <Tabs.screen label="Page 1">
-            <View
-              style={{ flex: 1, backgroundColor: APPTHEME.colors.background }}
-            ></View>
+          <Tabs.screen label="Tarefas">
+            <TasksPet />
           </Tabs.screen>
           <Tabs.screen label="Page 2">
             <View
