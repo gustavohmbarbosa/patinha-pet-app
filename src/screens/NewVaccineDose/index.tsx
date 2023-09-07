@@ -34,6 +34,8 @@ function NewVaccineDose() {
     control,
     resetField,
     handleSubmit,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<addVaccineDoseForm>();
 
@@ -50,6 +52,14 @@ function NewVaccineDose() {
   const navigation = useNavigation<StackRouterProps>();
 
   const submit = handleSubmit(async (data) => {
+    if (additionalInfo && !data.vaccinatedDate) {
+      setError("vaccinatedDate", {
+        message: "Insira a data de vacinação",
+        type: "required",
+      });
+      return;
+    }
+
     var newVaccineDose: NewVaccineDoseProps = data;
     if (!additionalInfo) {
       newVaccineDose = {
@@ -135,7 +145,10 @@ function NewVaccineDose() {
             control={control}
             render={({ field: { value, onChange } }) => (
               <DatePicker
-                onChange={onChange}
+                onChange={(date) => {
+                  clearErrors("scheduledDate");
+                  onChange(date);
+                }}
                 error={errors.scheduledDate ? true : false}
                 placeholder="Data marcada"
               />
@@ -170,11 +183,23 @@ function NewVaccineDose() {
                 control={control}
                 render={({ field: { value, onChange } }) => (
                   <DatePicker
-                    onChange={onChange}
+                    onChange={(date) => {
+                      clearErrors("vaccinatedDate");
+                      onChange(date);
+                    }}
                     placeholder="Data de vacinação"
+                    error={errors.vaccinatedDate ? true : false}
                   />
                 )}
               />
+              {errors.vaccinatedDate && (
+                <InvalidFormText
+                  title={
+                    errors.vaccinatedDate.message ||
+                    "Insira da data de vacinação"
+                  }
+                />
+              )}
             </View>
             <View style={styles.input}>
               <Controller
