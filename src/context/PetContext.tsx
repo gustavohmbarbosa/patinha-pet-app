@@ -61,9 +61,8 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
 
     await api
       .post("/pets", newPet)
-      .then((retorno) => {
-        const addedPet: PetProps = retorno.data;
-        setPets([...pets, addedPet]);
+      .then(() => {
+        reloadPets();
       })
       .catch((err) => {
         errorHandler(err);

@@ -9,14 +9,32 @@ type CardVaccineProps = {
   title: string;
   subtitle: string;
   onPress?: () => void;
+  fabIcon?:
+    | "neddle"
+    | "hospital-box-outline"
+    | "calendar-check"
+    | "calendar-remove";
+  fabIconColor?: string;
+  fabBgColor?: string;
 };
 
-export function CardVaccine({ title, subtitle, onPress }: CardVaccineProps) {
+export function CardVaccine({
+  title,
+  subtitle,
+  fabIcon = "neddle",
+  fabBgColor = APPTHEME.colors.other.khaki,
+  fabIconColor,
+  onPress,
+}: CardVaccineProps) {
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
       <Card mode="elevated">
         <Card.Content style={styles.container}>
-          <FabIcon icon="neddle" bgColor={APPTHEME.colors.other.khaki} />
+          <FabIcon
+            icon={fabIcon}
+            bgColor={fabBgColor}
+            iconColor={fabIconColor}
+          />
           <View style={styles.content}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.subtitle}>{subtitle}</Text>

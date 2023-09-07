@@ -70,7 +70,9 @@ export function DatePicker({
             const fText = `${
               fDate.getDate() < 10 ? `0${fDate.getDate()}` : fDate.getDate()
             }/${
-              fDate.getMonth() < 10 ? `0${fDate.getMonth()}` : fDate.getMonth()
+              fDate.getMonth() + 1 < 10
+                ? `0${fDate.getMonth() + 1}`
+                : fDate.getMonth() + 1
             }/${fDate.getFullYear()}`;
             setDateText(fText);
           }}

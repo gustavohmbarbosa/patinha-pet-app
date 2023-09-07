@@ -27,6 +27,8 @@ import PetVaccines from "../screens/PetVaccines";
 import AccountBoxImg from "../assets/account-box.svg";
 import CloseImg from "../assets/close.svg";
 import { PetProps } from "../lib/props/PetProps";
+import { VaccineDoseProps } from "../lib/props/VaccineDoseProps";
+import VaccineDoses from "../screens/VaccineDoses";
 
 // Personalizando o thema padrão do React Navigate
 const theme: Theme = {
@@ -49,7 +51,9 @@ export type StackNavigationProps = {
   NewPet: undefined;
   PetProfile: { pet: PetProps }; // recebe os dados do pet - dai pega os dados de vacina pelo id
   NewVaccineDose: undefined;
+  // UpdateVaccineDose: { vaccineDose: VaccineDoseProps };
   PetVaccines: { name: string; id: Number };
+  VaccineDoses: { name: string; petId: Number; vaccineId: Number };
   Config: undefined;
   UserInfo: undefined;
   AdressInfo: undefined;
@@ -183,6 +187,20 @@ export default function StackRouterComponent() {
               component={PetVaccines}
               options={({ route }) => ({
                 title: `Vacinas - ${route.params.name}`,
+                statusBarStyle: "light",
+                headerTitleStyle: styleTitleBodyLg,
+                headerStyle: {
+                  backgroundColor: APPTHEME.colors.primary,
+                },
+                headerTintColor: APPTHEME.colors.text.background,
+                animation: "slide_from_bottom",
+              })}
+            />
+            <Stack.Screen
+              name="VaccineDoses"
+              component={VaccineDoses}
+              options={({ route }) => ({
+                title: `${route.params.name}`,
                 statusBarStyle: "light",
                 headerTitleStyle: styleTitleBodyLg,
                 headerStyle: {

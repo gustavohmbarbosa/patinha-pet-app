@@ -4,9 +4,9 @@ import { View, FlatList } from "react-native";
 import { styles } from "./styles";
 import { CardVaccine } from "../../components/CardVaccine";
 import { VaccinesPetProps } from "../../lib/props/VaccinesPet";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackNavigationProps } from "../../routers/stack";
+import { StackNavigationProps, StackRouterProps } from "../../routers/stack";
 import { getVaccinesPet } from "../../services/getVaccinesPet";
 import { Loading } from "../../components/Loading";
 import { CardEmptyList } from "../../components/CardEmptyList";
@@ -17,6 +17,7 @@ type PetVaccinesProps = NativeStackScreenProps<
 >;
 
 export default function PetVaccines({ route }: PetVaccinesProps) {
+  const navigation = useNavigation<StackRouterProps>();
   const [vaccines, setVaccines] = useState<VaccinesPetProps[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -49,6 +50,13 @@ export default function PetVaccines({ route }: PetVaccinesProps) {
                   <CardVaccine
                     title={item.name}
                     subtitle={`Doses: ${item.amount}`}
+                    onPress={() => {
+                      navigation.push("VaccineDoses", {
+                        name: item.name,
+                        petId: route.params.id,
+                        vaccineId: item.id,
+                      });
+                    }}
                   />
                 );
               }}
