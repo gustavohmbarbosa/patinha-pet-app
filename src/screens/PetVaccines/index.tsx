@@ -22,14 +22,14 @@ export default function PetVaccines({ route }: PetVaccinesProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   async function getVaccines() {
+    setIsLoading(true);
     const response = await getVaccinesPet(route.params.id);
     setVaccines(response);
+    setIsLoading(false);
   }
 
   useEffect(() => {
-    setIsLoading(true);
     getVaccines();
-    setIsLoading(false);
   }, []);
 
   return (

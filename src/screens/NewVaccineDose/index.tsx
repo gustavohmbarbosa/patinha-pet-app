@@ -15,6 +15,7 @@ import { VaccineProps } from "../../lib/props/VaccineProps";
 import { useNavigation } from "@react-navigation/native";
 import { StackRouterProps } from "../../routers/stack";
 import { styles } from "./styles";
+import { maskNumberPositive } from "../../utils/masks";
 
 type addVaccineDoseForm = {
   vaccine: VaccineProps;
@@ -71,7 +72,7 @@ function NewVaccineDose() {
         vaccinatedDate: data.vaccinatedDate,
         batch: data.batch,
         brand: data.brand,
-        dose: data.dose,
+        dose: Number(data.dose),
         locale: data.locale,
         observation: data.observation,
         professional: data.professional,
@@ -235,8 +236,12 @@ function NewVaccineDose() {
                     label="Dose"
                     placeholder="Dose"
                     value={value as string}
-                    onChangeText={onChange}
                     error={errors.dose ? true : false}
+                    onChangeText={(text) => {
+                      const number = maskNumberPositive(text);
+                      onChange(number !== undefined ? number : value);
+                    }}
+                    keyboardType="number-pad"
                   />
                 )}
               />

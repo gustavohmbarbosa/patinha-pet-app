@@ -205,7 +205,7 @@ export default function StackRouterComponent() {
                   backgroundColor: APPTHEME.colors.primary,
                 },
                 headerTintColor: APPTHEME.colors.text.background,
-                animation: "slide_from_bottom",
+                animation: "fade_from_bottom",
               })}
             />
             <Stack.Screen name="ExempleTabs" component={ExempleTabs} />

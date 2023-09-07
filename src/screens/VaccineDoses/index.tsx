@@ -10,7 +10,7 @@ import { CardEmptyList } from "../../components/CardEmptyList";
 import { CardVaccine } from "../../components/CardVaccine";
 import { Loading } from "../../components/Loading";
 import { APPTHEME } from "../../styles/theme";
-import { confirmDateVaccineted } from "../../utils/confirmDateVaccineted";
+import { confirmDateVaccinated } from "../../utils/confirmDateVaccinated";
 import { useNavigation } from "@react-navigation/native";
 
 type VaccinesDosesProps = NativeStackScreenProps<
@@ -25,17 +25,17 @@ export default function VaccineDoses({ route }: VaccinesDosesProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   async function getDoses() {
+    setIsLoading(true);
     const response = await getVaccinesDoses(
       route.params.petId,
       route.params.vaccineId
     );
     setDoses(response);
+    setIsLoading(false);
   }
 
   useEffect(() => {
-    setIsLoading(true);
     getDoses();
-    setIsLoading(false);
   }, []);
 
   return (
@@ -52,9 +52,9 @@ export default function VaccineDoses({ route }: VaccinesDosesProps) {
               data={doses}
               keyExtractor={({ id }) => String(id)}
               renderItem={({ item }) => {
-                const confirmVaccineted = confirmDateVaccineted(
+                const confirmVaccineted = confirmDateVaccinated(
                   item.scheduledDate,
-                  item.vaccinetedDate
+                  item.vaccinatedDate
                 );
                 return (
                   <CardVaccine
@@ -69,9 +69,9 @@ export default function VaccineDoses({ route }: VaccinesDosesProps) {
                       });
                     }}
                     title={
-                      confirmVaccineted && item.vaccinetedDate
+                      confirmVaccineted && item.vaccinatedDate
                         ? `Tomou - ${new Date(
-                            item.vaccinetedDate
+                            item.vaccinatedDate
                           ).toLocaleDateString("pt-BR")}`
                         : "Tomar"
                     }

@@ -1,7 +1,7 @@
 export type NewVaccineDoseProps = {
   scheduledDate: Date;
   vaccinatedDate?: Date;
-  dose?: string;
+  dose?: Number;
   locale?: string;
   batch?: string;
   brand?: string;
