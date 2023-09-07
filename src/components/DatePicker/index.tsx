@@ -10,11 +10,13 @@ type DatePickerProps = {
   placeholder: string;
   onChange: (date: Date) => void;
   error?: boolean;
+  maxToday?: boolean;
 };
 
 export function DatePicker({
   onChange,
   error = false,
+  maxToday = false,
   placeholder,
 }: DatePickerProps) {
   const [date, setDate] = useState(new Date());
@@ -55,6 +57,7 @@ export function DatePicker({
         <DateTimePicker
           value={date}
           mode="date"
+          maximumDate={maxToday ? new Date() : undefined}
           is24Hour
           onChange={(event, selectedDate) => {
             // verifica se tem dava selecionada, se não tiver considera a inicial de "date"

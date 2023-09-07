@@ -5,7 +5,7 @@ export type PetProps = {
   breed: string;
   weight: number | null;
   height: number | null;
-  birth: Date | null;
+  birth: string | null;
   createdOn: Date;
   updatedOn: Date;
 };
