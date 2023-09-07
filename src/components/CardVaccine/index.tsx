@@ -36,7 +36,9 @@ export function CardVaccine({
             iconColor={fabIconColor}
           />
           <View style={styles.content}>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+              {title}
+            </Text>
             <Text style={styles.subtitle}>{subtitle}</Text>
           </View>
         </Card.Content>

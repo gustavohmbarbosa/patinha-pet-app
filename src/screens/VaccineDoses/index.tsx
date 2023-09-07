@@ -3,7 +3,7 @@ import { FlatList, View } from "react-native";
 
 import { styles } from "./styles";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackNavigationProps } from "../../routers/stack";
+import { StackNavigationProps, StackRouterProps } from "../../routers/stack";
 import { VaccineDoseProps } from "../../lib/props/VaccineDoseProps";
 import { getVaccinesDoses } from "../../services/getVaccinesDoses";
 import { CardEmptyList } from "../../components/CardEmptyList";
@@ -11,6 +11,7 @@ import { CardVaccine } from "../../components/CardVaccine";
 import { Loading } from "../../components/Loading";
 import { APPTHEME } from "../../styles/theme";
 import { confirmDateVaccineted } from "../../utils/confirmDateVaccineted";
+import { useNavigation } from "@react-navigation/native";
 
 type VaccinesDosesProps = NativeStackScreenProps<
   StackNavigationProps,
@@ -18,6 +19,8 @@ type VaccinesDosesProps = NativeStackScreenProps<
 >;
 
 export default function VaccineDoses({ route }: VaccinesDosesProps) {
+  const navigation = useNavigation<StackRouterProps>();
+
   const [doses, setDoses] = useState<VaccineDoseProps[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -55,6 +58,16 @@ export default function VaccineDoses({ route }: VaccinesDosesProps) {
                 );
                 return (
                   <CardVaccine
+                    onPress={() => {
+                      navigation.push("VaccineDose", {
+                        petId: route.params.petId,
+                        vaccine: {
+                          name: route.params.name,
+                          id: route.params.vaccineId,
+                        },
+                        vaccineDose: item,
+                      });
+                    }}
                     title={
                       confirmVaccineted && item.vaccinetedDate
                         ? `Tomou - ${new Date(

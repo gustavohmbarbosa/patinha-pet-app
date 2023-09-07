@@ -13,13 +13,12 @@ import { usePet } from "../../hooks/usePet";
 import { PetProps } from "../../lib/props/PetProps";
 import { VaccineProps } from "../../lib/props/VaccineProps";
 import { useNavigation } from "@react-navigation/native";
-import { StackRouterProps } from "../../routers/stack";
-import { styles } from "./styles";
+import { StackNavigationProps, StackRouterProps } from "../../routers/stack";
 
-type addVaccineDoseForm = {
-  vaccine: VaccineProps;
+import { styles } from "./styles";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+type VaccineDoseForm = {
   scheduledDate: Date;
-  pet: PetProps;
   vaccinatedDate?: Date;
   dose?: string;
   locale?: string;
@@ -29,7 +28,13 @@ type addVaccineDoseForm = {
   observation?: string;
 };
 
-function NewVaccineDose() {
+type VaccineDoseProps = NativeStackScreenProps<
+  StackNavigationProps,
+  "VaccineDose"
+>;
+
+function VaccineDose({ route }: VaccineDoseProps) {
+  const vaccineDose = route.params.vaccineDose;
   const {
     control,
     resetField,
@@ -37,17 +42,28 @@ function NewVaccineDose() {
     setError,
     clearErrors,
     formState: { errors },
-  } = useForm<addVaccineDoseForm>();
+  } = useForm<VaccineDoseForm>({
+    defaultValues: {
+      scheduledDate: new Date(vaccineDose.scheduledDate),
+      vaccinatedDate: vaccineDose.vaccinetedDate
+        ? new Date(vaccineDose.vaccinetedDate)
+        : undefined,
+      batch: vaccineDose.batch ? vaccineDose.batch : undefined,
+      brand: vaccineDose.brand ? vaccineDose.brand : undefined,
+      dose: vaccineDose.dose ? vaccineDose.dose : undefined,
+      locale: vaccineDose.locale ? vaccineDose.locale : undefined,
+      professional: vaccineDose.professional
+        ? vaccineDose.professional
+        : undefined,
+      observation: vaccineDose.observation
+        ? vaccineDose.observation
+        : undefined,
+    },
+  });
 
   const [additionalInfo, setAdditionalInfo] = useState(false);
-  const [isDog, setIsDog] = useState(true);
-  const [petSelect, setPetSelect] = useState<PetProps>({} as PetProps);
-  const [vaccineSelect, setVaccineSelect] = useState<VaccineProps>(
-    {} as VaccineProps
-  );
 
-  const { pets, dogVaccines, catVaccines, addVaccineToPet, isPetLoading } =
-    usePet();
+  const { isPetLoading, addVaccineToPet } = usePet();
 
   const navigation = useNavigation<StackRouterProps>();
 
@@ -77,78 +93,16 @@ function NewVaccineDose() {
         professional: data.professional,
       };
     }
-    await addVaccineToPet(petSelect.id, vaccineSelect.id, newVaccineDose).then(
-      () => {
-        navigation.goBack();
-      }
-    );
+    // await addVaccineToPet(petSelect.id, vaccineSelect.id, newVaccineDose).then(
+    //   () => {
+    //     navigation.goBack();
+    //   }
+    // );
   });
-
-  useEffect(() => {
-    if (petSelect.type === "DOG") {
-      setIsDog(true);
-    } else {
-      setIsDog(false);
-    }
-  }, [petSelect]);
 
   return (
     <View style={styles.container}>
       <View style={styles.contentInputs}>
-        <View style={styles.input}>
-          <Controller
-            name="pet"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <Select
-                opcoes={pets}
-                placeholder="Pet a ser vacinado"
-                value={petSelect}
-                onChange={(item: PetProps) => {
-                  if (petSelect.type !== item.type) {
-                    resetField("vaccine");
-                  }
-
-                  setPetSelect(item);
-                  onChange(item);
-                }}
-                error={errors.pet ? true : false}
-              />
-            )}
-            rules={{
-              required: true,
-            }}
-          />
-          {errors.pet && (
-            <InvalidFormText title={errors.pet.message || "Selecione o Pet"} />
-          )}
-        </View>
-        <View style={styles.input}>
-          <Controller
-            name="vaccine"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <Select
-                opcoes={isDog ? dogVaccines : catVaccines}
-                placeholder="Vacina"
-                value={vaccineSelect}
-                onChange={(item) => {
-                  setVaccineSelect(item);
-                  onChange(item);
-                }}
-                error={errors.vaccine ? true : false}
-              />
-            )}
-            rules={{
-              required: true,
-            }}
-          />
-          {errors.vaccine && (
-            <InvalidFormText
-              title={errors.vaccine.message || "Informe a vacina"}
-            />
-          )}
-        </View>
         <View style={styles.input}>
           <Controller
             name="scheduledDate"
@@ -310,4 +264,4 @@ function NewVaccineDose() {
     </View>
   );
 }
-export default withKeyboardAwareScrollView(NewVaccineDose);
+export default withKeyboardAwareScrollView(VaccineDose);

@@ -1,5 +1,7 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { APPTHEME } from "../../styles/theme";
+
+const maxWidth = Dimensions.get("screen").width - 140;
 
 export const styles = StyleSheet.create({
   container: {
@@ -22,7 +24,7 @@ export const styles = StyleSheet.create({
     letterSpacing: APPTHEME.letterSpacing.body.lg,
     lineHeight: APPTHEME.lineHeight.body.lg,
     color: APPTHEME.colors.primary,
-    flexWrap: "wrap",
+    width: maxWidth,
   },
   subtitle: {
     fontFamily: APPTHEME.font.body,
