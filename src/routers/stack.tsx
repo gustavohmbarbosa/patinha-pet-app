@@ -22,6 +22,7 @@ import ExempleTabs from "../screens/ExempleTabs";
 import SignUp from "../screens/SignUp";
 import NewPet from "../screens/NewPet";
 import NewVaccineDose from "../screens/NewVaccineDose";
+import PetVaccines from "../screens/PetVaccines";
 
 import AccountBoxImg from "../assets/account-box.svg";
 import CloseImg from "../assets/close.svg";
@@ -48,6 +49,7 @@ export type StackNavigationProps = {
   NewPet: undefined;
   PetProfile: { pet: PetProps }; // recebe os dados do pet - dai pega os dados de vacina pelo id
   NewVaccineDose: undefined;
+  PetVaccines: { name: string; id: Number };
   Config: undefined;
   UserInfo: undefined;
   AdressInfo: undefined;
@@ -175,6 +177,20 @@ export default function StackRouterComponent() {
                 },
                 headerTintColor: APPTHEME.colors.text.background,
               }}
+            />
+            <Stack.Screen
+              name="PetVaccines"
+              component={PetVaccines}
+              options={({ route }) => ({
+                title: `Vacinas - ${route.params.name}`,
+                statusBarStyle: "light",
+                headerTitleStyle: styleTitleBodyLg,
+                headerStyle: {
+                  backgroundColor: APPTHEME.colors.primary,
+                },
+                headerTintColor: APPTHEME.colors.text.background,
+                animation: "slide_from_bottom",
+              })}
             />
             <Stack.Screen name="ExempleTabs" component={ExempleTabs} />
           </>

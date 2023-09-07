@@ -1,13 +1,16 @@
 import { StyleSheet } from "react-native";
-import { APPTHEME } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: APPTHEME.colors.background,
     paddingHorizontal: 16,
   },
-  content: {
+  cards: {
+    marginTop: 24,
+  },
+  contentContainer: {
+    gap: 16,
+    // paddingVertical: 24,
     paddingBottom: 24,
   },
 });

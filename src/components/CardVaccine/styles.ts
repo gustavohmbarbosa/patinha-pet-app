@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
     letterSpacing: APPTHEME.letterSpacing.body.lg,
     lineHeight: APPTHEME.lineHeight.body.lg,
     color: APPTHEME.colors.primary,
+    flexWrap: "wrap",
   },
   subtitle: {
     fontFamily: APPTHEME.font.body,

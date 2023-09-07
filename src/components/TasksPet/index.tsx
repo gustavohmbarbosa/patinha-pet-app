@@ -4,6 +4,8 @@ import { styles } from "./styles";
 import { useState } from "react";
 import { CardVaccine } from "../CardVaccine";
 import { FabIconBottom } from "../FabIconBottom";
+import { useNavigation } from "@react-navigation/native";
+import { StackRouterProps } from "../../routers/stack";
 
 type TasksPetProps = {
   next: any[];
@@ -31,9 +33,15 @@ export function TasksPet({ next, expired, applied }: TasksPetProps) {
   ];
   const [option, setOption] = useState(options[0]);
 
+  const navigation = useNavigation<StackRouterProps>();
   return (
     <View style={styles.container}>
-      <FabIconBottom icon="pencil" onPress={() => {}} />
+      <FabIconBottom
+        icon="pencil"
+        onPress={() => {
+          navigation.push("NewVaccineDose");
+        }}
+      />
       <View style={styles.buttons}>
         {options.map((item, index) => {
           return (
@@ -60,7 +68,7 @@ export function TasksPet({ next, expired, applied }: TasksPetProps) {
         data={option.tasks}
         // keyExtractor={({item})=> item}
         renderItem={({ item }) => {
-          return <CardVaccine />;
+          return <CardVaccine title="sef" subtitle="sd" />;
         }}
       />
     </View>

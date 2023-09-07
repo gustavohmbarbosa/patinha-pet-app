@@ -92,6 +92,7 @@ export const dogBreeds = [
   "stbernard",
   "terrier",
   "tervuren",
+  "vira lata",
   "vizsla",
   "waterdog",
   "weimaraner",
@@ -166,5 +167,6 @@ export const catBreeds = [
   "Toyger",
   "Turkish Angora",
   "Turkish Van",
+  "vira lata",
   "York Chocolate",
 ];
