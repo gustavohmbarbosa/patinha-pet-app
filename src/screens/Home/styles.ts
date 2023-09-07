@@ -7,6 +7,12 @@ export const styles = StyleSheet.create({
     backgroundColor: APPTHEME.colors.background,
     alignItems: "center",
     justifyContent: "center",
+    gap: 16,
+  },
+  content: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
     gap: 8,
     paddingHorizontal: 16,
   },
