@@ -56,9 +56,9 @@ export default function VaccineDoses({ route }: VaccinesDosesProps) {
                 return (
                   <CardVaccine
                     title={
-                      confirmVaccineted
+                      confirmVaccineted && item.vaccinetedDate
                         ? `Tomou - ${new Date(
-                            item.vaccinetedDate!
+                            item.vaccinetedDate
                           ).toLocaleDateString("pt-BR")}`
                         : "Tomar"
                     }

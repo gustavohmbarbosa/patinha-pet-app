@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: APPTHEME.colors.background,
     paddingHorizontal: 16,
+    paddingTop: 16,
   },
   content: {
     paddingBottom: 24,

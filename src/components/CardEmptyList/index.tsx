@@ -10,7 +10,7 @@ type CardEmptyListProps = {
 
 export function CardEmptyList({ text }: CardEmptyListProps) {
   return (
-    <Card mode="elevated" style={styles.container}>
+    <Card mode="elevated">
       <Card.Content style={styles.content}>
         <Text style={styles.text}>{text}</Text>
       </Card.Content>

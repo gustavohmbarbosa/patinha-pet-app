@@ -10,7 +10,6 @@ export const styles = StyleSheet.create({
   },
   contentContainer: {
     gap: 16,
-    // paddingVertical: 24,
     paddingBottom: 24,
   },
 });
