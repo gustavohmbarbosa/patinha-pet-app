@@ -52,6 +52,7 @@ function NewVaccineDose() {
   const navigation = useNavigation<StackRouterProps>();
 
   const submit = handleSubmit(async (data) => {
+    console.log("entrou");
     if (additionalInfo && !data.vaccinatedDate) {
       setError("vaccinatedDate", {
         message: "Insira a data de vacinação",
@@ -60,13 +61,24 @@ function NewVaccineDose() {
       return;
     }
 
-    var newVaccineDose: NewVaccineDoseProps = data;
+    var newVaccineDose: NewVaccineDoseProps = {} as NewVaccineDoseProps;
     if (!additionalInfo) {
       newVaccineDose = {
         scheduledDate: data.scheduledDate,
       };
+    } else {
+      newVaccineDose = {
+        scheduledDate: data.scheduledDate,
+        vaccinatedDate: data.vaccinatedDate,
+        batch: data.batch,
+        brand: data.brand,
+        dose: data.dose,
+        locale: data.locale,
+        observation: data.observation,
+        professional: data.professional,
+      };
     }
-
+    console.log(newVaccineDose);
     await addVaccineToPet(petSelect.id, vaccineSelect.id, newVaccineDose).then(
       () => {
         navigation.goBack();
