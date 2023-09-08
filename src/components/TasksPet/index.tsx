@@ -39,7 +39,7 @@ export function TasksPet({ next, expired, applied }: TasksPetProps) {
       <FabIconBottom
         icon="pencil"
         onPress={() => {
-          navigation.push("NewVaccineDose");
+          navigation.navigate("NewVaccineDose");
         }}
       />
       <View style={styles.buttons}>

@@ -23,13 +23,15 @@ import SignUp from "../screens/SignUp";
 import NewPet from "../screens/NewPet";
 import NewVaccineDose from "../screens/NewVaccineDose";
 import PetVaccines from "../screens/PetVaccines";
+import VaccineDoses from "../screens/VaccineDoses";
+import VaccineDose from "../screens/VaccineDose";
+import UpdatePet from "../screens/UpdatePet";
 
 import AccountBoxImg from "../assets/account-box.svg";
+import PencilImg from "../assets/pencil.svg";
 import CloseImg from "../assets/close.svg";
 import { PetProps } from "../lib/props/PetProps";
 import { VaccineDoseProps } from "../lib/props/VaccineDoseProps";
-import VaccineDoses from "../screens/VaccineDoses";
-import VaccineDose from "../screens/VaccineDose";
 
 const theme: Theme = {
   ...DefaultTheme,
@@ -45,6 +47,7 @@ export type StackNavigationProps = {
   Login: undefined;
   SignUp: undefined;
   NewPet: undefined;
+  UpdatePet: { pet: PetProps };
   PetProfile: { pet: PetProps };
   NewVaccineDose: undefined;
   VaccineDose: {
@@ -147,6 +150,16 @@ export default function StackRouterComponent() {
               }}
             />
             <Stack.Screen
+              name="UpdatePet"
+              component={UpdatePet}
+              options={({ route }) => ({
+                title: route.params.pet.name,
+                headerTitleStyle: styleTitleBodyLg,
+                headerStyle: { backgroundColor: APPTHEME.colors.background },
+                animation: "slide_from_right",
+              })}
+            />
+            <Stack.Screen
               name="NewVaccineDose"
               component={NewVaccineDose}
               options={{
@@ -170,7 +183,7 @@ export default function StackRouterComponent() {
             <Stack.Screen
               name="PetProfile"
               component={PetProfile}
-              options={{
+              options={({ route }) => ({
                 title: "Informações do Pet",
                 statusBarStyle: "light",
                 headerTitleStyle: styleTitleBodyLg,
@@ -178,7 +191,14 @@ export default function StackRouterComponent() {
                   backgroundColor: APPTHEME.colors.primary,
                 },
                 headerTintColor: APPTHEME.colors.text.background,
-              }}
+                headerRight: () => (
+                  <ButtonIcon
+                    route="UpdatePet"
+                    paramsRoute={route.params.pet}
+                    icon={<PencilImg width={24} height={24} />}
+                  />
+                ),
+              })}
             />
             <Stack.Screen
               name="PetVaccines"
