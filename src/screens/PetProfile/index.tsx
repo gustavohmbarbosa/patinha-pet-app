@@ -77,7 +77,7 @@ function PetProfile({ route }: PetProfileProps) {
       <View style={styles.content}>
         <Tabs.root backgroundColor={APPTHEME.colors.primary}>
           <Tabs.screen label="Tarefas">
-            <TasksPet applied={[]} next={[]} expired={[]} />
+            <TasksPet pet={pet} applied={[]} next={[]} expired={[]} />
           </Tabs.screen>
           <Tabs.screen label="Rastreador">
             <TrackersPet />

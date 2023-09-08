@@ -49,7 +49,7 @@ export type StackNavigationProps = {
   NewPet: undefined;
   UpdatePet: { pet: PetProps };
   PetProfile: { pet: PetProps };
-  NewVaccineDose: undefined;
+  NewVaccineDose: { pet: PetProps } | undefined;
   VaccineDose: {
     petId: Number;
     vaccine: { name: string; id: Number };

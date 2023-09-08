@@ -13,9 +13,10 @@ import { usePet } from "../../hooks/usePet";
 import { PetProps } from "../../lib/props/PetProps";
 import { VaccineProps } from "../../lib/props/VaccineProps";
 import { useNavigation } from "@react-navigation/native";
-import { StackRouterProps } from "../../routers/stack";
+import { StackNavigationProps, StackRouterProps } from "../../routers/stack";
 import { styles } from "./styles";
 import { maskNumberPositive } from "../../utils/masks";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 type addVaccineDoseForm = {
   vaccine: VaccineProps;
@@ -30,7 +31,14 @@ type addVaccineDoseForm = {
   observation?: string;
 };
 
-function NewVaccineDose() {
+type NewVaccineDoseRouterProps = NativeStackScreenProps<
+  StackNavigationProps,
+  "NewVaccineDose"
+>;
+
+function NewVaccineDose({ route }: NewVaccineDoseRouterProps) {
+  const basePet = route.params?.pet;
+
   const {
     control,
     resetField,
@@ -38,11 +46,17 @@ function NewVaccineDose() {
     setError,
     clearErrors,
     formState: { errors },
-  } = useForm<addVaccineDoseForm>();
+  } = useForm<addVaccineDoseForm>({
+    defaultValues: {
+      pet: basePet,
+    },
+  });
 
   const [additionalInfo, setAdditionalInfo] = useState(false);
   const [isDog, setIsDog] = useState(true);
-  const [petSelect, setPetSelect] = useState<PetProps>({} as PetProps);
+  const [petSelect, setPetSelect] = useState<PetProps>(
+    basePet ? basePet : ({} as PetProps)
+  );
   const [vaccineSelect, setVaccineSelect] = useState<VaccineProps>(
     {} as VaccineProps
   );
@@ -113,6 +127,7 @@ function NewVaccineDose() {
                   setPetSelect(item);
                   onChange(item);
                 }}
+                disabled={basePet ? true : false}
                 error={errors.pet ? true : false}
               />
             )}

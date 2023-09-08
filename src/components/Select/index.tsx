@@ -13,6 +13,7 @@ type SelectProps = {
   // de acordo com o onChange do useForm
   onChange: (...event: any[]) => void;
   error?: boolean;
+  disabled?: boolean;
 };
 
 export function Select({
@@ -20,23 +21,36 @@ export function Select({
   placeholder,
   value,
   onChange,
+  disabled = false,
   error = false,
 }: SelectProps) {
   return (
     <View style={styles.container}>
       <View
         // aceita vários styles, nesse caso um fixo e um condicional
-        style={[styles.content, error ? styles.borderError : styles.border]}
+        style={[
+          styles.content,
+          error
+            ? styles.borderError
+            : disabled
+            ? styles.borderDisabled
+            : styles.border,
+        ]}
       >
         <Picker
+          enabled={!disabled}
           selectedValue={value}
           onValueChange={onChange}
-          style={value ? styles.select : {}}
+          style={value ? (disabled ? styles.disabled : styles.select) : {}}
           // não consegui alterar o style, não apresenta mudança
           // mas sendo o natoivo nn tem problema, pode deixar assim
           // itemStyle={styles.item}
           dropdownIconColor={
-            error ? APPTHEME.colors.alert : APPTHEME.colors.text.dark
+            error
+              ? APPTHEME.colors.alert
+              : disabled
+              ? APPTHEME.colors.neutrals.gray
+              : APPTHEME.colors.text.dark
           }
           placeholder={placeholder}
           prompt={placeholder}
