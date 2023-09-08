@@ -54,7 +54,7 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
       breed: basePet.breed,
       birth: basePet.birth ? new Date(basePet.birth) : undefined,
       height: basePet.height ? String(basePet.height) : undefined,
-      weight: basePet.weight ? String(basePet.height) : undefined,
+      weight: basePet.weight ? String(basePet.weight) : undefined,
     },
   });
 
