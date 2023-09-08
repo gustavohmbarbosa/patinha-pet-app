@@ -23,7 +23,6 @@ type addVaccineDoseForm = {
   scheduledDate: Date;
   pet: PetProps;
   vaccinatedDate?: Date;
-  dose?: string;
   locale?: string;
   batch?: string;
   brand?: string;
@@ -86,7 +85,6 @@ function NewVaccineDose({ route }: NewVaccineDoseRouterProps) {
         vaccinatedDate: data.vaccinatedDate,
         batch: data.batch,
         brand: data.brand,
-        dose: Number(data.dose),
         locale: data.locale,
         observation: data.observation,
         professional: data.professional,
@@ -238,25 +236,6 @@ function NewVaccineDose({ route }: NewVaccineDoseRouterProps) {
                     value={value as string}
                     onChangeText={onChange}
                     error={errors.locale ? true : false}
-                  />
-                )}
-              />
-            </View>
-            <View style={styles.input}>
-              <Controller
-                name="dose"
-                control={control}
-                render={({ field: { value, onChange } }) => (
-                  <TextInput
-                    label="Dose"
-                    placeholder="Dose"
-                    value={value as string}
-                    error={errors.dose ? true : false}
-                    onChangeText={(text) => {
-                      const number = maskNumberPositive(text);
-                      onChange(number !== undefined ? number : value);
-                    }}
-                    keyboardType="number-pad"
                   />
                 )}
               />
