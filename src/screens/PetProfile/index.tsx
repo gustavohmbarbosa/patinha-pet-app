@@ -23,7 +23,7 @@ type PetProfileProps = NativeStackScreenProps<
 
 function PetProfile({ route }: PetProfileProps) {
   const [pet, setPet] = useState<PetProps>(route.params.pet);
-  const navigaton = useNavigation<StackRouterProps>();
+  const navigation = useNavigation<StackRouterProps>();
 
   return (
     <View style={styles.container}>
@@ -52,6 +52,9 @@ function PetProfile({ route }: PetProfileProps) {
                   color={APPTHEME.colors.secondary}
                 />
               }
+              onPress={() => {
+                navigation.push("PetVaccines", { name: pet.name, id: pet.id });
+              }}
             />
             <ButtonTextIcon
               label="Histórico"

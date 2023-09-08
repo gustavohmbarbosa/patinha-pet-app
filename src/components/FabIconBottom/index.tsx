@@ -13,7 +13,11 @@ type FabIconBottomProps = FABProps & {
 
 export function FabIconBottom({ icon, onPress, ...props }: FabIconBottomProps) {
   return (
-    <TouchableOpacity activeOpacity={0.7} style={styles.container}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      style={styles.container}
+      onPress={onPress}
+    >
       <FAB
         {...props}
         mode="flat"

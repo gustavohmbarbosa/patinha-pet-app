@@ -22,12 +22,15 @@ import ExempleTabs from "../screens/ExempleTabs";
 import SignUp from "../screens/SignUp";
 import NewPet from "../screens/NewPet";
 import NewVaccineDose from "../screens/NewVaccineDose";
+import PetVaccines from "../screens/PetVaccines";
 
 import AccountBoxImg from "../assets/account-box.svg";
 import CloseImg from "../assets/close.svg";
 import { PetProps } from "../lib/props/PetProps";
+import { VaccineDoseProps } from "../lib/props/VaccineDoseProps";
+import VaccineDoses from "../screens/VaccineDoses";
+import VaccineDose from "../screens/VaccineDose";
 
-// Personalizando o thema padrão do React Navigate
 const theme: Theme = {
   ...DefaultTheme,
   colors: {
@@ -37,41 +40,31 @@ const theme: Theme = {
     text: APPTHEME.colors.primary,
   },
 };
-
-// Tipagem por usar o typescript
 export type StackNavigationProps = {
-  // caso seja necessário algum dado para a página, pode ser exclarecido aqui, se não passa undefined
-  // Ex: Home: {userId: string, username: string,...}
   Home: undefined;
   Login: undefined;
   SignUp: undefined;
   NewPet: undefined;
-  PetProfile: { pet: PetProps }; // recebe os dados do pet - dai pega os dados de vacina pelo id
+  PetProfile: { pet: PetProps };
   NewVaccineDose: undefined;
+  VaccineDose: {
+    petId: Number;
+    vaccine: { name: string; id: Number };
+    vaccineDose: VaccineDoseProps;
+  };
+  PetVaccines: { name: string; id: Number };
+  VaccineDoses: { name: string; petId: Number; vaccineId: Number };
   Config: undefined;
   UserInfo: undefined;
   AdressInfo: undefined;
   ExempleTabs: undefined;
 };
 
-// esse type será usado todas as vezes que for usar as rotas
 export type StackRouterProps = NativeStackNavigationProp<StackNavigationProps>;
 
-// navegação em modo "pilha"
 const Stack = createNativeStackNavigator<StackNavigationProps>();
 
 export default function StackRouterComponent() {
-  // possível passar a cor/font/title/... do header a depender da tela
-  /* 
-  options={{
-    title: "my home",
-    headerStyle: { backgroundColor: "#0f0" },
-    headerTintColor: "#fff", //cor do texto
-    headerTitleAlign: "center",
-  }}
-  */
-
-  // usar em headerStyle quando for o header com background azul ou text Label Lg
   const styleTitleLabelLg = {
     fontFamily: APPTHEME.font.label.lg,
     fontSize: APPTHEME.fontsize.label.lg,
@@ -164,6 +157,17 @@ export default function StackRouterComponent() {
               }}
             />
             <Stack.Screen
+              name="VaccineDose"
+              component={VaccineDose}
+              options={({ route }) => ({
+                title: route.params.vaccine.name,
+                headerTitleStyle: styleTitleBodyLg,
+                headerStyle: { backgroundColor: APPTHEME.colors.background },
+                animation: "slide_from_right",
+                contentStyle: { overflow: "hidden" },
+              })}
+            />
+            <Stack.Screen
               name="PetProfile"
               component={PetProfile}
               options={{
@@ -175,6 +179,34 @@ export default function StackRouterComponent() {
                 },
                 headerTintColor: APPTHEME.colors.text.background,
               }}
+            />
+            <Stack.Screen
+              name="PetVaccines"
+              component={PetVaccines}
+              options={({ route }) => ({
+                title: `Vacinas - ${route.params.name}`,
+                statusBarStyle: "light",
+                headerTitleStyle: styleTitleBodyLg,
+                headerStyle: {
+                  backgroundColor: APPTHEME.colors.primary,
+                },
+                headerTintColor: APPTHEME.colors.text.background,
+                animation: "slide_from_bottom",
+              })}
+            />
+            <Stack.Screen
+              name="VaccineDoses"
+              component={VaccineDoses}
+              options={({ route }) => ({
+                title: `${route.params.name}`,
+                statusBarStyle: "light",
+                headerTitleStyle: styleTitleBodyLg,
+                headerStyle: {
+                  backgroundColor: APPTHEME.colors.primary,
+                },
+                headerTintColor: APPTHEME.colors.text.background,
+                animation: "fade_from_bottom",
+              })}
             />
             <Stack.Screen name="ExempleTabs" component={ExempleTabs} />
           </>

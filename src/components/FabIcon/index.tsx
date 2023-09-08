@@ -6,13 +6,19 @@ import { Path, Svg } from "react-native-svg";
 
 type FabIconProps = FABProps & {
   bgColor?: string;
-  icon: "neddle" | "hospital-box-outline";
+  iconColor?: string;
+  icon:
+    | "neddle"
+    | "hospital-box-outline"
+    | "calendar-check"
+    | "calendar-remove";
 };
 
 export function FabIcon({
   icon,
   label = "",
   bgColor = APPTHEME.colors.other.cyan,
+  iconColor = APPTHEME.colors.neutrals.white,
   ...props
 }: FabIconProps) {
   return (
@@ -33,7 +39,7 @@ export function FabIcon({
       }
       label={label}
       size="medium"
-      color={APPTHEME.colors.neutrals.white}
+      color={iconColor}
       style={{
         borderRadius: 8,
         backgroundColor: bgColor,

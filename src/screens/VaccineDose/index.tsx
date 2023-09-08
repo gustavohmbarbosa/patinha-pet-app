@@ -1,26 +1,21 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { View, Text } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { TextInput } from "../../components/TextInput";
 import { DatePicker } from "../../components/DatePicker";
-import { Select } from "../../components/Select";
-import { NewVaccineDoseProps } from "../../lib/props/NewVaccineDoseProps";
 import { Button } from "../../components/Button";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
 import { Switch } from "../../components/Switch";
 import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { usePet } from "../../hooks/usePet";
-import { PetProps } from "../../lib/props/PetProps";
-import { VaccineProps } from "../../lib/props/VaccineProps";
 import { useNavigation } from "@react-navigation/native";
-import { StackRouterProps } from "../../routers/stack";
-import { styles } from "./styles";
-import { maskNumberPositive } from "../../utils/masks";
+import { StackNavigationProps, StackRouterProps } from "../../routers/stack";
 
-type addVaccineDoseForm = {
-  vaccine: VaccineProps;
+import { styles } from "./styles";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { maskNumberPositive } from "../../utils/masks";
+type VaccineDoseForm = {
   scheduledDate: Date;
-  pet: PetProps;
   vaccinatedDate?: Date;
   dose?: string;
   locale?: string;
@@ -30,132 +25,58 @@ type addVaccineDoseForm = {
   observation?: string;
 };
 
-function NewVaccineDose() {
+type VaccineDoseProps = NativeStackScreenProps<
+  StackNavigationProps,
+  "VaccineDose"
+>;
+
+function VaccineDose({ route }: VaccineDoseProps) {
+  const vaccineDose = route.params.vaccineDose;
   const {
     control,
-    resetField,
     handleSubmit,
-    setError,
     clearErrors,
     formState: { errors },
-  } = useForm<addVaccineDoseForm>();
+  } = useForm<VaccineDoseForm>({
+    defaultValues: {
+      scheduledDate: new Date(vaccineDose.scheduledDate),
+      vaccinatedDate: vaccineDose.vaccinatedDate
+        ? new Date(vaccineDose.vaccinatedDate)
+        : undefined,
+      batch: vaccineDose.batch ? vaccineDose.batch : undefined,
+      brand: vaccineDose.brand ? vaccineDose.brand : undefined,
+      dose: vaccineDose.dose ? String(vaccineDose.dose) : undefined,
+      locale: vaccineDose.locale ? vaccineDose.locale : undefined,
+      professional: vaccineDose.professional
+        ? vaccineDose.professional
+        : undefined,
+      observation: vaccineDose.observation
+        ? vaccineDose.observation
+        : undefined,
+    },
+  });
 
-  const [additionalInfo, setAdditionalInfo] = useState(false);
-  const [isDog, setIsDog] = useState(true);
-  const [petSelect, setPetSelect] = useState<PetProps>({} as PetProps);
-  const [vaccineSelect, setVaccineSelect] = useState<VaccineProps>(
-    {} as VaccineProps
+  const [additionalInfo, setAdditionalInfo] = useState(
+    vaccineDose.vaccinatedDate ? true : false
   );
 
-  const { pets, dogVaccines, catVaccines, addVaccineToPet, isPetLoading } =
-    usePet();
+  const { isPetLoading, addVaccineToPet } = usePet();
 
   const navigation = useNavigation<StackRouterProps>();
 
   const submit = handleSubmit(async (data) => {
-    if (additionalInfo && !data.vaccinatedDate) {
-      setError("vaccinatedDate", {
-        message: "Insira a data de vacinação",
-        type: "required",
-      });
-      return;
-    }
-
-    var newVaccineDose: NewVaccineDoseProps = {} as NewVaccineDoseProps;
-    if (!additionalInfo) {
-      newVaccineDose = {
-        scheduledDate: data.scheduledDate,
-      };
-    } else {
-      newVaccineDose = {
-        scheduledDate: data.scheduledDate,
-        vaccinatedDate: data.vaccinatedDate,
-        batch: data.batch,
-        brand: data.brand,
-        dose: Number(data.dose),
-        locale: data.locale,
-        observation: data.observation,
-        professional: data.professional,
-      };
-    }
-    await addVaccineToPet(petSelect.id, vaccineSelect.id, newVaccineDose).then(
-      () => {
-        navigation.goBack();
-      }
-    );
+    console.log(data);
   });
-
-  useEffect(() => {
-    if (petSelect.type === "DOG") {
-      setIsDog(true);
-    } else {
-      setIsDog(false);
-    }
-  }, [petSelect]);
-
   return (
     <View style={styles.container}>
       <View style={styles.contentInputs}>
-        <View style={styles.input}>
-          <Controller
-            name="pet"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <Select
-                opcoes={pets}
-                placeholder="Pet a ser vacinado"
-                value={petSelect}
-                onChange={(item: PetProps) => {
-                  if (petSelect.type !== item.type) {
-                    resetField("vaccine");
-                  }
-
-                  setPetSelect(item);
-                  onChange(item);
-                }}
-                error={errors.pet ? true : false}
-              />
-            )}
-            rules={{
-              required: true,
-            }}
-          />
-          {errors.pet && (
-            <InvalidFormText title={errors.pet.message || "Selecione o Pet"} />
-          )}
-        </View>
-        <View style={styles.input}>
-          <Controller
-            name="vaccine"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <Select
-                opcoes={isDog ? dogVaccines : catVaccines}
-                placeholder="Vacina"
-                value={vaccineSelect}
-                onChange={(item) => {
-                  setVaccineSelect(item);
-                  onChange(item);
-                }}
-                error={errors.vaccine ? true : false}
-              />
-            )}
-            rules={{
-              required: true,
-            }}
-          />
-          {errors.vaccine && (
-            <InvalidFormText
-              title={errors.vaccine.message || "Informe a vacina"}
-            />
-          )}
-        </View>
         <View style={styles.input}>
           <Controller
             name="scheduledDate"
             control={control}
             render={({ field: { value, onChange } }) => (
               <DatePicker
+                defaultValue={value}
                 onChange={(date) => {
                   clearErrors("scheduledDate");
                   onChange(date);
@@ -194,6 +115,7 @@ function NewVaccineDose() {
                 control={control}
                 render={({ field: { value, onChange } }) => (
                   <DatePicker
+                    defaultValue={value}
                     onChange={(date) => {
                       clearErrors("vaccinatedDate");
                       onChange(date);
@@ -236,12 +158,12 @@ function NewVaccineDose() {
                     label="Dose"
                     placeholder="Dose"
                     value={value as string}
-                    error={errors.dose ? true : false}
                     onChangeText={(text) => {
                       const number = maskNumberPositive(text);
                       onChange(number !== undefined ? number : value);
                     }}
                     keyboardType="number-pad"
+                    error={errors.dose ? true : false}
                   />
                 )}
               />
@@ -315,4 +237,4 @@ function NewVaccineDose() {
     </View>
   );
 }
-export default withKeyboardAwareScrollView(NewVaccineDose);
+export default withKeyboardAwareScrollView(VaccineDose);

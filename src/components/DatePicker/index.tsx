@@ -11,6 +11,7 @@ type DatePickerProps = {
   onChange: (date: Date) => void;
   error?: boolean;
   maxToday?: boolean;
+  defaultValue?: Date;
 };
 
 export function DatePicker({
@@ -18,9 +19,12 @@ export function DatePicker({
   error = false,
   maxToday = false,
   placeholder,
+  defaultValue,
 }: DatePickerProps) {
-  const [date, setDate] = useState(new Date());
-  const [dateText, setDateText] = useState("");
+  const [date, setDate] = useState(defaultValue ? defaultValue : new Date());
+  const [dateText, setDateText] = useState(
+    defaultValue ? defaultValue.toLocaleDateString("pt-BR") : ""
+  );
   const [show, setShow] = useState(false);
 
   return (
@@ -62,6 +66,7 @@ export function DatePicker({
           onChange={(event, selectedDate) => {
             // verifica se tem dava selecionada, se não tiver considera a inicial de "date"
             const currentDate = selectedDate || date;
+            currentDate.setHours(0, 0, 0, 0);
             setShow(false);
             setDate(currentDate);
             onChange(currentDate);
@@ -70,7 +75,9 @@ export function DatePicker({
             const fText = `${
               fDate.getDate() < 10 ? `0${fDate.getDate()}` : fDate.getDate()
             }/${
-              fDate.getMonth() < 10 ? `0${fDate.getMonth()}` : fDate.getMonth()
+              fDate.getMonth() + 1 < 10
+                ? `0${fDate.getMonth() + 1}`
+                : fDate.getMonth() + 1
             }/${fDate.getFullYear()}`;
             setDateText(fText);
           }}

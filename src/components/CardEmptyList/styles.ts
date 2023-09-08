@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { APPTHEME } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
-  container: {
+  content: {
     backgroundColor: APPTHEME.colors.background,
     padding: 16,
     borderRadius: 8,

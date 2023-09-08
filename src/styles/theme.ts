@@ -28,6 +28,10 @@ export const APPTHEME = {
       gray: "#5D737E",
       khaki: "#BFCC94",
       green: "#59D975",
+      seaGreen: "#448863",
+      celadon: "#A0CFB5",
+      cherry: "#FFB0BA",
+      red: "#FF0A2B",
     },
   },
   font: {
