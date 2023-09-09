@@ -5,7 +5,8 @@ export const styles = StyleSheet.create({
   container: {
     width: "100%",
     backgroundColor: APPTHEME.colors.neutrals.white,
-    paddingVertical: 16,
+    paddingBottom: 16,
+    paddingTop: 8,
   },
   content: {
     gap: 16,

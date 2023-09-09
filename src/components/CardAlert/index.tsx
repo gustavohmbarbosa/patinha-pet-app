@@ -4,11 +4,11 @@ import { Text } from "react-native";
 import { styles } from "./styles";
 import { Card } from "react-native-paper";
 
-type CardEmptyListProps = {
+type CardAlertProps = {
   text: string;
 };
 
-export function CardEmptyList({ text }: CardEmptyListProps) {
+export function CardAlert({ text }: CardAlertProps) {
   return (
     <Card mode="elevated">
       <Card.Content style={styles.content}>

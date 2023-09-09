@@ -9,7 +9,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackNavigationProps, StackRouterProps } from "../../routers/stack";
 import { getVaccinesPet } from "../../services/getVaccinesPet";
 import { Loading } from "../../components/Loading";
-import { CardEmptyList } from "../../components/CardEmptyList";
+import { CardAlert } from "../../components/CardAlert";
 
 type PetVaccinesProps = NativeStackScreenProps<
   StackNavigationProps,
@@ -61,11 +61,11 @@ export default function PetVaccines({ route }: PetVaccinesProps) {
                 );
               }}
               ListEmptyComponent={
-                <CardEmptyList text="Não há vacinas registradas para o seu pet" />
+                <CardAlert text="Não há vacinas registradas para o seu pet" />
               }
             />
           ) : (
-            <CardEmptyList text="Algo de errado aconteceu ao buscar vacinas" />
+            <CardAlert text="Algo de errado aconteceu ao buscar vacinas" />
           )}
         </>
       )}
