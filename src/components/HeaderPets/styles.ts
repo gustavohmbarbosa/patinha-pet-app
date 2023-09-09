@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: APPTHEME.colors.neutrals.white,
     paddingBottom: 16,
+    paddingTop: 8,
   },
   content: {
     gap: 16,

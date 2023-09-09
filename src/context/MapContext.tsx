@@ -28,11 +28,13 @@ export const MapContext = createContext({} as MapContextDataProps);
 
 export function MapContextProvider({ children }: MapContextProviderProps) {
   const [positionUser, setPositionUser] = useState<LocationObject | null>(null);
+  const [permited, setPermited] = useState(false);
 
   async function requestLocationPermitions() {
     const { granted } = await requestForegroundPermissionsAsync();
 
     if (granted) {
+      setPermited(true);
       const currentPosition = await getCurrentPositionAsync();
       setPositionUser(currentPosition);
     }
@@ -43,17 +45,19 @@ export function MapContextProvider({ children }: MapContextProviderProps) {
   }, []);
 
   useEffect(() => {
-    watchPositionAsync(
-      {
-        accuracy: LocationAccuracy.Highest,
-        timeInterval: 1000,
-        distanceInterval: 1,
-      },
-      (response) => {
-        setPositionUser(response);
-      }
-    );
-  }, []);
+    if (permited) {
+      watchPositionAsync(
+        {
+          accuracy: LocationAccuracy.Highest,
+          timeInterval: 1000,
+          distanceInterval: 1,
+        },
+        (response) => {
+          setPositionUser(response);
+        }
+      );
+    }
+  }, [permited]);
 
   return (
     <MapContext.Provider
