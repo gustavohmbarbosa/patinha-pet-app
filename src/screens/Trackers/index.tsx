@@ -6,14 +6,15 @@ import { FabIconBottom } from "../../components/FabIconBottom";
 import { CardTracker } from "../../components/CardTracker";
 import { TrackerProps } from "../../lib/props/TrackerProps";
 import { CardAlert } from "../../components/CardAlert";
+import { useTracker } from "../../hooks/useTrackers";
 
 export default function Trackers() {
-  var option: TrackerProps[] = [];
+  const { trackers, isLoadingTrackers } = useTracker();
   return (
     <View style={styles.container}>
       <FabIconBottom icon="plus" onPress={() => {}} />
       <FlatList
-        data={option}
+        data={trackers}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => {
           return <CardTracker model={item.model} code={item.code} />;
