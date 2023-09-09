@@ -10,10 +10,13 @@ import { TrackerProps } from "../lib/props/TrackerProps";
 import { useAuth } from "../hooks/useAuth";
 import { api } from "../services/api";
 import { errorHandler } from "../utils/errorHandler";
+import { NewUserTracker } from "../lib/props/NewUserTracker";
+import { UserTarckerBond } from "../lib/props/UserTrackerBond";
 
 export type TrackerContextDataProps = {
   trackers: TrackerProps[];
-  isLoadingTrackers: boolean;
+  isTrackerLoading: boolean;
+  addNewTracker: (tracker: NewUserTracker) => Promise<boolean>;
 };
 
 export type TrackerContextProviderProps = {
@@ -26,12 +29,12 @@ export function TrackerContextProvider({
   children,
 }: TrackerContextProviderProps) {
   const [trackers, setTrackers] = useState<TrackerProps[]>([]);
-  const [isLoadingTrackers, setIsLoadingTrackers] = useState(true);
+  const [isTrackerLoading, setIsTrackerLoading] = useState(true);
 
   const { user } = useAuth();
 
   async function getUserTrackers() {
-    setIsLoadingTrackers(true);
+    setIsTrackerLoading(true);
     await api
       .get("/trackers")
       .then((response) => {
@@ -42,7 +45,26 @@ export function TrackerContextProvider({
         errorHandler(err);
       })
       .finally(() => {
-        setIsLoadingTrackers(false);
+        setIsTrackerLoading(false);
+      });
+  }
+
+  async function addNewTracker(tracker: NewUserTracker) {
+    setIsTrackerLoading(true);
+    var boolean;
+    return await api
+      .post("/trackers", tracker)
+      .then((response) => {
+        const data: UserTarckerBond = response.data;
+        setTrackers([...trackers, data.tracker]);
+        return true;
+      })
+      .catch((err) => {
+        errorHandler(err);
+        return false;
+      })
+      .finally(() => {
+        setIsTrackerLoading(false);
       });
   }
 
@@ -56,7 +78,8 @@ export function TrackerContextProvider({
     <TrackerContext.Provider
       value={{
         trackers,
-        isLoadingTrackers,
+        isTrackerLoading,
+        addNewTracker,
       }}
     >
       {children}
