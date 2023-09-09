@@ -1,11 +1,10 @@
 import React from "react";
-import { View, Text } from "react-native";
-
-import { styles } from "./styles";
+import { View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useMap } from "../../hooks/useMap";
 import { CardAlert } from "../CardAlert";
 import { Pin } from "../Pin";
+import { styles } from "./styles";
 
 export function Map() {
   const { positionUser } = useMap();
@@ -28,10 +27,8 @@ export function Map() {
             }}
             title="Você"
             description="Sua localização atual"
-            // style={{ width: 75, height: 75 }}
-            // image={require("../../assets/elipse.png")}
           >
-            <Pin text="Luan" />
+            <Pin isUser />
           </Marker>
         </MapView>
       ) : (

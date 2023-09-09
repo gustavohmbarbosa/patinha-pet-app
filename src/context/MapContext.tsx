@@ -35,7 +35,6 @@ export function MapContextProvider({ children }: MapContextProviderProps) {
     if (granted) {
       const currentPosition = await getCurrentPositionAsync();
       setPositionUser(currentPosition);
-      console.log("Position ==> ", currentPosition);
     }
   }
 
