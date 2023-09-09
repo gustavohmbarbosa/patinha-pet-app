@@ -1,25 +1,23 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Avatar, Divider } from "react-native-paper";
-
-import { styles } from "./styles";
-import { APPTHEME } from "../../styles/theme";
-import InfoImg from "../../assets/info.svg";
-import LogoutImg from "../../assets/logout.svg";
-import PinImg from "../../assets/pin.svg";
-import ChevronImg from "../../assets/chevron-white.svg";
 import { useNavigation } from "@react-navigation/native";
 import { StackRouterProps } from "../../routers/stack";
 import { useAuth } from "../../hooks/useAuth";
+
+import { styles } from "./styles";
+import { APPTHEME } from "../../styles/theme";
+import ChevronImg from "../../assets/chevron-white.svg";
+import InfoImg from "../../assets/info.svg";
+import LogoutImg from "../../assets/logout.svg";
+import PinImg from "../../assets/pin.svg";
+import TrackerImg from "../../assets/tracker.svg";
 
 export default function Config() {
   const navigation = useNavigation<StackRouterProps>();
 
   const { user, logOut } = useAuth();
 
-  // botões de opções
-  // como só há o botão de dados e sair coloquei junto, porém se for adicionar mais
-  // deverá ser refatorado para o style ficar adequado.
   const options = [
     {
       id: 1,
@@ -35,18 +33,17 @@ export default function Config() {
       icon: <PinImg width={24} height={24} />,
       onPress: () => navigation.push("AdressInfo"),
     },
+    {
+      id: 3,
+      title: "Rastreadores",
+      subtitle: "Meus rastreadores vinculados",
+      icon: <TrackerImg width={24} height={24} />,
+      onPress: () => navigation.push("Trackers"),
+    },
   ];
 
   return (
     <View style={styles.container}>
-      {/* 
-        // caso não for usar a imagem, usar o texto mesmo
-          <AvatarText
-          label="L"
-          size={80}
-          backgroundColor={APPTHEME.colors.background}
-        /> 
-      */}
       <View style={styles.header}>
         <Avatar.Icon
           icon="image-plus"
