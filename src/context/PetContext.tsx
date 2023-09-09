@@ -13,7 +13,7 @@ export type PetContextDataProps = {
   pets: PetProps[];
   isPetLoading: boolean;
   reloadPets: () => Promise<void>;
-  addNewPet: (newPet: NewPetProps) => Promise<void>;
+  addNewPet: (newPet: NewPetProps) => Promise<boolean>;
   updatePet: (pet: UpdatePetProps) => Promise<PetProps | null>;
   deletePet: () => Promise<void>;
   dogVaccines: VaccineProps[];
@@ -22,7 +22,7 @@ export type PetContextDataProps = {
     petId: Number,
     vaccineId: Number,
     vaccineDose: NewVaccineDoseProps
-  ) => Promise<void>;
+  ) => Promise<boolean>;
 };
 
 export type PetContextProviderProps = {
@@ -70,13 +70,15 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
   async function addNewPet(newPet: NewPetProps) {
     setIsPetLoading(true);
 
-    await api
+    return await api
       .post("/pets", newPet)
       .then(() => {
         reloadPets();
+        return true;
       })
       .catch((err) => {
         errorHandler(err);
+        return true;
       })
       .finally(() => {
         setIsPetLoading(false);
@@ -141,10 +143,15 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
     vaccineDose: NewVaccineDoseProps
   ) {
     setIsPetLoading(true);
-    await api
+    return await api
       .post(`/pets/${petId}/vaccines/${vaccineId}/doses`, vaccineDose)
-      .then()
-      .catch((error) => errorHandler(error))
+      .then(() => {
+        return true;
+      })
+      .catch((error) => {
+        errorHandler(error);
+        return false;
+      })
       .finally(() => {
         setIsPetLoading(false);
       });

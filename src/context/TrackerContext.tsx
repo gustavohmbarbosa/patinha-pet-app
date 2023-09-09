@@ -51,7 +51,6 @@ export function TrackerContextProvider({
 
   async function addNewTracker(tracker: NewUserTracker) {
     setIsTrackerLoading(true);
-    var boolean;
     return await api
       .post("/trackers", tracker)
       .then((response) => {

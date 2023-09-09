@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 
 import { styles } from "./styles";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
@@ -13,7 +13,6 @@ import { DatePicker } from "../../components/DatePicker";
 import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { Select } from "../../components/Select";
 import { catBreeds, dogBreeds } from "../../utils/breeds";
-import { RadioPet } from "../../components/RadioPet";
 import { APPTHEME } from "../../styles/theme";
 import { AvatarText } from "../../components/AvatarText";
 import { usePet } from "../../hooks/usePet";
@@ -44,8 +43,6 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
 
   const {
     control,
-    getValues,
-    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<FormUpdatePet>({
@@ -71,8 +68,6 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
     await updatePet(pet).then((response) => {
       if (response) {
         navigation.navigate("PetProfile", { pet: response });
-      } else {
-        navigation.goBack();
       }
     });
   });

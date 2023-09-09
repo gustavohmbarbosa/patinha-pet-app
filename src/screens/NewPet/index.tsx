@@ -55,9 +55,10 @@ function NewPet() {
           : undefined,
     };
 
-    await addNewPet(newPet).then(() => {
+    const response = await addNewPet(newPet);
+    if (response) {
       navigation.goBack();
-    });
+    }
   });
 
   return (
