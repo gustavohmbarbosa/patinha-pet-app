@@ -12,6 +12,7 @@ import InfoImg from "../../assets/info.svg";
 import LogoutImg from "../../assets/logout.svg";
 import PinImg from "../../assets/pin.svg";
 import TrackerImg from "../../assets/tracker.svg";
+import { AvatarIcon } from "../../components/AvatarIcon";
 
 export default function Config() {
   const navigation = useNavigation<StackRouterProps>();
@@ -45,10 +46,10 @@ export default function Config() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Avatar.Icon
+        <AvatarIcon
           icon="image-plus"
-          style={styles.avatar}
           color={APPTHEME.colors.primary}
+          backgroundColor={APPTHEME.colors.background}
           size={80}
         />
         <View style={styles.headerText}>
