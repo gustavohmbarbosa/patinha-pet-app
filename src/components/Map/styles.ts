@@ -1,14 +1,17 @@
 import { StyleSheet } from "react-native";
-import { APPTHEME } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    backgroundColor: APPTHEME.colors.neutrals.white,
-    paddingBottom: 16,
+    flex: 1,
   },
-  content: {
-    gap: 16,
+  map: {
+    flex: 1,
+    width: "100%",
+    zIndex: 10,
+  },
+  card: {
+    flex: 1,
+    justifyContent: "center",
     paddingHorizontal: 16,
   },
 });

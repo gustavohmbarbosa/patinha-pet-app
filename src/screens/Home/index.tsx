@@ -1,70 +1,33 @@
-import { useNavigation } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
-import { ScrollView, Text, View } from "react-native";
-import { StackRouterProps } from "../../routers/stack";
+import React from "react";
+import { View } from "react-native";
+import { Portal } from "react-native-paper";
+import { FabGroup } from "../../components/FabGroup";
+import { HeaderPets } from "../../components/HeaderPets";
+import { Map } from "../../components/Map";
 
 import { styles } from "./styles";
-import { TextInput } from "../../components/TextInput";
-import { Button } from "../../components/Button";
-import { AvatarText } from "../../components/AvatarText";
-import { FabIcon } from "../../components/FabIcon";
-import { FabGroup } from "../../components/FabGroup";
-import { Portal } from "react-native-paper";
-import { Switch } from "../../components/Switch";
-import { RadioPet, RadioTypePetProps } from "../../components/RadioPet";
-import { useState } from "react";
-import { usePet } from "../../hooks/usePet";
-import { HeaderPets } from "../../components/HeaderPets";
+import { Tabs } from "../../components/Tabs";
+import { MapContextProvider } from "../../context/MapContext";
 
 export default function Home() {
-  // para fazer a navegação
-  const navigaton = useNavigation<StackRouterProps>();
-  const [switchOn, setSwitchOn] = useState(false);
-  const [pet, setPet] = useState<RadioTypePetProps>("DOG");
-
-  const { pets } = usePet();
-
   return (
-    <Portal.Host>
-      <ScrollView>
+    <MapContextProvider>
+      <Portal.Host>
         <View style={styles.container}>
-          <FabGroup />
           <HeaderPets />
-
-          <View style={styles.content}>
-            <Text>Página Home </Text>
-
-            <Text>Pets do usuário: (só para confirmação)</Text>
-            {pets.map((data, index) => {
-              return (
-                <View key={index}>
-                  <Text>{data.name}</Text>
-                </View>
-              );
-            })}
-
-            <TextInput label={"Nome"} />
-
-            <Button
-              onPress={() => {
-                navigaton.push("ExempleTabs");
-              }}
-            >
-              ir para ExempleTabs
-            </Button>
-            {/* <Loading /> */}
-
-            <AvatarText label="LN" title="Luan" />
-            <FabIcon icon="hospital-box-outline" />
-            <StatusBar style="auto" />
-            <Switch
-              value={switchOn}
-              onValueChange={() => setSwitchOn(!switchOn)}
-            />
-            <RadioPet pet={pet} setPet={setPet} />
-          </View>
+          <FabGroup />
+          <Tabs.root>
+            <Tabs.screen label="Mapa">
+              <View style={styles.tabScreen}>
+                <Map />
+              </View>
+            </Tabs.screen>
+            <Tabs.screen label="Tarefas">
+              <View style={{ flex: 1, backgroundColor: "#f0f" }}></View>
+            </Tabs.screen>
+          </Tabs.root>
         </View>
-      </ScrollView>
-    </Portal.Host>
+      </Portal.Host>
+    </MapContextProvider>
   );
 }
