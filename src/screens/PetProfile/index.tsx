@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Text, View } from "react-native";
 import { StackNavigationProps, StackRouterProps } from "../../routers/stack";
@@ -24,6 +24,17 @@ type PetProfileProps = NativeStackScreenProps<
 function PetProfile({ route }: PetProfileProps) {
   const [pet, setPet] = useState<PetProps>(route.params.pet);
   const navigation = useNavigation<StackRouterProps>();
+
+  useEffect(() => {
+    // Esta função será executada sempre que a Rota A for focada
+    const unsubscribe = navigation.addListener("focus", () => {
+      // Verifique se a rota tem dadosAtualizados dos parâmetros
+      setPet(route.params.pet);
+    });
+
+    // Retorne uma função de limpeza para cancelar a inscrição
+    return unsubscribe;
+  }, [navigation, route]);
 
   return (
     <View style={styles.container}>
@@ -66,7 +77,7 @@ function PetProfile({ route }: PetProfileProps) {
       <View style={styles.content}>
         <Tabs.root backgroundColor={APPTHEME.colors.primary}>
           <Tabs.screen label="Tarefas">
-            <TasksPet applied={[]} next={[]} expired={[]} />
+            <TasksPet pet={pet} applied={[]} next={[]} expired={[]} />
           </Tabs.screen>
           <Tabs.screen label="Rastreador">
             <TrackersPet />

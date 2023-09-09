@@ -13,6 +13,7 @@ export const APPTHEME = {
       black30: "#0000004D", //30%
       black25: "#00000040", //25%
       black5: "#0000000D", //5%
+      gray: "#8d928D",
     },
     text: {
       white: "#FFFFFF",

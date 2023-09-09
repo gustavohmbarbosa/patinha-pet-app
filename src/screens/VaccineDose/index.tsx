@@ -10,14 +10,14 @@ import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { usePet } from "../../hooks/usePet";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProps, StackRouterProps } from "../../routers/stack";
-
-import { styles } from "./styles";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
 import { maskNumberPositive } from "../../utils/masks";
+import { styles } from "./styles";
+
 type VaccineDoseForm = {
   scheduledDate: Date;
   vaccinatedDate?: Date;
-  dose?: string;
   locale?: string;
   batch?: string;
   brand?: string;
@@ -45,7 +45,6 @@ function VaccineDose({ route }: VaccineDoseProps) {
         : undefined,
       batch: vaccineDose.batch ? vaccineDose.batch : undefined,
       brand: vaccineDose.brand ? vaccineDose.brand : undefined,
-      dose: vaccineDose.dose ? String(vaccineDose.dose) : undefined,
       locale: vaccineDose.locale ? vaccineDose.locale : undefined,
       professional: vaccineDose.professional
         ? vaccineDose.professional
@@ -145,25 +144,6 @@ function VaccineDose({ route }: VaccineDoseProps) {
                     value={value as string}
                     onChangeText={onChange}
                     error={errors.locale ? true : false}
-                  />
-                )}
-              />
-            </View>
-            <View style={styles.input}>
-              <Controller
-                name="dose"
-                control={control}
-                render={({ field: { value, onChange } }) => (
-                  <TextInput
-                    label="Dose"
-                    placeholder="Dose"
-                    value={value as string}
-                    onChangeText={(text) => {
-                      const number = maskNumberPositive(text);
-                      onChange(number !== undefined ? number : value);
-                    }}
-                    keyboardType="number-pad"
-                    error={errors.dose ? true : false}
                   />
                 )}
               />

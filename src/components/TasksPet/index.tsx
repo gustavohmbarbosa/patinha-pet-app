@@ -6,14 +6,16 @@ import { CardVaccine } from "../CardVaccine";
 import { FabIconBottom } from "../FabIconBottom";
 import { useNavigation } from "@react-navigation/native";
 import { StackRouterProps } from "../../routers/stack";
+import { PetProps } from "../../lib/props/PetProps";
 
 type TasksPetProps = {
+  pet: PetProps;
   next: any[];
   expired: any[];
   applied: any[];
 };
 
-export function TasksPet({ next, expired, applied }: TasksPetProps) {
+export function TasksPet({ pet, next, expired, applied }: TasksPetProps) {
   const options = [
     {
       title: "Próximas",
@@ -37,9 +39,9 @@ export function TasksPet({ next, expired, applied }: TasksPetProps) {
   return (
     <View style={styles.container}>
       <FabIconBottom
-        icon="pencil"
+        icon="plus"
         onPress={() => {
-          navigation.push("NewVaccineDose");
+          navigation.navigate("NewVaccineDose", { pet: pet });
         }}
       />
       <View style={styles.buttons}>

@@ -13,16 +13,16 @@ import { usePet } from "../../hooks/usePet";
 import { PetProps } from "../../lib/props/PetProps";
 import { VaccineProps } from "../../lib/props/VaccineProps";
 import { useNavigation } from "@react-navigation/native";
-import { StackRouterProps } from "../../routers/stack";
+import { StackNavigationProps, StackRouterProps } from "../../routers/stack";
 import { styles } from "./styles";
 import { maskNumberPositive } from "../../utils/masks";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 type addVaccineDoseForm = {
   vaccine: VaccineProps;
   scheduledDate: Date;
   pet: PetProps;
   vaccinatedDate?: Date;
-  dose?: string;
   locale?: string;
   batch?: string;
   brand?: string;
@@ -30,7 +30,14 @@ type addVaccineDoseForm = {
   observation?: string;
 };
 
-function NewVaccineDose() {
+type NewVaccineDoseRouterProps = NativeStackScreenProps<
+  StackNavigationProps,
+  "NewVaccineDose"
+>;
+
+function NewVaccineDose({ route }: NewVaccineDoseRouterProps) {
+  const basePet = route.params?.pet;
+
   const {
     control,
     resetField,
@@ -38,11 +45,17 @@ function NewVaccineDose() {
     setError,
     clearErrors,
     formState: { errors },
-  } = useForm<addVaccineDoseForm>();
+  } = useForm<addVaccineDoseForm>({
+    defaultValues: {
+      pet: basePet,
+    },
+  });
 
   const [additionalInfo, setAdditionalInfo] = useState(false);
   const [isDog, setIsDog] = useState(true);
-  const [petSelect, setPetSelect] = useState<PetProps>({} as PetProps);
+  const [petSelect, setPetSelect] = useState<PetProps>(
+    basePet ? basePet : ({} as PetProps)
+  );
   const [vaccineSelect, setVaccineSelect] = useState<VaccineProps>(
     {} as VaccineProps
   );
@@ -72,7 +85,6 @@ function NewVaccineDose() {
         vaccinatedDate: data.vaccinatedDate,
         batch: data.batch,
         brand: data.brand,
-        dose: Number(data.dose),
         locale: data.locale,
         observation: data.observation,
         professional: data.professional,
@@ -113,6 +125,7 @@ function NewVaccineDose() {
                   setPetSelect(item);
                   onChange(item);
                 }}
+                disabled={basePet ? true : false}
                 error={errors.pet ? true : false}
               />
             )}
@@ -223,25 +236,6 @@ function NewVaccineDose() {
                     value={value as string}
                     onChangeText={onChange}
                     error={errors.locale ? true : false}
-                  />
-                )}
-              />
-            </View>
-            <View style={styles.input}>
-              <Controller
-                name="dose"
-                control={control}
-                render={({ field: { value, onChange } }) => (
-                  <TextInput
-                    label="Dose"
-                    placeholder="Dose"
-                    value={value as string}
-                    error={errors.dose ? true : false}
-                    onChangeText={(text) => {
-                      const number = maskNumberPositive(text);
-                      onChange(number !== undefined ? number : value);
-                    }}
-                    keyboardType="number-pad"
                   />
                 )}
               />

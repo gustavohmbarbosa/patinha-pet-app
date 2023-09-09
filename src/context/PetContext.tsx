@@ -7,13 +7,14 @@ import { PetProps } from "../lib/props/PetProps";
 import { AxiosError } from "axios";
 import { VaccineProps } from "../lib/props/VaccineProps";
 import { NewVaccineDoseProps } from "../lib/props/NewVaccineDoseProps";
+import { UpdatePetProps } from "../lib/props/UpdatePetProps";
 
 export type PetContextDataProps = {
   pets: PetProps[];
   isPetLoading: boolean;
   reloadPets: () => Promise<void>;
   addNewPet: (newPet: NewPetProps) => Promise<void>;
-  updatePet: () => Promise<void>;
+  updatePet: (pet: UpdatePetProps) => Promise<PetProps | null>;
   deletePet: () => Promise<void>;
   dogVaccines: VaccineProps[];
   catVaccines: VaccineProps[];
@@ -56,6 +57,16 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
       });
   }
 
+  async function getPet(id: Number) {
+    setIsPetLoading(true);
+    var pet: PetProps | null = null;
+    await api.get(`/pets/${id}`).then((response) => {
+      const data: PetProps = response.data;
+      pet = data;
+    });
+    return pet;
+  }
+
   async function addNewPet(newPet: NewPetProps) {
     setIsPetLoading(true);
 
@@ -72,7 +83,31 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
       });
   }
 
-  async function updatePet() {}
+  async function updatePet(pet: UpdatePetProps) {
+    setIsPetLoading(true);
+    var returnPet: PetProps | null = null;
+    await api
+      .put(`/pets/${pet.id}`, pet)
+      .then(async () => {
+        const response = await getPet(pet.id);
+        if (response) {
+          var petsTemp = pets;
+          const index = pets.findIndex((item) => item.id === pet.id);
+          if (index !== -1) {
+            petsTemp[index] = response;
+          }
+          returnPet = response;
+          setPets(petsTemp);
+        }
+      })
+      .catch((err) => {
+        errorHandler(err);
+      })
+      .finally(() => {
+        setIsPetLoading(false);
+      });
+    return returnPet;
+  }
 
   async function deletePet() {}
 

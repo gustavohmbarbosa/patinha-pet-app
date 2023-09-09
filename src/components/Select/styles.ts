@@ -18,8 +18,18 @@ export const styles = StyleSheet.create({
   borderError: {
     borderColor: APPTHEME.colors.alert,
   },
+  borderDisabled: {
+    borderColor: APPTHEME.colors.neutrals.gray,
+  },
   select: {
     color: APPTHEME.colors.text.dark,
+    fontFamily: APPTHEME.font.body,
+    fontSize: APPTHEME.fontsize.body.lg,
+    lineHeight: APPTHEME.lineHeight.body.lg,
+    letterSpacing: APPTHEME.letterSpacing.body.lg,
+  },
+  disabled: {
+    color: APPTHEME.colors.neutrals.gray,
     fontFamily: APPTHEME.font.body,
     fontSize: APPTHEME.fontsize.body.lg,
     lineHeight: APPTHEME.lineHeight.body.lg,
