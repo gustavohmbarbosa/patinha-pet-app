@@ -4,7 +4,7 @@ import { View, Text } from "react-native";
 import { styles } from "./styles";
 import MapView, { Marker } from "react-native-maps";
 import { useMap } from "../../hooks/useMap";
-import { CardEmptyList } from "../CardEmptyList";
+import { CardAlert } from "../CardAlert";
 import { Pin } from "../Pin";
 
 export function Map() {
@@ -36,7 +36,7 @@ export function Map() {
         </MapView>
       ) : (
         <View style={styles.card}>
-          <CardEmptyList text="Permita o acesso de localização." />
+          <CardAlert text="Permita o acesso de localização." />
         </View>
       )}
     </View>

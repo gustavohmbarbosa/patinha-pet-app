@@ -6,7 +6,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackNavigationProps, StackRouterProps } from "../../routers/stack";
 import { VaccineDoseProps } from "../../lib/props/VaccineDoseProps";
 import { getVaccinesDoses } from "../../services/getVaccinesDoses";
-import { CardEmptyList } from "../../components/CardEmptyList";
+import { CardAlert } from "../../components/CardAlert";
 import { CardVaccine } from "../../components/CardVaccine";
 import { Loading } from "../../components/Loading";
 import { APPTHEME } from "../../styles/theme";
@@ -95,11 +95,11 @@ export default function VaccineDoses({ route }: VaccinesDosesProps) {
                 );
               }}
               ListEmptyComponent={
-                <CardEmptyList text="Não há vacinas registradas para o seu pet" />
+                <CardAlert text="Não há vacinas registradas para o seu pet" />
               }
             />
           ) : (
-            <CardEmptyList text="Algo de errado aconteceu ao buscar vacinas" />
+            <CardAlert text="Algo de errado aconteceu ao buscar vacinas" />
           )}
         </>
       )}

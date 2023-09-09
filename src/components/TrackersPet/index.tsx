@@ -2,7 +2,7 @@ import React from "react";
 import { View, FlatList } from "react-native";
 
 import { styles } from "./styles";
-import { CardEmptyList } from "../CardEmptyList";
+import { CardAlert } from "../CardAlert";
 import { FabIconBottom } from "../FabIconBottom";
 
 export function TrackersPet() {
@@ -16,7 +16,7 @@ export function TrackersPet() {
           return <></>;
         }}
         ListEmptyComponent={
-          <CardEmptyList text="Você ainda não cadastrou nenhum rastreador para esse pet" />
+          <CardAlert text="Você ainda não cadastrou nenhum rastreador para esse pet" />
         }
       />
     </View>
