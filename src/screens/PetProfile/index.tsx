@@ -80,7 +80,7 @@ function PetProfile({ route }: PetProfileProps) {
             <TasksPet pet={pet} applied={[]} next={[]} expired={[]} />
           </Tabs.screen>
           <Tabs.screen label="Rastreador">
-            <TrackersPet />
+            <TrackersPet pet={pet} />
           </Tabs.screen>
         </Tabs.root>
       </View>

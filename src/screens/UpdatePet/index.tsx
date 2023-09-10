@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 
 import { styles } from "./styles";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
@@ -13,7 +13,6 @@ import { DatePicker } from "../../components/DatePicker";
 import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { Select } from "../../components/Select";
 import { catBreeds, dogBreeds } from "../../utils/breeds";
-import { RadioPet } from "../../components/RadioPet";
 import { APPTHEME } from "../../styles/theme";
 import { AvatarText } from "../../components/AvatarText";
 import { usePet } from "../../hooks/usePet";
@@ -27,6 +26,7 @@ type UpdatePetRouteProps = NativeStackScreenProps<
 
 type FormUpdatePet = {
   name: string;
+  type: "CAT" | "DOG";
   breed: string;
   weight?: string;
   height?: string;
@@ -44,14 +44,13 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
 
   const {
     control,
-    getValues,
-    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<FormUpdatePet>({
     defaultValues: {
       name: basePet.name,
       breed: basePet.breed,
+      type: basePet.type,
       birth: basePet.birth ? new Date(basePet.birth) : undefined,
       height: basePet.height ? String(basePet.height) : undefined,
       weight: basePet.weight ? String(basePet.weight) : undefined,
@@ -60,19 +59,16 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
 
   const submit = handleSubmit(async (data) => {
     const pet: UpdatePetProps = {
+      ...data,
       id: basePet.id,
-      name: data.name,
-      breed: data.breed,
-      height: data.height ? Number(data.height) : undefined,
-      weight: data.weight ? Number(data.weight) : undefined,
-      birth: data.birth,
+      height: data.height ? Number(data.height) : null,
+      weight: data.weight ? Number(data.weight) : null,
+      birth: data.birth ? data.birth : null,
     };
 
     await updatePet(pet).then((response) => {
       if (response) {
         navigation.navigate("PetProfile", { pet: response });
-      } else {
-        navigation.goBack();
       }
     });
   });

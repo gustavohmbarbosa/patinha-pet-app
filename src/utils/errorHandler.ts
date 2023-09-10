@@ -1,6 +1,5 @@
 import { AxiosResponse, isAxiosError } from "axios";
 import { Alert } from "react-native";
-import { BackUserErrorProps } from "../lib/props/ErrorProps";
 
 const alertError = (apiError: AxiosResponse<any, any>) => {
   if (apiError.status === 403)
@@ -16,7 +15,7 @@ const alertError = (apiError: AxiosResponse<any, any>) => {
       messageError = `${messageError}\n- ${errors[key]}`;
     });
   } else {
-    messageError = `${apiError.data.message}`;
+    messageError = `Atenção`;
   }
 
   return Alert.alert(`${apiError.data.message}`, messageError);

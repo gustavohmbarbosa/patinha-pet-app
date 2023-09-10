@@ -4,12 +4,13 @@ import { styles } from "./styles";
 import { APPTHEME } from "../../styles/theme";
 import { PetProps } from "../../lib/props/PetProps";
 import { VaccineProps } from "../../lib/props/VaccineProps";
+import { TrackerProps } from "../../lib/props/TrackerProps";
 
 // tipagem temporária, haverá necessidade de muldaça de acordo com o tipo de raça e pet
 type SelectProps = {
   placeholder: string;
-  opcoes: string[] | PetProps[] | VaccineProps[];
-  value: string | PetProps | VaccineProps;
+  opcoes: string[] | PetProps[] | VaccineProps[] | TrackerProps[];
+  value: string | PetProps | VaccineProps | TrackerProps;
   // de acordo com o onChange do useForm
   onChange: (...event: any[]) => void;
   error?: boolean;
@@ -42,9 +43,6 @@ export function Select({
           selectedValue={value}
           onValueChange={onChange}
           style={value ? (disabled ? styles.disabled : styles.select) : {}}
-          // não consegui alterar o style, não apresenta mudança
-          // mas sendo o natoivo nn tem problema, pode deixar assim
-          // itemStyle={styles.item}
           dropdownIconColor={
             error
               ? APPTHEME.colors.alert
@@ -70,7 +68,13 @@ export function Select({
                 key={index + 1} // 0 será o default(placeholder)
                 // style={styles.item}// não consegui alterar o style, não apresenta mudança
                 fontFamily={APPTHEME.font.body}
-                label={typeof item === "object" ? item.name : item}
+                label={
+                  typeof item === "object"
+                    ? "name" in item
+                      ? item.name
+                      : `${item.model} - ${item.code}`
+                    : item
+                }
                 value={item}
               />
             );

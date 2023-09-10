@@ -13,7 +13,7 @@ export type PetContextDataProps = {
   pets: PetProps[];
   isPetLoading: boolean;
   reloadPets: () => Promise<void>;
-  addNewPet: (newPet: NewPetProps) => Promise<void>;
+  addNewPet: (newPet: NewPetProps) => Promise<boolean>;
   updatePet: (pet: UpdatePetProps) => Promise<PetProps | null>;
   deletePet: () => Promise<void>;
   dogVaccines: VaccineProps[];
@@ -22,7 +22,7 @@ export type PetContextDataProps = {
     petId: Number,
     vaccineId: Number,
     vaccineDose: NewVaccineDoseProps
-  ) => Promise<void>;
+  ) => Promise<boolean>;
 };
 
 export type PetContextProviderProps = {
@@ -70,13 +70,15 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
   async function addNewPet(newPet: NewPetProps) {
     setIsPetLoading(true);
 
-    await api
+    return await api
       .post("/pets", newPet)
       .then(() => {
         reloadPets();
+        return true;
       })
       .catch((err) => {
         errorHandler(err);
+        return true;
       })
       .finally(() => {
         setIsPetLoading(false);
@@ -89,16 +91,17 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
     await api
       .put(`/pets/${pet.id}`, pet)
       .then(async () => {
-        const response = await getPet(pet.id);
-        if (response) {
-          var petsTemp = pets;
-          const index = pets.findIndex((item) => item.id === pet.id);
-          if (index !== -1) {
-            petsTemp[index] = response;
-          }
-          returnPet = response;
-          setPets(petsTemp);
+        var petsTemp = pets;
+        const index = pets.findIndex((item) => item.id === pet.id);
+        if (index !== -1) {
+          petsTemp[index] = {
+            ...pets[index],
+            ...pet,
+            birth: pet.birth ? String(pet.birth) : null,
+          };
         }
+        returnPet = petsTemp[index];
+        setPets(petsTemp);
       })
       .catch((err) => {
         errorHandler(err);
@@ -141,10 +144,15 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
     vaccineDose: NewVaccineDoseProps
   ) {
     setIsPetLoading(true);
-    await api
+    return await api
       .post(`/pets/${petId}/vaccines/${vaccineId}/doses`, vaccineDose)
-      .then()
-      .catch((error) => errorHandler(error))
+      .then(() => {
+        return true;
+      })
+      .catch((error) => {
+        errorHandler(error);
+        return false;
+      })
       .finally(() => {
         setIsPetLoading(false);
       });

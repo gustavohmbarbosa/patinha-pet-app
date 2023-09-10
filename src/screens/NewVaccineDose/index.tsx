@@ -90,11 +90,16 @@ function NewVaccineDose({ route }: NewVaccineDoseRouterProps) {
         professional: data.professional,
       };
     }
-    await addVaccineToPet(petSelect.id, vaccineSelect.id, newVaccineDose).then(
-      () => {
-        navigation.goBack();
-      }
+
+    const response = await addVaccineToPet(
+      petSelect.id,
+      vaccineSelect.id,
+      newVaccineDose
     );
+
+    if (response) {
+      navigation.goBack();
+    }
   });
 
   useEffect(() => {

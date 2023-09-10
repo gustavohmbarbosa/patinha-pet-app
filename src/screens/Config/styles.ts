@@ -19,10 +19,6 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 16,
   },
-  avatar: {
-    backgroundColor: APPTHEME.colors.background,
-    color: APPTHEME.colors.primary,
-  },
   headerText: {
     alignItems: "center",
     justifyContent: "center",
@@ -57,7 +53,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 16,
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   buttonText: {
     fontFamily: APPTHEME.font.label.md,
