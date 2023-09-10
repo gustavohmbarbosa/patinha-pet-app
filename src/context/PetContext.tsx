@@ -8,10 +8,12 @@ import { AxiosError } from "axios";
 import { VaccineProps } from "../lib/props/VaccineProps";
 import { NewVaccineDoseProps } from "../lib/props/NewVaccineDoseProps";
 import { UpdatePetProps } from "../lib/props/UpdatePetProps";
+import { VaccinesDosesPetProps } from "../lib/props/VaccinesDosesProps";
 
 export type PetContextDataProps = {
   pets: PetProps[];
   isPetLoading: boolean;
+  isVaccineDosesLoading: boolean;
   reloadPets: () => Promise<void>;
   addNewPet: (newPet: NewPetProps) => Promise<boolean>;
   updatePet: (pet: UpdatePetProps) => Promise<PetProps | null>;
@@ -23,6 +25,7 @@ export type PetContextDataProps = {
     vaccineId: Number,
     vaccineDose: NewVaccineDoseProps
   ) => Promise<boolean>;
+  getVaccinesDoses: (petId: Number) => Promise<VaccinesDosesPetProps[]>;
 };
 
 export type PetContextProviderProps = {
@@ -38,6 +41,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
   const [dogVaccines, setDogVaccines] = useState<VaccineProps[]>([]);
   const [catVaccines, setCatVaccines] = useState<VaccineProps[]>([]);
   const [isPetLoading, setIsPetLoading] = useState(false);
+  const [isVaccineDosesLoading, setIsVaccineDosesLoading] = useState(false);
 
   async function reloadPets() {
     setIsPetLoading(true);
@@ -138,6 +142,26 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
       });
   }
 
+  async function getVaccinesDoses(petId: Number) {
+    setIsVaccineDosesLoading(true);
+    var doses: VaccinesDosesPetProps[] = [];
+    await api
+      .get(`/pets/${petId}/dose`)
+      .then((response) => {
+        const data: VaccinesDosesPetProps[] = response.data;
+        doses = data;
+      })
+      .catch((err) => {
+        if (err.response?.status !== 404) {
+          errorHandler(err);
+        }
+      })
+      .finally(() => {
+        setIsVaccineDosesLoading(false);
+      });
+    return doses;
+  }
+
   async function addVaccineToPet(
     petId: Number,
     vaccineId: Number,
@@ -170,6 +194,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
       value={{
         pets,
         isPetLoading,
+        isVaccineDosesLoading,
         reloadPets,
         addNewPet,
         updatePet,
@@ -177,6 +202,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
         dogVaccines,
         catVaccines,
         addVaccineToPet,
+        getVaccinesDoses,
       }}
     >
       {children}
