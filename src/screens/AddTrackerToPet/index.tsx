@@ -1,5 +1,7 @@
-import { View, Text } from "react-native";
+import { useEffect, useState } from "react";
+import { View, Text, Alert } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { usePet } from "../../hooks/usePet";
 import { Button } from "../../components/Button";
 import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { Controller, useForm } from "react-hook-form";
@@ -11,15 +13,14 @@ import { StackNavigationProps, StackRouterProps } from "../../routers/stack";
 import { Select } from "../../components/Select";
 import { Switch } from "../../components/Switch";
 
-import { styles } from "./styles";
 import { PetProps } from "../../lib/props/PetProps";
 import { TrackerProps } from "../../lib/props/TrackerProps";
-import { useEffect, useState } from "react";
+import { styles } from "./styles";
 
 type FormAddTrackerToPetProps = {
   code: string;
   password: string;
-  Pet: PetProps;
+  pet: PetProps;
   tracker: TrackerProps;
 };
 
@@ -30,36 +31,54 @@ type AddTrackerToPetProps = NativeStackScreenProps<
 
 function AddTrackerToPet({ route }: AddTrackerToPetProps) {
   const [isNewTracker, setIsNewTracker] = useState(false);
+  const [trackerSelect, setTrackerSelect] = useState<TrackerProps>(
+    {} as TrackerProps
+  );
+  const [petSelected, setPetSelected] = useState<PetProps>(route.params.pet);
+  const { pets } = usePet();
+  const { addNewTracker, addTrackerToPet, trackers, isTrackerLoading } =
+    useTracker();
 
-  const { addNewTracker, trackers, isTrackerLoading } = useTracker();
   const navigation = useNavigation<StackRouterProps>();
 
   const {
     control,
     handleSubmit,
-    getValues,
+    resetField,
     clearErrors,
-    setError,
     formState: { errors },
   } = useForm<FormAddTrackerToPetProps>({
-    defaultValues: {},
+    defaultValues: {
+      pet: route.params.pet,
+    },
   });
 
   const submit = handleSubmit(async (data) => {
-    // await addNewTracker(data).then((boolean) => {
-    //   if (boolean) {
-    //     navigation.goBack();
-    //   }
-    // });
+    if (isNewTracker) {
+      await addNewTracker({ code: data.code, password: data.password }).then(
+        async (trackerId) => {
+          if (trackerId) {
+            await addTrackerToPet(data.pet.id, trackerId).then((response) => {
+              if (response) {
+                Alert.alert("Deu certo");
+                navigation.goBack();
+              }
+            });
+          }
+        }
+      );
+    } else {
+      await addTrackerToPet(data.pet.id, data.tracker.id).then((response) => {
+        if (response) {
+          navigation.goBack();
+        }
+      });
+    }
   });
 
   useEffect(() => {
     if (trackers.length === 0) {
       setIsNewTracker(true);
-      setError("tracker", {
-        type: "value",
-        message: "Você não possui rastreador",
-      });
     }
   }, []);
 
@@ -68,13 +87,13 @@ function AddTrackerToPet({ route }: AddTrackerToPetProps) {
       <View style={styles.contentInputs}>
         <View style={styles.input}>
           <Controller
-            name="Pet"
+            name="pet"
             control={control}
             render={({ field: { value, onChange } }) => (
               <Select
-                opcoes={[route.params.pet]}
+                opcoes={pets}
                 placeholder="Pet"
-                value={route.params.pet}
+                value={petSelected}
                 onChange={onChange}
                 disabled
               />
@@ -92,16 +111,24 @@ function AddTrackerToPet({ route }: AddTrackerToPetProps) {
                 placeholder={
                   trackers.length > 0 ? "Rastreador" : "Sem rastreador"
                 }
-                value={value}
-                onChange={onChange}
+                value={trackerSelect}
+                onChange={(item) => {
+                  setTrackerSelect(item);
+                  onChange(item);
+                }}
+                error={errors.tracker ? true : false}
                 disabled={isNewTracker}
               />
             )}
+            rules={{ required: !isNewTracker }}
           />
           {errors.tracker && (
             <InvalidFormText
               title={errors.tracker.message || "Selecione um rastreador"}
             />
+          )}
+          {trackers.length === 0 && (
+            <InvalidFormText title={"Você não possui rastreador"} />
           )}
         </View>
         <View style={styles.inputSwitch}>
@@ -112,6 +139,9 @@ function AddTrackerToPet({ route }: AddTrackerToPetProps) {
               if (trackers.length > 0) {
                 setIsNewTracker(newValue);
                 clearErrors("tracker");
+                if (newValue) {
+                  resetField("tracker");
+                }
               }
             }}
           />

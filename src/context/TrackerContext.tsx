@@ -1,11 +1,4 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import {
-  getCurrentPositionAsync,
-  requestForegroundPermissionsAsync,
-  watchPositionAsync,
-  LocationObject,
-  LocationAccuracy,
-} from "expo-location";
 import { TrackerProps } from "../lib/props/TrackerProps";
 import { useAuth } from "../hooks/useAuth";
 import { api } from "../services/api";
@@ -17,7 +10,8 @@ import { AxiosError } from "axios";
 export type TrackerContextDataProps = {
   trackers: TrackerProps[];
   isTrackerLoading: boolean;
-  addNewTracker: (tracker: NewUserTrackerProps) => Promise<boolean>;
+  addNewTracker: (tracker: NewUserTrackerProps) => Promise<Number | null>;
+  addTrackerToPet: (petId: Number, trackerId: Number) => Promise<boolean>;
 };
 
 export type TrackerContextProviderProps = {
@@ -59,6 +53,22 @@ export function TrackerContextProvider({
       .then((response) => {
         const data: UserTarckerBond = response.data;
         setTrackers([...trackers, data.tracker]);
+        return data.tracker.id;
+      })
+      .catch((err) => {
+        errorHandler(err);
+        return null;
+      })
+      .finally(() => {
+        setIsTrackerLoading(false);
+      });
+  }
+
+  async function addTrackerToPet(petId: Number, trackerId: Number) {
+    setIsTrackerLoading(true);
+    return await api
+      .post(`/pets/${petId}/tracker`, { trackerId: trackerId })
+      .then(() => {
         return true;
       })
       .catch((err) => {
@@ -82,6 +92,7 @@ export function TrackerContextProvider({
         trackers,
         isTrackerLoading,
         addNewTracker,
+        addTrackerToPet,
       }}
     >
       {children}
