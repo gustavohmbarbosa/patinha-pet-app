@@ -11,6 +11,7 @@ import { VaccineDoseWithVaccineProps } from "../../lib/props/VaccineDoseWithVacc
 import { usePet } from "../../hooks/usePet";
 import { Loading } from "../Loading";
 import { APPTHEME } from "../../styles/theme";
+import { CardAlert } from "../CardAlert";
 
 type TasksPetProps = {
   pet: PetProps;
@@ -96,7 +97,7 @@ export function TasksPet({ pet }: TasksPetProps) {
       ) : (
         <>
           {optionSelected && (
-            <>
+            <View style={styles.content}>
               <FabIconBottom
                 icon="plus"
                 onPress={() => {
@@ -126,7 +127,6 @@ export function TasksPet({ pet }: TasksPetProps) {
               </View>
 
               <FlatList
-                style={styles.cards}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.contentContainer}
                 data={optionSelected.tasks}
@@ -163,8 +163,11 @@ export function TasksPet({ pet }: TasksPetProps) {
                     />
                   );
                 }}
+                ListEmptyComponent={
+                  <CardAlert text="Nenhuma tarefa nesta situação" />
+                }
               />
-            </>
+            </View>
           )}
         </>
       )}

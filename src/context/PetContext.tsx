@@ -18,7 +18,6 @@ export type PetContextDataProps = {
   reloadPets: () => Promise<void>;
   addNewPet: (newPet: NewPetProps) => Promise<boolean>;
   updatePet: (pet: UpdatePetProps) => Promise<PetProps | null>;
-  deletePet: () => Promise<void>;
   dogVaccines: VaccineProps[];
   catVaccines: VaccineProps[];
   addVaccineToPet: (
@@ -29,6 +28,7 @@ export type PetContextDataProps = {
   getPetVaccinesDoses: (
     petId: Number
   ) => Promise<VaccineDoseWithVaccineProps[]>;
+  getAllVaccinesDosesOnTime: () => Promise<VaccineDoseWithPetAndVaccineProps[]>;
 };
 
 export type PetContextProviderProps = {
@@ -119,8 +119,6 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
     return returnPet;
   }
 
-  async function deletePet() {}
-
   async function getVaccines() {
     await api
       .get("/vaccines")
@@ -154,6 +152,26 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
       .get(`/pets/${petId}/doses`)
       .then((response) => {
         const data: VaccineDoseWithVaccineProps[] = response.data;
+        doses = data;
+      })
+      .catch((err: AxiosError) => {
+        if (err.response?.status !== 404) {
+          errorHandler(err);
+        }
+      })
+      .finally(() => {
+        setIsVaccineDosesLoading(false);
+      });
+    return doses;
+  }
+
+  async function getAllVaccinesDosesOnTime() {
+    setIsVaccineDosesLoading(true);
+    var doses: VaccineDoseWithPetAndVaccineProps[] = [];
+    await api
+      .get(`/pets/doses`)
+      .then((response) => {
+        const data: VaccineDoseWithPetAndVaccineProps[] = response.data;
         doses = data;
       })
       .catch((err: AxiosError) => {
@@ -203,11 +221,11 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
         reloadPets,
         addNewPet,
         updatePet,
-        deletePet,
         dogVaccines,
         catVaccines,
         addVaccineToPet,
         getPetVaccinesDoses,
+        getAllVaccinesDosesOnTime,
       }}
     >
       {children}
