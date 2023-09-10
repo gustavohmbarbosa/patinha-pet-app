@@ -46,7 +46,6 @@ export default function VaccineDoses({ route }: VaccinesDosesProps) {
         <>
           {doses ? (
             <FlatList
-              style={styles.cards}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.contentContainer}
               data={doses}
