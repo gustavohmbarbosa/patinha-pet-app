@@ -26,6 +26,7 @@ type UpdatePetRouteProps = NativeStackScreenProps<
 
 type FormUpdatePet = {
   name: string;
+  type: "CAT" | "DOG";
   breed: string;
   weight?: string;
   height?: string;
@@ -49,6 +50,7 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
     defaultValues: {
       name: basePet.name,
       breed: basePet.breed,
+      type: basePet.type,
       birth: basePet.birth ? new Date(basePet.birth) : undefined,
       height: basePet.height ? String(basePet.height) : undefined,
       weight: basePet.weight ? String(basePet.weight) : undefined,
@@ -57,12 +59,11 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
 
   const submit = handleSubmit(async (data) => {
     const pet: UpdatePetProps = {
+      ...data,
       id: basePet.id,
-      name: data.name,
-      breed: data.breed,
-      height: data.height ? Number(data.height) : undefined,
-      weight: data.weight ? Number(data.weight) : undefined,
-      birth: data.birth,
+      height: data.height ? Number(data.height) : null,
+      weight: data.weight ? Number(data.weight) : null,
+      birth: data.birth ? data.birth : null,
     };
 
     await updatePet(pet).then((response) => {

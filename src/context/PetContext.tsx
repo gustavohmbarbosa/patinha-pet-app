@@ -91,16 +91,17 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
     await api
       .put(`/pets/${pet.id}`, pet)
       .then(async () => {
-        const response = await getPet(pet.id);
-        if (response) {
-          var petsTemp = pets;
-          const index = pets.findIndex((item) => item.id === pet.id);
-          if (index !== -1) {
-            petsTemp[index] = response;
-          }
-          returnPet = response;
-          setPets(petsTemp);
+        var petsTemp = pets;
+        const index = pets.findIndex((item) => item.id === pet.id);
+        if (index !== -1) {
+          petsTemp[index] = {
+            ...pets[index],
+            ...pet,
+            birth: pet.birth ? String(pet.birth) : null,
+          };
         }
+        returnPet = petsTemp[index];
+        setPets(petsTemp);
       })
       .catch((err) => {
         errorHandler(err);

@@ -12,6 +12,7 @@ import { api } from "../services/api";
 import { errorHandler } from "../utils/errorHandler";
 import { NewUserTracker } from "../lib/props/NewUserTracker";
 import { UserTarckerBond } from "../lib/props/UserTrackerBond";
+import { AxiosError } from "axios";
 
 export type TrackerContextDataProps = {
   trackers: TrackerProps[];
@@ -41,8 +42,10 @@ export function TrackerContextProvider({
         const data: TrackerProps[] = response.data;
         setTrackers(data);
       })
-      .catch((err) => {
-        errorHandler(err);
+      .catch((err: AxiosError) => {
+        if (err.response?.status !== 404) {
+          errorHandler(err);
+        }
       })
       .finally(() => {
         setIsTrackerLoading(false);
