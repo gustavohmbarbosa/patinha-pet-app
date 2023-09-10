@@ -12,6 +12,7 @@ export type TrackerContextDataProps = {
   isTrackerLoading: boolean;
   addNewTracker: (tracker: NewUserTrackerProps) => Promise<Number | null>;
   addTrackerToPet: (petId: Number, trackerId: Number) => Promise<boolean>;
+  removeTrackerPet: (petId: Number, trackerId: Number) => Promise<boolean>;
 };
 
 export type TrackerContextProviderProps = {
@@ -80,6 +81,22 @@ export function TrackerContextProvider({
       });
   }
 
+  async function removeTrackerPet(petId: Number, trackerId: Number) {
+    setIsTrackerLoading(true);
+    return await api
+      .delete(`/pets/${petId}/tracker`, { data: { trackerId: trackerId } })
+      .then(() => {
+        return true;
+      })
+      .catch((err) => {
+        errorHandler(err);
+        return false;
+      })
+      .finally(() => {
+        setIsTrackerLoading(false);
+      });
+  }
+
   useEffect(() => {
     if (user.token) {
       getUserTrackers();
@@ -93,6 +110,7 @@ export function TrackerContextProvider({
         isTrackerLoading,
         addNewTracker,
         addTrackerToPet,
+        removeTrackerPet,
       }}
     >
       {children}
