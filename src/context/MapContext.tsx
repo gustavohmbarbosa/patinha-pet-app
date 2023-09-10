@@ -41,6 +41,7 @@ export function MapContextProvider({ children }: MapContextProviderProps) {
 
   useEffect(() => {
     if (permited) {
+      setIsMapLoading(false);
       watchPositionAsync(
         {
           accuracy: LocationAccuracy.Highest,

@@ -8,6 +8,7 @@ import { styles } from "./styles";
 import { StackRouterProps } from "../../routers/stack";
 import { PetProps } from "../../lib/props/PetProps";
 import { useAuth } from "../../hooks/useAuth";
+import { CardTracker } from "../CardTracker";
 
 type TrackersPetProps = {
   pet: PetProps;
@@ -36,7 +37,7 @@ export function TrackersPet({ pet }: TrackersPetProps) {
         style={styles.content}
         data={[]}
         renderItem={() => {
-          return <></>;
+          return <CardTracker model="Teste" code="2386DS" />;
         }}
         ListEmptyComponent={
           <CardAlert text="Você ainda não cadastrou nenhum rastreador para esse pet" />

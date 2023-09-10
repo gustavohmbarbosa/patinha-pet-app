@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useMap } from "../../hooks/useMap";
@@ -9,6 +9,9 @@ import { Loading } from "../Loading";
 
 export function Map() {
   const { positionUser, isMapLoading } = useMap();
+
+  const [petsPosition, setPetsPosition] = useState([""]);
+
   return (
     <View style={styles.container}>
       {isMapLoading ? (
@@ -26,6 +29,7 @@ export function Map() {
               }}
             >
               <Marker
+                key={0}
                 coordinate={{
                   latitude: positionUser.coords.latitude,
                   longitude: positionUser.coords.longitude,
@@ -35,6 +39,22 @@ export function Map() {
               >
                 <Pin isUser />
               </Marker>
+
+              {petsPosition.map((pet, index) => {
+                return (
+                  <Marker
+                    key={index + 1}
+                    coordinate={{
+                      latitude: -8.9043,
+                      longitude: -36.4926,
+                    }}
+                    title="Pet"
+                    description="Trc - 4743SD"
+                  >
+                    <Pin text="P" />
+                  </Marker>
+                );
+              })}
             </MapView>
           ) : (
             <View style={styles.card}>
