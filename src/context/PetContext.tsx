@@ -25,7 +25,7 @@ export type PetContextDataProps = {
     vaccineId: Number,
     vaccineDose: NewVaccineDoseProps
   ) => Promise<boolean>;
-  getVaccinesDoses: (petId: Number) => Promise<VaccinesDosesPetProps[]>;
+  getPetVaccinesDoses: (petId: Number) => Promise<VaccinesDosesPetProps[]>;
 };
 
 export type PetContextProviderProps = {
@@ -127,10 +127,12 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
         var dog: VaccineProps[] = [];
 
         vaccines.forEach((vaccine) => {
-          if (vaccine.petType === "DOG") {
-            dog.push(vaccine);
-          } else {
-            cat.push(vaccine);
+          if (vaccine.isActiveForChoice) {
+            if (vaccine.petType === "DOG") {
+              dog.push(vaccine);
+            } else {
+              cat.push(vaccine);
+            }
           }
         });
 
@@ -142,16 +144,16 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
       });
   }
 
-  async function getVaccinesDoses(petId: Number) {
+  async function getPetVaccinesDoses(petId: Number) {
     setIsVaccineDosesLoading(true);
     var doses: VaccinesDosesPetProps[] = [];
     await api
-      .get(`/pets/${petId}/dose`)
+      .get(`/pets/${petId}/doses`)
       .then((response) => {
         const data: VaccinesDosesPetProps[] = response.data;
         doses = data;
       })
-      .catch((err) => {
+      .catch((err: AxiosError) => {
         if (err.response?.status !== 404) {
           errorHandler(err);
         }
@@ -202,7 +204,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
         dogVaccines,
         catVaccines,
         addVaccineToPet,
-        getVaccinesDoses,
+        getPetVaccinesDoses,
       }}
     >
       {children}

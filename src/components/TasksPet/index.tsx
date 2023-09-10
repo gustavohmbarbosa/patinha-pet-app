@@ -1,7 +1,7 @@
 import { TouchableOpacity, View, Text, FlatList } from "react-native";
 
 import { styles } from "./styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CardVaccine } from "../CardVaccine";
 import { FabIconBottom } from "../FabIconBottom";
 import { useNavigation } from "@react-navigation/native";
@@ -10,25 +10,28 @@ import { PetProps } from "../../lib/props/PetProps";
 import { VaccinesDosesPetProps } from "../../lib/props/VaccinesDosesProps";
 import { usePet } from "../../hooks/usePet";
 import { Loading } from "../Loading";
+import { APPTHEME } from "../../styles/theme";
 
 type TasksPetProps = {
   pet: PetProps;
 };
 
+type optionProps = {
+  title: string;
+  value: "NEXT" | "EXPIRED" | "APPLIED";
+  tasks: VaccinesDosesPetProps[];
+};
+
 export function TasksPet({ pet }: TasksPetProps) {
   const navigation = useNavigation<StackRouterProps>();
 
-  const { isVaccineDosesLoading, getVaccinesDoses } = usePet();
+  const { isVaccineDosesLoading, getPetVaccinesDoses } = usePet();
 
-  const [next, setNext] = useState<VaccinesDosesPetProps[]>([]);
-  const [expired, setExpired] = useState<VaccinesDosesPetProps[]>([]);
-  const [applied, setApplied] = useState<VaccinesDosesPetProps[]>([]);
-
-  const options = [
+  const [options, setOptions] = useState<optionProps[]>([
     {
       title: "Próximas",
       value: "NEXT",
-      tasks: ["1", "@", "2", "3", "4"],
+      tasks: [],
     },
     {
       title: "Vencidas",
@@ -40,23 +43,51 @@ export function TasksPet({ pet }: TasksPetProps) {
       value: "APPLIED",
       tasks: [],
     },
-  ];
+  ]);
 
-  const [option, setOption] = useState(options[0]);
+  const [optionSelected, setOptionSelected] = useState<optionProps>();
 
   async function getDoses() {
-    const doses = await getVaccinesDoses(pet.id);
+    const doses = await getPetVaccinesDoses(pet.id);
+
+    var next: VaccinesDosesPetProps[] = [];
+    var expired: VaccinesDosesPetProps[] = [];
+    var applied: VaccinesDosesPetProps[] = [];
 
     doses.forEach((item) => {
       if (item.vaccinatedDate) {
-        setApplied([...applied, item]);
+        applied.push(item);
       } else if (new Date() > new Date(item.scheduledDate)) {
-        setExpired([...expired, item]);
+        expired.push(item);
       } else {
-        setNext([...next, item]);
+        next.push(item);
       }
     });
+
+    setOptions((prevOptions) => [
+      {
+        ...prevOptions[0],
+        tasks: next,
+      },
+      {
+        ...prevOptions[1],
+        tasks: expired,
+      },
+      {
+        ...prevOptions[2],
+        tasks: applied,
+      },
+    ]);
+    setOptionSelected(options[0]);
   }
+
+  useEffect(() => {
+    getDoses();
+  }, []);
+
+  useEffect(() => {
+    setOptionSelected(options[0]);
+  }, [options]);
 
   return (
     <View style={styles.container}>
@@ -64,41 +95,77 @@ export function TasksPet({ pet }: TasksPetProps) {
         <Loading />
       ) : (
         <>
-          <FabIconBottom
-            icon="plus"
-            onPress={() => {
-              navigation.navigate("NewVaccineDose", { pet: pet });
-            }}
-          />
-          <View style={styles.buttons}>
-            {options.map((item, index) => {
-              return (
-                <TouchableOpacity
-                  key={index}
-                  style={[
-                    styles.button,
-                    option.value === item.value ? styles.buttonActive : {},
-                  ]}
-                  activeOpacity={0.7}
-                  onPress={() => {
-                    setOption(item);
-                  }}
-                >
-                  <Text style={styles.buttonTitle}>{item.title}</Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-          <FlatList
-            style={styles.cards}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.contentContainer}
-            data={option.tasks}
-            // keyExtractor={({item})=> item}
-            renderItem={({ item }) => {
-              return <CardVaccine title="sef" subtitle="sd" />;
-            }}
-          />
+          {optionSelected && (
+            <>
+              <FabIconBottom
+                icon="plus"
+                onPress={() => {
+                  navigation.navigate("NewVaccineDose", { pet: pet });
+                }}
+              />
+              <View style={styles.buttons}>
+                {options.map((item, index) => {
+                  return (
+                    <TouchableOpacity
+                      key={index}
+                      style={[
+                        styles.button,
+                        optionSelected.value === item.value
+                          ? styles.buttonActive
+                          : {},
+                      ]}
+                      activeOpacity={0.7}
+                      onPress={() => {
+                        setOptionSelected(item);
+                      }}
+                    >
+                      <Text style={styles.buttonTitle}>{item.title}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+
+              <FlatList
+                style={styles.cards}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.contentContainer}
+                data={optionSelected.tasks}
+                keyExtractor={(item) => String(item.id)}
+                renderItem={({ item }) => {
+                  const icon =
+                    optionSelected.value === "APPLIED"
+                      ? "calendar-check"
+                      : optionSelected.value === "EXPIRED"
+                      ? "calendar-remove"
+                      : undefined;
+                  const bgIcon =
+                    optionSelected.value === "APPLIED"
+                      ? APPTHEME.colors.other.celadon
+                      : optionSelected.value === "EXPIRED"
+                      ? APPTHEME.colors.other.cherry
+                      : undefined;
+                  const iconColor =
+                    optionSelected.value === "APPLIED"
+                      ? APPTHEME.colors.other.seaGreen
+                      : optionSelected.value === "EXPIRED"
+                      ? APPTHEME.colors.other.red
+                      : undefined;
+
+                  return (
+                    <CardVaccine
+                      title={item.vaccine.name}
+                      subtitle={new Date(item.scheduledDate).toLocaleDateString(
+                        "pt-BR"
+                      )}
+                      fabIcon={icon}
+                      fabBgColor={bgIcon}
+                      fabIconColor={iconColor}
+                    />
+                  );
+                }}
+              />
+            </>
+          )}
         </>
       )}
     </View>
