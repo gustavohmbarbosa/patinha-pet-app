@@ -160,7 +160,7 @@ export default function StackRouterComponent() {
               name="AddTracker"
               component={AddTracker}
               options={{
-                title: "Adicionar novo rastreador",
+                title: "Adicionar rastreador",
                 headerTitleStyle: styleTitleBodyLg,
                 headerStyle: { backgroundColor: APPTHEME.colors.background },
                 animation: "slide_from_right",
