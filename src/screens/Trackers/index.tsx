@@ -8,6 +8,7 @@ import { useTracker } from "../../hooks/useTrackers";
 import { useNavigation } from "@react-navigation/native";
 import { StackRouterProps } from "../../routers/stack";
 import { useAuth } from "../../hooks/useAuth";
+import { Loading } from "../../components/Loading";
 
 export default function Trackers() {
   const { user } = useAuth();
@@ -16,7 +17,7 @@ export default function Trackers() {
 
   const decideRoute = () => {
     if (user.user.address.zipCode) {
-      navigation.push("AddTracker");
+      navigation.push("AddTrackerToUser");
     } else {
       Alert.alert(
         "Dados necessários",
@@ -28,18 +29,24 @@ export default function Trackers() {
 
   return (
     <View style={styles.container}>
-      <FabIconBottom icon="plus" onPress={decideRoute} />
-      <FlatList
-        data={trackers}
-        contentContainerStyle={styles.list}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => {
-          return <CardTracker model={item.model} code={item.code} />;
-        }}
-        ListEmptyComponent={
-          <CardAlert text="Não há rastreadores vinculados a sua conta." />
-        }
-      />
+      {isTrackerLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <FabIconBottom icon="plus" onPress={decideRoute} />
+          <FlatList
+            data={trackers}
+            contentContainerStyle={styles.list}
+            keyExtractor={(item) => String(item.id)}
+            renderItem={({ item }) => {
+              return <CardTracker model={item.model} code={item.code} />;
+            }}
+            ListEmptyComponent={
+              <CardAlert text="Não há rastreadores vinculados a sua conta." />
+            }
+          />
+        </>
+      )}
     </View>
   );
 }

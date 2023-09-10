@@ -6,14 +6,14 @@ import { Button } from "../../components/Button";
 import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { Controller, useForm } from "react-hook-form";
 import { TextInput } from "../../components/TextInput";
-import { NewUserTracker } from "../../lib/props/NewUserTracker";
+import { NewUserTrackerProps } from "../../lib/props/NewUserTrackerProps";
 import { useTracker } from "../../hooks/useTrackers";
 import { maskNumberPositive } from "../../utils/masks";
 import { useNavigation } from "@react-navigation/native";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
 import { StackRouterProps } from "../../routers/stack";
 
-function AddTracker() {
+function AddTrackerToUser() {
   const { addNewTracker, isTrackerLoading } = useTracker();
   const navigation = useNavigation<StackRouterProps>();
 
@@ -22,7 +22,7 @@ function AddTracker() {
     handleSubmit,
     getValues,
     formState: { errors },
-  } = useForm<NewUserTracker>({
+  } = useForm<NewUserTrackerProps>({
     defaultValues: {},
   });
 
@@ -93,4 +93,4 @@ function AddTracker() {
   );
 }
 
-export default withKeyboardAwareScrollView(AddTracker);
+export default withKeyboardAwareScrollView(AddTrackerToUser);

@@ -27,7 +27,8 @@ import VaccineDoses from "../screens/VaccineDoses";
 import VaccineDose from "../screens/VaccineDose";
 import UpdatePet from "../screens/UpdatePet";
 import Trackers from "../screens/Trackers";
-import AddTracker from "../screens/AddTracker";
+import AddTrackerToUser from "../screens/AddTrackerToUser";
+import AddTrackerToPet from "../screens/AddTrackerToPet";
 
 import AccountBoxImg from "../assets/account-box.svg";
 import PencilImg from "../assets/pencil.svg";
@@ -63,7 +64,8 @@ export type StackNavigationProps = {
   UserInfo: undefined;
   AdressInfo: undefined;
   Trackers: undefined;
-  AddTracker: undefined;
+  AddTrackerToUser: undefined;
+  AddTrackerToPet: undefined;
   ExempleTabs: undefined;
 };
 
@@ -157,8 +159,18 @@ export default function StackRouterComponent() {
               }}
             />
             <Stack.Screen
-              name="AddTracker"
-              component={AddTracker}
+              name="AddTrackerToUser"
+              component={AddTrackerToUser}
+              options={{
+                title: "Adicionar rastreador",
+                headerTitleStyle: styleTitleBodyLg,
+                headerStyle: { backgroundColor: APPTHEME.colors.background },
+                animation: "slide_from_right",
+              }}
+            />
+            <Stack.Screen
+              name="AddTrackerToPet"
+              component={AddTrackerToPet}
               options={{
                 title: "Adicionar rastreador",
                 headerTitleStyle: styleTitleBodyLg,

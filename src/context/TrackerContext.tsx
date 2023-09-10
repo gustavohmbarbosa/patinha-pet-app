@@ -10,14 +10,14 @@ import { TrackerProps } from "../lib/props/TrackerProps";
 import { useAuth } from "../hooks/useAuth";
 import { api } from "../services/api";
 import { errorHandler } from "../utils/errorHandler";
-import { NewUserTracker } from "../lib/props/NewUserTracker";
+import { NewUserTrackerProps } from "../lib/props/NewUserTrackerProps";
 import { UserTarckerBond } from "../lib/props/UserTrackerBond";
 import { AxiosError } from "axios";
 
 export type TrackerContextDataProps = {
   trackers: TrackerProps[];
   isTrackerLoading: boolean;
-  addNewTracker: (tracker: NewUserTracker) => Promise<boolean>;
+  addNewTracker: (tracker: NewUserTrackerProps) => Promise<boolean>;
 };
 
 export type TrackerContextProviderProps = {
@@ -52,7 +52,7 @@ export function TrackerContextProvider({
       });
   }
 
-  async function addNewTracker(tracker: NewUserTracker) {
+  async function addNewTracker(tracker: NewUserTrackerProps) {
     setIsTrackerLoading(true);
     return await api
       .post("/trackers", tracker)
