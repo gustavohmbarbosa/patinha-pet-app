@@ -65,7 +65,7 @@ export type StackNavigationProps = {
   AdressInfo: undefined;
   Trackers: undefined;
   AddTrackerToUser: undefined;
-  AddTrackerToPet: undefined;
+  AddTrackerToPet: { pet: PetProps };
   ExempleTabs: undefined;
 };
 

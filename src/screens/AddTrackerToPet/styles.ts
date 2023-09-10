@@ -13,4 +13,10 @@ export const styles = StyleSheet.create({
   input: {
     gap: 4,
   },
+  inputSwitch: {
+    gap: 4,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
 });

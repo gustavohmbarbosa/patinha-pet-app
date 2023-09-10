@@ -1,33 +1,37 @@
 import React from "react";
-import { View, FlatList } from "react-native";
+import { View, FlatList, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useTracker } from "../../hooks/useTrackers";
 import { CardAlert } from "../CardAlert";
 import { FabIconBottom } from "../FabIconBottom";
 
 import { styles } from "./styles";
 import { StackRouterProps } from "../../routers/stack";
+import { PetProps } from "../../lib/props/PetProps";
+import { useAuth } from "../../hooks/useAuth";
 
-export function TrackersPet() {
-  const { trackers } = useTracker();
+type TrackersPetProps = {
+  pet: PetProps;
+};
+
+export function TrackersPet({ pet }: TrackersPetProps) {
+  const { user } = useAuth();
   const navigation = useNavigation<StackRouterProps>();
 
-  // const decideRoute = () => {
-  //   if (trackers.length > 0) {
-  //     navigation.push("AddTracker");
-  //   } else {
-  //     navigation.push("Trackers");
-  //   }
-  // };
+  const decideRoute = () => {
+    if (user.user.address.zipCode) {
+      navigation.push("AddTrackerToPet", { pet });
+    } else {
+      Alert.alert(
+        "Dados necessários",
+        "Para cadastrar um rastreador, primeiro adicione seu endereço."
+      );
+      navigation.push("AdressInfo");
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <FabIconBottom
-        icon={"plus"}
-        onPress={() => {
-          navigation.push("AddTrackerToPet");
-        }}
-      />
+      <FabIconBottom icon={"plus"} onPress={decideRoute} />
       <FlatList
         style={styles.content}
         data={[]}
