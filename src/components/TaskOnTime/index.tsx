@@ -8,8 +8,11 @@ import { VaccineDoseWithPetAndVaccineProps } from "../../lib/props/VaccineDoseWi
 import { usePet } from "../../hooks/usePet";
 import { CardAlert } from "../CardAlert";
 import { Loading } from "../Loading";
+import { useNavigation } from "@react-navigation/native";
+import { StackRouterProps } from "../../routers/stack";
 
 export function TaskOnTime() {
+  const navigation = useNavigation<StackRouterProps>();
   const { isVaccineDosesLoading, getAllVaccinesDosesOnTime } = usePet();
 
   const [doses, setDoses] = useState<VaccineDoseWithPetAndVaccineProps[]>([]);
@@ -25,8 +28,12 @@ export function TaskOnTime() {
   }
 
   useEffect(() => {
-    getAllDoses();
-  }, []);
+    const unsubscribe = navigation.addListener("focus", async () => {
+      await getAllDoses();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={styles.container}>

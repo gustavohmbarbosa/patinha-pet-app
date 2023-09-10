@@ -1,17 +1,16 @@
-import { TouchableOpacity, View, Text, FlatList } from "react-native";
-
-import { styles } from "./styles";
 import { useEffect, useState } from "react";
-import { CardVaccine } from "../CardVaccine";
-import { FabIconBottom } from "../FabIconBottom";
+import { TouchableOpacity, View, Text, FlatList } from "react-native";
+import { usePet } from "../../hooks/usePet";
 import { useNavigation } from "@react-navigation/native";
 import { StackRouterProps } from "../../routers/stack";
+import { CardVaccine } from "../CardVaccine";
+import { FabIconBottom } from "../FabIconBottom";
+import { Loading } from "../Loading";
+import { CardAlert } from "../CardAlert";
 import { PetProps } from "../../lib/props/PetProps";
 import { VaccineDoseWithVaccineProps } from "../../lib/props/VaccineDoseWithVaccineProps";
-import { usePet } from "../../hooks/usePet";
-import { Loading } from "../Loading";
 import { APPTHEME } from "../../styles/theme";
-import { CardAlert } from "../CardAlert";
+import { styles } from "./styles";
 
 type TasksPetProps = {
   pet: PetProps;
@@ -83,7 +82,11 @@ export function TasksPet({ pet }: TasksPetProps) {
   }
 
   useEffect(() => {
-    getDoses();
+    const unsubscribe = navigation.addListener("focus", async () => {
+      await getDoses();
+    });
+
+    return unsubscribe;
   }, []);
 
   useEffect(() => {
