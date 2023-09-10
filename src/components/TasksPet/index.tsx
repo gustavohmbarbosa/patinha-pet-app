@@ -7,7 +7,7 @@ import { FabIconBottom } from "../FabIconBottom";
 import { useNavigation } from "@react-navigation/native";
 import { StackRouterProps } from "../../routers/stack";
 import { PetProps } from "../../lib/props/PetProps";
-import { VaccinesDosesPetProps } from "../../lib/props/VaccinesDosesProps";
+import { VaccineDoseWithVaccineProps } from "../../lib/props/VaccineDoseWithVaccineProps";
 import { usePet } from "../../hooks/usePet";
 import { Loading } from "../Loading";
 import { APPTHEME } from "../../styles/theme";
@@ -19,7 +19,7 @@ type TasksPetProps = {
 type optionProps = {
   title: string;
   value: "NEXT" | "EXPIRED" | "APPLIED";
-  tasks: VaccinesDosesPetProps[];
+  tasks: VaccineDoseWithVaccineProps[];
 };
 
 export function TasksPet({ pet }: TasksPetProps) {
@@ -50,9 +50,9 @@ export function TasksPet({ pet }: TasksPetProps) {
   async function getDoses() {
     const doses = await getPetVaccinesDoses(pet.id);
 
-    var next: VaccinesDosesPetProps[] = [];
-    var expired: VaccinesDosesPetProps[] = [];
-    var applied: VaccinesDosesPetProps[] = [];
+    var next: VaccineDoseWithVaccineProps[] = [];
+    var expired: VaccineDoseWithVaccineProps[] = [];
+    var applied: VaccineDoseWithVaccineProps[] = [];
 
     doses.forEach((item) => {
       if (item.vaccinatedDate) {

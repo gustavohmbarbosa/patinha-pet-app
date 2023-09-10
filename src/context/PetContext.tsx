@@ -8,7 +8,8 @@ import { AxiosError } from "axios";
 import { VaccineProps } from "../lib/props/VaccineProps";
 import { NewVaccineDoseProps } from "../lib/props/NewVaccineDoseProps";
 import { UpdatePetProps } from "../lib/props/UpdatePetProps";
-import { VaccinesDosesPetProps } from "../lib/props/VaccinesDosesProps";
+import { VaccineDoseWithVaccineProps } from "../lib/props/VaccineDoseWithVaccineProps";
+import { VaccineDoseWithPetAndVaccineProps } from "../lib/props/VaccineDoseWithPetAndVaccineProps";
 
 export type PetContextDataProps = {
   pets: PetProps[];
@@ -25,7 +26,9 @@ export type PetContextDataProps = {
     vaccineId: Number,
     vaccineDose: NewVaccineDoseProps
   ) => Promise<boolean>;
-  getPetVaccinesDoses: (petId: Number) => Promise<VaccinesDosesPetProps[]>;
+  getPetVaccinesDoses: (
+    petId: Number
+  ) => Promise<VaccineDoseWithVaccineProps[]>;
 };
 
 export type PetContextProviderProps = {
@@ -146,11 +149,11 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
 
   async function getPetVaccinesDoses(petId: Number) {
     setIsVaccineDosesLoading(true);
-    var doses: VaccinesDosesPetProps[] = [];
+    var doses: VaccineDoseWithVaccineProps[] = [];
     await api
       .get(`/pets/${petId}/doses`)
       .then((response) => {
-        const data: VaccinesDosesPetProps[] = response.data;
+        const data: VaccineDoseWithVaccineProps[] = response.data;
         doses = data;
       })
       .catch((err: AxiosError) => {

@@ -1,4 +1,4 @@
-import { VaccinesPetProps } from "../lib/props/VaccinesPet";
+import { VaccinesPetProps } from "../lib/props/VaccinesPetProps";
 import { errorHandler } from "../utils/errorHandler";
 import { api } from "./api";
 
