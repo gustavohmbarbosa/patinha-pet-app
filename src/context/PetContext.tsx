@@ -11,11 +11,13 @@ import { UpdatePetProps } from "../lib/props/UpdatePetProps";
 import { VaccineDoseWithVaccineProps } from "../lib/props/VaccineDoseWithVaccineProps";
 import { VaccineDoseWithPetAndVaccineProps } from "../lib/props/VaccineDoseWithPetAndVaccineProps";
 import { UpdateVaccineDoseProps } from "../lib/props/UpdateVaccineDoseProps";
+import { TrackerPetBondProps } from "../lib/props/TrackerPetBondProps";
 
 export type PetContextDataProps = {
   pets: PetProps[];
   isPetLoading: boolean;
   isVaccineDosesLoading: boolean;
+  isTrackerPetLoading: boolean;
   reloadPets: () => Promise<void>;
   addNewPet: (newPet: NewPetProps) => Promise<boolean>;
   updatePet: (pet: UpdatePetProps) => Promise<PetProps | null>;
@@ -35,6 +37,7 @@ export type PetContextDataProps = {
     petId: Number
   ) => Promise<VaccineDoseWithVaccineProps[]>;
   getAllVaccinesDosesOnTime: () => Promise<VaccineDoseWithPetAndVaccineProps[]>;
+  getPetTracker: (petId: Number) => Promise<TrackerPetBondProps | null>;
 };
 
 export type PetContextProviderProps = {
@@ -51,6 +54,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
   const [catVaccines, setCatVaccines] = useState<VaccineProps[]>([]);
   const [isPetLoading, setIsPetLoading] = useState(false);
   const [isVaccineDosesLoading, setIsVaccineDosesLoading] = useState(false);
+  const [isTrackerPetLoading, setIsTrackerPetLoading] = useState(false);
 
   async function reloadPets() {
     setIsPetLoading(true);
@@ -231,6 +235,28 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
       });
   }
 
+  async function getPetTracker(petId: Number) {
+    setIsTrackerPetLoading(true);
+    var tracker: TrackerPetBondProps | null = null;
+
+    await api
+      .get(`/pets/${petId}/tracker`)
+      .then(async (response) => {
+        const data: TrackerPetBondProps = await response.data;
+        tracker = data;
+      })
+      .catch((err: AxiosError) => {
+        if (err.response?.status !== 404) {
+          errorHandler(err);
+        }
+      })
+      .finally(() => {
+        setIsTrackerPetLoading(false);
+      });
+
+    return tracker;
+  }
+
   useEffect(() => {
     if (user.token) {
       reloadPets();
@@ -244,6 +270,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
         pets,
         isPetLoading,
         isVaccineDosesLoading,
+        isTrackerPetLoading,
         reloadPets,
         addNewPet,
         updatePet,
@@ -253,6 +280,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
         updateVaccineDosePet,
         getPetVaccinesDoses,
         getAllVaccinesDosesOnTime,
+        getPetTracker,
       }}
     >
       {children}

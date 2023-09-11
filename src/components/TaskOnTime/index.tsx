@@ -63,11 +63,20 @@ export function TaskOnTime() {
 
             return (
               <CardVaccine
-                title={item.vaccine.name}
-                subtitle={scheduledDate.toLocaleDateString("pt-BR")}
+                title={item.pet.name}
+                subtitle={`${scheduledDate.toLocaleDateString("pt-BR")} - ${
+                  item.vaccine.name
+                }`}
                 fabIcon={icon}
                 fabBgColor={bgIcon}
                 fabIconColor={iconColor}
+                onPress={() => {
+                  navigation.navigate("VaccineDoses", {
+                    name: item.vaccine.name,
+                    petId: item.pet.id,
+                    vaccineId: item.vaccine.id,
+                  });
+                }}
               />
             );
           }}

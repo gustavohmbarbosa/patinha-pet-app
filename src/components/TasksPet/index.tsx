@@ -165,6 +165,13 @@ export function TasksPet({ pet }: TasksPetProps) {
                       fabIcon={icon}
                       fabBgColor={bgIcon}
                       fabIconColor={iconColor}
+                      onPress={() => {
+                        navigation.navigate("VaccineDoses", {
+                          name: item.vaccine.name,
+                          vaccineId: item.vaccine.id,
+                          petId: pet.id,
+                        });
+                      }}
                     />
                   );
                 }}
