@@ -4,7 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import { api } from "../services/api";
 import { errorHandler } from "../utils/errorHandler";
 import { NewUserTrackerProps } from "../lib/props/NewUserTrackerProps";
-import { UserTarckerBond } from "../lib/props/UserTrackerBond";
+import { UserTarckerBondProps } from "../lib/props/UserTrackerBondProps";
 import { AxiosError } from "axios";
 import { PositionWithTrackerAndPet } from "../lib/props/PositionWithTrackerAndPet";
 
@@ -57,7 +57,7 @@ export function TrackerContextProvider({
     return await api
       .post("/trackers", tracker)
       .then((response) => {
-        const data: UserTarckerBond = response.data;
+        const data: UserTarckerBondProps = response.data;
         setTrackers([...trackers, data.tracker]);
         return data.tracker.id;
       })

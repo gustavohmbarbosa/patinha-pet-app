@@ -35,8 +35,12 @@ export default function VaccineDoses({ route }: VaccinesDosesProps) {
   }
 
   useEffect(() => {
-    getDoses();
-  }, []);
+    const unsubscribe = navigation.addListener("focus", async () => {
+      await getDoses();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={styles.container}>

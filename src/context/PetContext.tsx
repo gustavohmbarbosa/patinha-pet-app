@@ -10,6 +10,7 @@ import { NewVaccineDoseProps } from "../lib/props/NewVaccineDoseProps";
 import { UpdatePetProps } from "../lib/props/UpdatePetProps";
 import { VaccineDoseWithVaccineProps } from "../lib/props/VaccineDoseWithVaccineProps";
 import { VaccineDoseWithPetAndVaccineProps } from "../lib/props/VaccineDoseWithPetAndVaccineProps";
+import { UpdateVaccineDoseProps } from "../lib/props/UpdateVaccineDoseProps";
 
 export type PetContextDataProps = {
   pets: PetProps[];
@@ -24,6 +25,11 @@ export type PetContextDataProps = {
     petId: Number,
     vaccineId: Number,
     vaccineDose: NewVaccineDoseProps
+  ) => Promise<boolean>;
+  updateVaccineDosePet: (
+    petId: Number,
+    doseId: Number,
+    vaccineDose: UpdateVaccineDoseProps
   ) => Promise<boolean>;
   getPetVaccinesDoses: (
     petId: Number
@@ -205,6 +211,26 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
       });
   }
 
+  async function updateVaccineDosePet(
+    petId: Number,
+    doseId: Number,
+    vaccineDose: UpdateVaccineDoseProps
+  ) {
+    setIsVaccineDosesLoading(true);
+    return await api
+      .put(`/pets/${petId}/doses/${doseId}`, vaccineDose)
+      .then(() => {
+        return true;
+      })
+      .catch((err) => {
+        errorHandler(err);
+        return false;
+      })
+      .finally(() => {
+        setIsVaccineDosesLoading(false);
+      });
+  }
+
   useEffect(() => {
     if (user.token) {
       reloadPets();
@@ -224,6 +250,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
         dogVaccines,
         catVaccines,
         addVaccineToPet,
+        updateVaccineDosePet,
         getPetVaccinesDoses,
         getAllVaccinesDosesOnTime,
       }}
