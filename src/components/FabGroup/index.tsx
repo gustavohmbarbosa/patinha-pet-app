@@ -1,18 +1,20 @@
-import React, { useState } from "react";
-import { View } from "react-native";
-
+import { useNavigation } from "@react-navigation/native";
+import { FAB, Portal } from "react-native-paper";
 import { styles } from "./styles";
-import { FAB, PaperProvider, Portal } from "react-native-paper";
 import { APPTHEME } from "../../styles/theme";
+import { useState } from "react";
+import { StackRouterProps } from "../../routers/stack";
 
 type stateProps = {
   open: boolean;
 };
 
 export function FabGroup() {
-  const [state, setState] = React.useState({ open: false });
+  const [state, setState] = useState({ open: false });
 
   const onStateChange = ({ open }: stateProps) => setState({ open });
+
+  const navigation = useNavigation<StackRouterProps>();
 
   const { open } = state;
   return (
@@ -34,7 +36,7 @@ export function FabGroup() {
             style: styles.subFab,
             color: APPTHEME.colors.primary,
             // ir para página de adicionar vacinação
-            onPress: () => console.log("ir vacinação"),
+            onPress: () => navigation.push("NewVaccineDose"),
           },
           {
             icon: "paw",
@@ -43,7 +45,7 @@ export function FabGroup() {
             style: styles.subFab,
             color: APPTHEME.colors.primary,
             // ir para página de cadastro de pet
-            onPress: () => console.log("ir pet"),
+            onPress: () => navigation.push("NewPet"),
           },
         ]}
       />

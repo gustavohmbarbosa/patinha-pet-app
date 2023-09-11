@@ -9,9 +9,11 @@ import {
   Quicksand_500Medium,
   Quicksand_600SemiBold,
 } from "@expo-google-fonts/quicksand";
-import { View, Text } from "react-native";
-import { APPTHEME } from "./src/styles/theme";
 import { Loading } from "./src/components/Loading";
+import { APPTHEME } from "./src/styles/theme";
+import { AuthContextProvider } from "./src/context/AuthContext";
+import { PetContextProvider } from "./src/context/PetContext";
+import { TrackerContextProvider } from "./src/context/TrackerContext";
 
 // definição de tema do react native paper
 const theme: MD3Theme = {
@@ -36,8 +38,13 @@ export default function App() {
     <PaperProvider theme={theme}>
       {fontsLoaded ? (
         /* component de rotas */
-
-        <StackRouterComponent />
+        <AuthContextProvider>
+          <PetContextProvider>
+            <TrackerContextProvider>
+              <StackRouterComponent />
+            </TrackerContextProvider>
+          </PetContextProvider>
+        </AuthContextProvider>
       ) : (
         <Loading />
       )}

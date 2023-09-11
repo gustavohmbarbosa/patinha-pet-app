@@ -2,12 +2,12 @@ import React from "react";
 import { View } from "react-native";
 import {
   TextInput as TextInputPaper,
-  TextInputProps,
+  TextInputProps as TextInputPaperProps,
 } from "react-native-paper";
 
 import { styles } from "./styles";
 
-export function TextInput({ ...props }: TextInputProps) {
+export function TextInput({ error = false, ...props }: TextInputPaperProps) {
   return (
     <View style={styles.container}>
       <TextInputPaper
@@ -19,7 +19,7 @@ export function TextInput({ ...props }: TextInputProps) {
         // }
         mode="outlined"
         style={styles.textInput}
-        outlineStyle={styles.outlined}
+        outlineStyle={error ? styles.outlinedError : styles.outlined}
       />
     </View>
   );

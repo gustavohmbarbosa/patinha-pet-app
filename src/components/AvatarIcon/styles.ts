@@ -4,20 +4,16 @@ import { APPTHEME } from "../../styles/theme";
 export const styles = StyleSheet.create({
   container: {
     display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 4,
   },
-  content: {
-    paddingHorizontal: 16,
-    borderColor: APPTHEME.colors.primary,
-    width: 156,
-  },
-  button: {
-    borderRadius: 8,
-  },
-  label: {
+  title: {
     fontFamily: APPTHEME.font.body,
     fontSize: APPTHEME.fontsize.body.sm,
     lineHeight: APPTHEME.lineHeight.body.sm,
     letterSpacing: APPTHEME.letterSpacing.body.sm,
-    color: APPTHEME.colors.text.dark,
+    color: APPTHEME.colors.primary,
   },
 });

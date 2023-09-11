@@ -10,6 +10,7 @@ import { styles } from "./styles";
 type AvatarTextProps = AvatarTextPaperProps & {
   borderWhite?: boolean;
   title?: string;
+  backgroundColor?: string;
 };
 
 // Ao usar o component, escolhe se a borda terá a cor do tema principal ou será branca
@@ -19,6 +20,7 @@ export function AvatarText({
   label,
   title,
   size = 64,
+  backgroundColor = APPTHEME.colors.other.gray,
   ...props
 }: AvatarTextProps) {
   return (
@@ -26,13 +28,13 @@ export function AvatarText({
       <AvatarPaper.Text
         {...props}
         size={size}
-        label={label}
+        label={label.toUpperCase()}
         style={{
           borderWidth: 2,
           borderColor: borderWhite
             ? APPTHEME.colors.neutrals.white
             : APPTHEME.colors.primary,
-          backgroundColor: APPTHEME.colors.other.gray,
+          backgroundColor: backgroundColor,
         }}
       />
       {title && <Text style={styles.title}>{title}</Text>}
