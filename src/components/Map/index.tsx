@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { useMap } from "../../hooks/useMap";
@@ -6,11 +5,12 @@ import { CardAlert } from "../CardAlert";
 import { Pin } from "../Pin";
 import { styles } from "./styles";
 import { Loading } from "../Loading";
+import { useTracker } from "../../hooks/useTrackers";
 
 export function Map() {
   const { positionUser, isMapLoading } = useMap();
 
-  const [petsPosition, setPetsPosition] = useState([""]);
+  const { petsPosition } = useTracker();
 
   return (
     <View style={styles.container}>
@@ -40,18 +40,18 @@ export function Map() {
                 <Pin isUser />
               </Marker>
 
-              {petsPosition.map((pet, index) => {
+              {petsPosition.map((item, index) => {
                 return (
                   <Marker
                     key={index + 1}
                     coordinate={{
-                      latitude: -8.9043,
-                      longitude: -36.4926,
+                      latitude: item.latitude,
+                      longitude: item.longitude,
                     }}
-                    title="Pet"
-                    description="Trc - 4743SD"
+                    title={item.pet.name}
+                    description={`${item.tracker.model} - ${item.tracker.code}`}
                   >
-                    <Pin text="P" />
+                    <Pin text={item.pet.name[0]} />
                   </Marker>
                 );
               })}

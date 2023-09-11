@@ -1,9 +1,7 @@
-type IdAndName = { id: Number; name: string };
-
 export type VaccineDoseWithPetAndVaccineProps = {
   id: Number;
-  pet: IdAndName;
-  vaccine: IdAndName;
+  pet: IdAndNameProps;
+  vaccine: IdAndNameProps;
   scheduledDate: string;
   vaccinatedDate: string | null;
   observation: string | null;
