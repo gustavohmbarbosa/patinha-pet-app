@@ -154,12 +154,14 @@ export function TasksPet({ pet }: TasksPetProps) {
                       ? APPTHEME.colors.other.red
                       : undefined;
 
+                  const date = item.vaccinatedDate
+                    ? new Date(item.vaccinatedDate).toLocaleDateString("pt-BR")
+                    : new Date(item.scheduledDate).toLocaleDateString("pt-BR");
+
                   return (
                     <CardVaccine
                       title={item.vaccine.name}
-                      subtitle={new Date(item.scheduledDate).toLocaleDateString(
-                        "pt-BR"
-                      )}
+                      subtitle={date}
                       fabIcon={icon}
                       fabBgColor={bgIcon}
                       fabIconColor={iconColor}
