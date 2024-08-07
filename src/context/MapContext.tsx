@@ -1,13 +1,4 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { UserProps } from "../lib/props/UserProps";
-import { api } from "../services/api";
-import { Alert } from "react-native";
-import { NewUserProps } from "../lib/props/NewUserProps";
-import {
-  UpdateUserAddressProps,
-  UpdateUserContactProps,
-} from "../lib/props/UpdateUserProps";
-import { errorHandler } from "../utils/errorHandler";
 import {
   getCurrentPositionAsync,
   requestForegroundPermissionsAsync,
@@ -18,6 +9,7 @@ import {
 
 export type MapContextDataProps = {
   positionUser: LocationObject | null;
+  isMapLoading: boolean;
 };
 
 export type MapContextProviderProps = {
@@ -27,10 +19,12 @@ export type MapContextProviderProps = {
 export const MapContext = createContext({} as MapContextDataProps);
 
 export function MapContextProvider({ children }: MapContextProviderProps) {
+  const [isMapLoading, setIsMapLoading] = useState(true);
   const [positionUser, setPositionUser] = useState<LocationObject | null>(null);
   const [permited, setPermited] = useState(false);
 
   async function requestLocationPermitions() {
+    setIsMapLoading(true);
     const { granted } = await requestForegroundPermissionsAsync();
 
     if (granted) {
@@ -38,6 +32,7 @@ export function MapContextProvider({ children }: MapContextProviderProps) {
       const currentPosition = await getCurrentPositionAsync();
       setPositionUser(currentPosition);
     }
+    setIsMapLoading(false);
   }
 
   useEffect(() => {
@@ -46,6 +41,7 @@ export function MapContextProvider({ children }: MapContextProviderProps) {
 
   useEffect(() => {
     if (permited) {
+      setIsMapLoading(false);
       watchPositionAsync(
         {
           accuracy: LocationAccuracy.Highest,
@@ -63,6 +59,7 @@ export function MapContextProvider({ children }: MapContextProviderProps) {
     <MapContext.Provider
       value={{
         positionUser,
+        isMapLoading,
       }}
     >
       {children}

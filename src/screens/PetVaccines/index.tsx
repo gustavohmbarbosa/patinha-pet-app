@@ -3,7 +3,7 @@ import { View, FlatList } from "react-native";
 
 import { styles } from "./styles";
 import { CardVaccine } from "../../components/CardVaccine";
-import { VaccinesPetProps } from "../../lib/props/VaccinesPet";
+import { VaccinesPetProps } from "../../lib/props/VaccinesPetProps";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackNavigationProps, StackRouterProps } from "../../routers/stack";

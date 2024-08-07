@@ -12,23 +12,6 @@ Não precisa baixar pois já ta nas dependências
 
 ## Rodar na sua máquina
 
-### `src/services/api.ts`
-
-- coloque o seu ipv4
-
-```bash
-# rode no teminal para pegar o seu ip
-$ ipconfig
-```
-
-- no arquivo `api.ts`
-
-```ts
-export const api = axios.create({
-  baseURL: "http://{seuIPv4}:8080/v1/",
-});
-```
-
 ### No terminal
 
 ```bash
@@ -48,6 +31,14 @@ $ npx expo -h
 ```
 
 > Expo Go - Para rodar o código no seu celular é so baixar o expo go e pode usar sem conta, para usar basta ler o QRCode que aparece ao rodar a aplicação ou digitar a URL.
+
+### Crie um `.env` na raiz so projeto
+
+- coloque o seu ipv4 de acordo com o `.env.example`
+
+```bash
+API_URL=ipv4
+```
 
 ## Outros
 

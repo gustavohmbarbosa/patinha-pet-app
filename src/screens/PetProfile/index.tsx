@@ -26,13 +26,10 @@ function PetProfile({ route }: PetProfileProps) {
   const navigation = useNavigation<StackRouterProps>();
 
   useEffect(() => {
-    // Esta função será executada sempre que a Rota A for focada
     const unsubscribe = navigation.addListener("focus", () => {
-      // Verifique se a rota tem dadosAtualizados dos parâmetros
       setPet(route.params.pet);
     });
 
-    // Retorne uma função de limpeza para cancelar a inscrição
     return unsubscribe;
   }, [navigation, route]);
 
@@ -77,7 +74,7 @@ function PetProfile({ route }: PetProfileProps) {
       <View style={styles.content}>
         <Tabs.root backgroundColor={APPTHEME.colors.primary}>
           <Tabs.screen label="Tarefas">
-            <TasksPet pet={pet} applied={[]} next={[]} expired={[]} />
+            <TasksPet pet={pet} />
           </Tabs.screen>
           <Tabs.screen label="Rastreador">
             <TrackersPet pet={pet} />
