@@ -1,7 +1,7 @@
 import { PetProps } from "./PetProps";
 import { TrackerProps } from "./TrackerProps";
 
-export type UserTarckerBond = {
+export type UserTarckerBondProps = {
   id: Number;
   pet: PetProps | null;
   tracker: TrackerProps;

@@ -14,6 +14,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import { maskNumberPositive } from "../../utils/masks";
 import { styles } from "./styles";
+import { UpdateVaccineDoseProps } from "../../lib/props/UpdateVaccineDoseProps";
 
 type VaccineDoseForm = {
   scheduledDate: Date;
@@ -35,6 +36,7 @@ function VaccineDose({ route }: VaccineDoseProps) {
   const {
     control,
     handleSubmit,
+    setError,
     clearErrors,
     formState: { errors },
   } = useForm<VaccineDoseForm>({
@@ -59,13 +61,48 @@ function VaccineDose({ route }: VaccineDoseProps) {
     vaccineDose.vaccinatedDate ? true : false
   );
 
-  const { isPetLoading, addVaccineToPet } = usePet();
+  const { isVaccineDosesLoading, updateVaccineDosePet } = usePet();
 
   const navigation = useNavigation<StackRouterProps>();
 
   const submit = handleSubmit(async (data) => {
-    console.log(data);
+    if (additionalInfo && !data.vaccinatedDate) {
+      setError("vaccinatedDate", {
+        message: "Insira a data de vacinação",
+        type: "required",
+      });
+      return;
+    }
+
+    var updatedVaccineDose: UpdateVaccineDoseProps =
+      {} as UpdateVaccineDoseProps;
+    if (!additionalInfo) {
+      updatedVaccineDose = {
+        scheduledDate: data.scheduledDate,
+      };
+    } else {
+      updatedVaccineDose = {
+        scheduledDate: data.scheduledDate,
+        vaccinatedDate: data.vaccinatedDate,
+        batch: data.batch,
+        brand: data.brand,
+        locale: data.locale,
+        observation: data.observation,
+        professional: data.professional,
+      };
+    }
+
+    const response = await updateVaccineDosePet(
+      route.params.petId,
+      vaccineDose.id,
+      updatedVaccineDose
+    );
+
+    if (response) {
+      navigation.goBack();
+    }
   });
+
   return (
     <View style={styles.container}>
       <View style={styles.contentInputs}>
@@ -211,7 +248,7 @@ function VaccineDose({ route }: VaccineDoseProps) {
           </>
         )}
       </View>
-      <Button onPress={submit} loading={isPetLoading}>
+      <Button onPress={submit} loading={isVaccineDosesLoading}>
         Salvar
       </Button>
     </View>

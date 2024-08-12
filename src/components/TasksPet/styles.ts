@@ -8,6 +8,10 @@ export const styles = StyleSheet.create({
     paddingTop: 24,
     paddingHorizontal: 16,
   },
+  content: {
+    flex: 1,
+    gap: 24,
+  },
   buttons: {
     flexDirection: "row",
     gap: 16,
@@ -33,9 +37,6 @@ export const styles = StyleSheet.create({
     letterSpacing: APPTHEME.letterSpacing.label.md,
     lineHeight: APPTHEME.lineHeight.label.md,
     color: APPTHEME.colors.primary,
-  },
-  cards: {
-    marginTop: 24,
   },
   contentContainer: {
     gap: 16,

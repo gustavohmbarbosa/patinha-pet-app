@@ -35,8 +35,12 @@ export default function VaccineDoses({ route }: VaccinesDosesProps) {
   }
 
   useEffect(() => {
-    getDoses();
-  }, []);
+    const unsubscribe = navigation.addListener("focus", async () => {
+      await getDoses();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -46,7 +50,6 @@ export default function VaccineDoses({ route }: VaccinesDosesProps) {
         <>
           {doses ? (
             <FlatList
-              style={styles.cards}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.contentContainer}
               data={doses}
