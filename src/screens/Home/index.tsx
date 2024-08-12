@@ -4,11 +4,11 @@ import { Portal } from "react-native-paper";
 import { MapContextProvider } from "../../context/MapContext";
 import { FabGroup } from "../../components/FabGroup";
 import { HeaderPets } from "../../components/HeaderPets";
-import { Map } from "../../components/Map";
 import { Tabs } from "../../components/Tabs";
 import { TaskOnTime } from "../../components/TaskOnTime";
 
 import { styles } from "./styles";
+import { CardAlert } from "../../components/CardAlert";
 
 export default function Home() {
   return (
@@ -19,11 +19,11 @@ export default function Home() {
           <FabGroup />
           <Tabs.root>
             <Tabs.screen label="Mapa">
-              <View style={styles.tabScreen}>
-                <Map />
+              <View style={styles.cardAlert}>
+                  <CardAlert text="Em desenvolvimento" />
               </View>
             </Tabs.screen>
-            <Tabs.screen label="Tarefas">
+            <Tabs.screen label="Tarefas" disabled>
               <TaskOnTime />
             </Tabs.screen>
           </Tabs.root>
