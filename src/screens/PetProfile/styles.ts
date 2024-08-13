@@ -33,4 +33,11 @@ export const styles = StyleSheet.create({
     paddingTop: 24,
     backgroundColor: APPTHEME.colors.primary,
   },
+  cardAlert: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: APPTHEME.colors.background,
+  },
 });

@@ -8,13 +8,12 @@ import { ButtonTextIcon } from "../../components/ButtonTextIcon";
 import { AvatarText } from "../../components/AvatarText";
 import { Tabs } from "../../components/Tabs";
 import { TasksPet } from "../../components/TasksPet";
-import { TrackersPet } from "../../components/TrackersPet";
 
 import { calculateAge } from "../../utils/ageByBirth";
 import NeddleImg from "../../assets/needle.svg";
-import MapImg from "../../assets/map-marker-path.svg";
 import { APPTHEME } from "../../styles/theme";
 import { styles } from "./styles";
+import { CardAlert } from "../../components/CardAlert";
 
 type PetProfileProps = NativeStackScreenProps<
   StackNavigationProps,
@@ -47,11 +46,12 @@ function PetProfile({ route }: PetProfileProps) {
           <View>
             <Text style={styles.headerTitle}>{pet.name}</Text>
             <Text style={styles.headerSubtitle}>
-              {pet.birth ? calculateAge(pet.birth) : "Não informado"}
+              Idade: {pet.birth ? calculateAge(pet.birth) : "Não informado"}
             </Text>
           </View>
           <View style={styles.headerButtons}>
             <ButtonTextIcon
+              disabled
               label="Vacinas"
               icon={
                 <NeddleImg
@@ -64,20 +64,19 @@ function PetProfile({ route }: PetProfileProps) {
               //   navigation.push("PetVaccines", { name: pet.name, id: pet.id });
               // }}
             />
-            <ButtonTextIcon
-              label="Histórico"
-              icon={<MapImg width={16} height={16} />}
-            />
           </View>
         </View>
       </View>
       <View style={styles.content}>
         <Tabs.root backgroundColor={APPTHEME.colors.primary}>
           <Tabs.screen label="Tarefas">
-            <TasksPet pet={pet} />
+            <View style={styles.cardAlert}>
+              <CardAlert text="Em desenvolvimento" />
+            </View>
+            {/* <TasksPet pet={pet} /> */}
           </Tabs.screen>
-          <Tabs.screen label="Rastreador">
-            <TrackersPet pet={pet} />
+          <Tabs.screen label="Rastreador" disabled>
+            <></>
           </Tabs.screen>
         </Tabs.root>
       </View>

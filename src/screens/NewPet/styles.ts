@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     gap: 24,
   },
   inputRow: {
@@ -30,6 +30,9 @@ export const styles = StyleSheet.create({
   inputRadio: {
     gap: 4,
     alignItems: "flex-start",
+  },
+  inputSwitch: {
+    alignItems: "flex-end",
   },
   title: {
     fontFamily: APPTHEME.font.label.md,

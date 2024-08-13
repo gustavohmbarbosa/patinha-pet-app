@@ -17,11 +17,13 @@ import { catBreeds, dogBreeds } from "../../utils/breeds";
 import { usePet } from "../../hooks/usePet";
 import { useNavigation } from "@react-navigation/native";
 import { StackRouterProps } from "../../routers/stack";
+import { Switch } from "../../components/Switch";
 
 type FormNewPet = {
   name: string;
   type: "CAT" | "DOG";
   breed: string;
+  castrated: boolean;
   weight?: string;
   height?: string;
   birth?: Date;
@@ -36,11 +38,10 @@ function NewPet() {
 
   const {
     control,
-    getValues,
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormNewPet>({ defaultValues: { type: "DOG" } });
+  } = useForm<FormNewPet>({ defaultValues: { type: "DOG", castrated: false } });
 
   const submit = handleSubmit(async (data) => {
     const newPet: NewPetProps = {
@@ -92,13 +93,14 @@ function NewPet() {
           />
           {errors.name && <InvalidFormText title={"Informe o nome"} />}
         </View>
-        <View style={styles.inputRadio}>
-          <Text style={styles.title}>Espécie</Text>
-          <Controller
-            name="type"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <RadioPet
+        <View style={styles.contentRow}>
+          <View style={styles.inputRadio}>
+            <Text style={styles.title}>Espécie</Text>
+            <Controller
+              name="type"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <RadioPet
                 pet={value}
                 setPet={(data) => {
                   if (data === "DOG") {
@@ -109,12 +111,23 @@ function NewPet() {
                   setValue("breed", "");
                   onChange(data);
                 }}
+                />
+              )}
+              rules={{
+                required: true,
+              }}
               />
-            )}
-            rules={{
-              required: true,
-            }}
-          />
+          </View>
+          <View style={styles.inputSwitch}>
+            <Text style={styles.title}>É castrado?</Text>
+            <Controller
+              name="castrated"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <Switch value={value} onChange={() => onChange(!value)} />
+              )}
+            />
+          </View>
         </View>
         <View style={styles.input}>
           <Controller
