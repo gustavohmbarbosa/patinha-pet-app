@@ -60,9 +60,9 @@ function PetProfile({ route }: PetProfileProps) {
                   color={APPTHEME.colors.secondary}
                 />
               }
-              onPress={() => {
-                navigation.push("PetVaccines", { name: pet.name, id: pet.id });
-              }}
+              // onPress={() => {
+              //   navigation.push("PetVaccines", { name: pet.name, id: pet.id });
+              // }}
             />
             <ButtonTextIcon
               label="Histórico"

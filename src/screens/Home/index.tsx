@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { Portal } from "react-native-paper";
-import { MapContextProvider } from "../../context/MapContext";
+// import { MapContextProvider } from "../../context/MapContext";
 import { FabGroup } from "../../components/FabGroup";
 import { HeaderPets } from "../../components/HeaderPets";
 import { Tabs } from "../../components/Tabs";
@@ -12,7 +12,7 @@ import { CardAlert } from "../../components/CardAlert";
 
 export default function Home() {
   return (
-    <MapContextProvider>
+    // <MapContextProvider>
       <Portal.Host>
         <View style={styles.container}>
           <HeaderPets />
@@ -29,6 +29,6 @@ export default function Home() {
           </Tabs.root>
         </View>
       </Portal.Host>
-    </MapContextProvider>
+    // </MapContextProvider>
   );
 }

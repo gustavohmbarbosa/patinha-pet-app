@@ -145,7 +145,7 @@ export default function StackRouterComponent() {
                 headerStyle: { backgroundColor: APPTHEME.colors.background },
               }}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
               name="Trackers"
               component={Trackers}
               options={{
@@ -177,7 +177,7 @@ export default function StackRouterComponent() {
                 headerStyle: { backgroundColor: APPTHEME.colors.background },
                 animation: "slide_from_right",
               }}
-            />
+            /> */}
             <Stack.Screen
               name="NewPet"
               component={NewPet}
@@ -198,7 +198,7 @@ export default function StackRouterComponent() {
                 animation: "slide_from_right",
               })}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
               name="NewVaccineDose"
               component={NewVaccineDose}
               options={{
@@ -218,7 +218,7 @@ export default function StackRouterComponent() {
                 animation: "slide_from_right",
                 contentStyle: { overflow: "hidden" },
               })}
-            />
+            /> */}
             <Stack.Screen
               name="PetProfile"
               component={PetProfile}
@@ -239,7 +239,7 @@ export default function StackRouterComponent() {
                 ),
               })}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
               name="PetVaccines"
               component={PetVaccines}
               options={({ route }) => ({
@@ -266,8 +266,8 @@ export default function StackRouterComponent() {
                 headerTintColor: APPTHEME.colors.text.background,
                 animation: "fade_from_bottom",
               })}
-            />
-            <Stack.Screen name="ExempleTabs" component={ExempleTabs} />
+            /> */}
+            {/* <Stack.Screen name="ExempleTabs" component={ExempleTabs} /> */}
           </>
         ) : (
           <>

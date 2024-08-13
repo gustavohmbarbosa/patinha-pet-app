@@ -260,7 +260,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
   useEffect(() => {
     if (user.token) {
       reloadPets();
-      getVaccines();
+      // getVaccines();
     }
   }, [user]);
 

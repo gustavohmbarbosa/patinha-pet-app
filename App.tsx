@@ -13,7 +13,7 @@ import { Loading } from "./src/components/Loading";
 import { APPTHEME } from "./src/styles/theme";
 import { AuthContextProvider } from "./src/context/AuthContext";
 import { PetContextProvider } from "./src/context/PetContext";
-import { TrackerContextProvider } from "./src/context/TrackerContext";
+// import { TrackerContextProvider } from "./src/context/TrackerContext";
 
 // definição de tema do react native paper
 const theme: MD3Theme = {
@@ -40,9 +40,9 @@ export default function App() {
         /* component de rotas */
         <AuthContextProvider>
           <PetContextProvider>
-            <TrackerContextProvider>
+            {/* <TrackerContextProvider> */}
               <StackRouterComponent />
-            </TrackerContextProvider>
+            {/* </TrackerContextProvider> */}
           </PetContextProvider>
         </AuthContextProvider>
       ) : (
