@@ -22,7 +22,7 @@ import { styles } from "./styles";
 
 type FormNewPet = {
   name: string;
-  type: "cat" | "dog";
+  specie: "cat" | "dog";
   race: string;
   gender: 'female' | 'male';  
   castrated: boolean;
@@ -43,7 +43,7 @@ function NewPet() {
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormNewPet>({ defaultValues: { type: "dog", castrated: false, gender: "male" } });
+  } = useForm<FormNewPet>({ defaultValues: { specie: "dog", castrated: false, gender: "male" } });
 
   const submit = handleSubmit(async (data) => {
     const newPet: NewPetProps = {
@@ -99,7 +99,7 @@ function NewPet() {
           <View style={styles.inputRadio}>
             <Text style={styles.title}>Espécie</Text>
             <Controller
-              name="type"
+              name="specie"
               control={control}
               render={({ field: { value, onChange } }) => (
                 <RadioPet

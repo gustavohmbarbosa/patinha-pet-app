@@ -103,7 +103,7 @@ function NewVaccineDose({ route }: NewVaccineDoseRouterProps) {
   });
 
   useEffect(() => {
-    if (petSelect.type === "cat") {
+    if (petSelect.specie === "cat") {
       setIsDog(true);
     } else {
       setIsDog(false);
@@ -123,7 +123,7 @@ function NewVaccineDose({ route }: NewVaccineDoseRouterProps) {
                 placeholder="Pet a ser vacinado"
                 value={petSelect}
                 onChange={(item: PetProps) => {
-                  if (petSelect.type !== item.type) {
+                  if (petSelect.specie !== item.specie) {
                     resetField("vaccine");
                   }
 

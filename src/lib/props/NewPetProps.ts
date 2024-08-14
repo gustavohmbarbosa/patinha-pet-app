@@ -1,6 +1,6 @@
 export type NewPetProps = {
   name: string;
-  type: "cat" | "dog";
+  specie: "cat" | "dog";
   race: string;
   gender: 'female' | 'male';
   weight?: number;

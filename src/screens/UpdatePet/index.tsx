@@ -28,7 +28,7 @@ type UpdatePetRouteProps = NativeStackScreenProps<
 
 type FormUpdatePet = {
   name: string;
-  type: "cat" | "dog";
+  specie: "cat" | "dog";
   race: string;
   gender: 'female' | 'male';
   castrated: boolean;
@@ -54,7 +54,7 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
     defaultValues: {
       name: basePet.name,
       race: basePet.race,
-      type: basePet.type,
+      specie: basePet.specie,
       castrated: basePet.castrated,
       gender: basePet.gender,
       birth: basePet.birth ? new Date(basePet.birth) : undefined,
@@ -117,7 +117,7 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
               control={control}
               render={({ field: { value, onChange } }) => (
                 <Select
-                  opcoes={basePet.type === "dog" ? dogBreeds : catBreeds}
+                  opcoes={basePet.specie === "dog" ? dogBreeds : catBreeds}
                   placeholder="Raça"
                   value={value}
                   onChange={onChange}

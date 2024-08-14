@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   inputSwitch: {
-    alignItems: "flex-end",
+    alignItems: "flex-start",
   },
   title: {
     fontFamily: APPTHEME.font.label.md,
