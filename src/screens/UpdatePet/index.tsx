@@ -19,6 +19,7 @@ import { usePet } from "../../hooks/usePet";
 import { UpdatePetProps } from "../../lib/props/UpdatePetProps";
 import { useNavigation } from "@react-navigation/native";
 import { Switch } from "../../components/Switch";
+import { RadioGender } from "../../components/RadioGender";
 
 type UpdatePetRouteProps = NativeStackScreenProps<
   StackNavigationProps,
@@ -27,8 +28,9 @@ type UpdatePetRouteProps = NativeStackScreenProps<
 
 type FormUpdatePet = {
   name: string;
-  type: "CAT" | "DOG";
-  breed: string;
+  type: "cat" | "dog";
+  race: string;
+  gender: 'female' | 'male';
   castrated: boolean;
   weight?: string;
   height?: string;
@@ -51,8 +53,10 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
   } = useForm<FormUpdatePet>({
     defaultValues: {
       name: basePet.name,
-      breed: basePet.breed,
+      race: basePet.race,
       type: basePet.type,
+      castrated: basePet.castrated,
+      gender: basePet.gender,
       birth: basePet.birth ? new Date(basePet.birth) : undefined,
       height: basePet.height ? String(basePet.height) : undefined,
       weight: basePet.weight ? String(basePet.weight) : undefined,
@@ -81,7 +85,7 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
         <View style={styles.contentInputs}>
           <AvatarText
             label={lellerPet}
-            size={104}
+            size={96}
             backgroundColor={APPTHEME.colors.primary}
           />
           <View style={styles.input}>
@@ -109,20 +113,20 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
           </View>
           <View style={styles.input}>
             <Controller
-              name="breed"
+              name="race"
               control={control}
               render={({ field: { value, onChange } }) => (
                 <Select
-                  opcoes={basePet.type === "DOG" ? dogBreeds : catBreeds}
+                  opcoes={basePet.type === "dog" ? dogBreeds : catBreeds}
                   placeholder="Raça"
                   value={value}
                   onChange={onChange}
-                  error={errors.breed ? true : false}
+                  error={errors.race ? true : false}
                 />
               )}
               rules={{ required: true }}
             />
-            {errors.breed && <InvalidFormText title="Informe a raça" />}
+            {errors.race && <InvalidFormText title="Informe a raça" />}
           </View>
           <View style={styles.input}>
             <Controller
@@ -177,6 +181,8 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
             </View>
           </View>
         </View>
+        <View style={styles.contentRow}>
+          
         <View>
           <Text style={styles.title}>É castrado?</Text>
           <Controller
@@ -185,8 +191,25 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
             render={({ field: { value, onChange } }) => (
               <Switch value={value} onChange={() => onChange(!value)} />
             )}
-          />
+            />
         </View>
+        <View style={styles.inputRadio}>
+            <Text style={styles.title}>Gênero</Text>
+            <Controller
+              name="gender"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <RadioGender
+                gender={value}
+                setGender={onChange}
+                />
+              )}
+              rules={{
+                required: true,
+              }}
+              />
+          </View>
+            </View>
       </View>
       <Button onPress={submit} loading={isPetLoading}>
         Salvar

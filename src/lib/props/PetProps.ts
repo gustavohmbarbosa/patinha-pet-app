@@ -1,8 +1,9 @@
 export type PetProps = {
   id: Number;
   name: string;
-  type: "DOG" | "CAT";
-  breed: string;
+  type: "dog" | "cat";
+  race: string;
+  gender: 'female' | 'male';
   castrated: boolean;
   weight: Number | null;
   height: Number | null;

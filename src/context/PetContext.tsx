@@ -61,10 +61,11 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
     await api
       .get("/pets")
       .then((response) => {
-        const data: PetProps[] = response.data;
+        const data: PetProps[] = response.data.data;
         setPets(data);
       })
       .catch((err: AxiosError) => {
+        console.log(err);
         if (err.response?.status !== 404) {
           errorHandler(err);
         }
@@ -139,7 +140,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
 
         vaccines.forEach((vaccine) => {
           if (vaccine.isActiveForChoice) {
-            if (vaccine.petType === "DOG") {
+            if (vaccine.petType === "dog") {
               dog.push(vaccine);
             } else {
               cat.push(vaccine);
@@ -258,10 +259,10 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
   }
 
   useEffect(() => {
-    if (user.token) {
+    // if (user.token) {
       reloadPets();
       // getVaccines();
-    }
+    // }
   }, [user]);
 
   return (

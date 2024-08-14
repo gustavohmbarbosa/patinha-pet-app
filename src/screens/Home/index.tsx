@@ -24,7 +24,8 @@ export default function Home() {
               </View>
             </Tabs.screen>
             <Tabs.screen label="Tarefas" disabled>
-              <TaskOnTime />
+              {/* <TaskOnTime /> */}
+              <></>
             </Tabs.screen>
           </Tabs.root>
         </View>

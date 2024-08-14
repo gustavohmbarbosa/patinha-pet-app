@@ -103,7 +103,7 @@ function NewVaccineDose({ route }: NewVaccineDoseRouterProps) {
   });
 
   useEffect(() => {
-    if (petSelect.type === "DOG") {
+    if (petSelect.type === "cat") {
       setIsDog(true);
     } else {
       setIsDog(false);

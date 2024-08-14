@@ -12,13 +12,13 @@ export const styles = StyleSheet.create({
     gap: 24,
   },
   contentInputs: {
-    gap: 24,
+    gap: 16,
   },
   contentRow: {
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     gap: 24,
   },
   inputRow: {
