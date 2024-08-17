@@ -49,7 +49,7 @@ function PetProfile({ route }: PetProfileProps) {
               Idade: {pet.birth ? calculateAge(pet.birth) : "Não informado"}
             </Text>
           </View>
-          <View style={styles.headerButtons}>
+          {/* <View style={styles.headerButtons}>
             <ButtonTextIcon
               disabled
               label="Vacinas"
@@ -60,23 +60,56 @@ function PetProfile({ route }: PetProfileProps) {
                   color={APPTHEME.colors.secondary}
                 />
               }
-              // onPress={() => {
-              //   navigation.push("PetVaccines", { name: pet.name, id: pet.id });
-              // }}
+              onPress={() => {
+                navigation.push("PetVaccines", { name: pet.name, id: pet.id });
+              }}
             />
-          </View>
+          </View> */}
         </View>
       </View>
       <View style={styles.content}>
         <Tabs.root backgroundColor={APPTHEME.colors.primary}>
+          <Tabs.screen label="Informações">
+            <View style={styles.cardInfo}>
+              <View style={styles.info}>
+                <Text style={styles.label}>Espécie</Text>
+                <Text style={styles.text}>{pet.specie === 'cat' ? "Gato" : "Cachorro"}</Text>
+              </View>
+              <View style={styles.info}>
+                <Text style={styles.label}>Raça</Text>
+                <Text style={styles.text}>{pet.race}</Text>
+              </View>
+              <View style={styles.row}>
+                <View style={styles.rowItem}>
+                  <Text style={styles.label}>Altura</Text>
+                  <Text style={styles.text}>{pet.height ? `${Number(pet.height).toFixed(2).replace(".", ",")} cm`: "Não informado"}</Text>
+                </View>
+                <View style={styles.rowItem}>
+                  <Text style={styles.label}>Peso</Text>
+                  <Text style={styles.text}>{pet.weight ? `${Number(pet.weight).toFixed(2).replace(".", ",")} kg` : "Não informado"}</Text>
+                </View>
+              </View>
+              <View style={styles.row}>
+                <View style={styles.rowItem}>
+                  <Text style={styles.label}>Gênero</Text>
+                  <Text style={styles.text}>{pet.gender === "female" ? "Femea" : "Macho"}</Text>
+                </View>
+                <View style={styles.rowItem}>
+                  <Text style={styles.label}>Castrado</Text>
+                  <Text style={styles.text}>{pet.castrated ? "Sim" : "Não"}</Text>
+                </View>
+              </View>
+              <View style={styles.info}>
+                <Text style={styles.label}>Data de nascimento</Text>
+                <Text style={styles.text}>{pet.birth ? new Date(pet.birth).toLocaleDateString("pt-br") : "Não informado"}</Text>
+              </View>              
+            </View>
+          </Tabs.screen>
           <Tabs.screen label="Tarefas">
+            {/* <TasksPet pet={pet} /> */}
             <View style={styles.cardAlert}>
               <CardAlert text="Em desenvolvimento" />
             </View>
-            {/* <TasksPet pet={pet} /> */}
-          </Tabs.screen>
-          <Tabs.screen label="Rastreador" disabled>
-            <></>
           </Tabs.screen>
         </Tabs.root>
       </View>
