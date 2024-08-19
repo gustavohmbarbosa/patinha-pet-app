@@ -22,9 +22,7 @@ export default function SignUp() {
   const windowHeight = Dimensions.get("window").height;
   const maxHeightHeader = Math.round(windowHeight * 0.3);
 
-  const [newUser, setNewUser] = useState<NewUserProps>({
-    address: null,
-  } as NewUserProps);
+  const [newUser, setNewUser] = useState<NewUserProps>({} as NewUserProps);
 
   const headerOptions: headerOptionsProps[] = [
     {

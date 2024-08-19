@@ -1,20 +1,19 @@
-import { AddressUserProps } from "./UserProps";
-
 export type NewAddressUserProps = {
-  zipCode: string;
+  cep: string;
   city: string;
   state: string;
-  neighborhood: string;
+  district: string;
   street: string;
   number?: string;
   complement?: string;
 };
 
 export type NewUserProps = {
-  firstName: string;
-  lastName: string;
-  phone: string;
+  name: string;
+  cpf: string;
+  phone_number: string;
   email: string;
   password: string;
-  address: NewAddressUserProps | null;
+  password_confirmation: string;
+  address?: NewAddressUserProps | null;
 };
