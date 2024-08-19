@@ -6,7 +6,7 @@ import { Button } from "../../../components/Button";
 import { TextInput } from "../../../components/TextInput";
 import { InvalidFormText } from "../../../components/Form/InvalidFormText";
 import { withKeyboardAwareScrollView } from "../../../components/withKeyboardAwareScrollView";
-import { maskCellphone, removeMask } from "../../../utils/masks";
+import { maskCellphone, maskCpf, removeMask } from "../../../utils/masks";
 
 import { NewUserProps } from "../../../lib/props/NewUserProps";
 import { styles } from "./styles";
@@ -17,9 +17,9 @@ type UserInfoFormProps = {
 };
 
 type FormDataProps = {
-  firstName: string;
-  lastName: string;
-  phone: string;
+  name: string;
+  cpf: string;
+  phone_number: string;
 };
 function UserInfoForm({ newUser, setNewUser }: UserInfoFormProps) {
   const {
@@ -32,13 +32,14 @@ function UserInfoForm({ newUser, setNewUser }: UserInfoFormProps) {
   const goTo = useTabNavigation();
 
   const submit = handleSubmit((data) => {
-    const phoneNoMask = removeMask(data.phone);
+    const phoneNoMask = removeMask(data.phone_number);
+    const cpfNoMask = removeMask(data.cpf);
 
     setNewUser({
       ...newUser,
-      firstName: data.firstName.trim(),
-      lastName: data.lastName.trim(),
-      phone: phoneNoMask,
+      name: data.name.trim(),
+      cpf: cpfNoMask,
+      phone_number: phoneNoMask,
     });
 
     goTo(1);
@@ -49,41 +50,53 @@ function UserInfoForm({ newUser, setNewUser }: UserInfoFormProps) {
       <View style={styles.contentInputs}>
         <View style={styles.input}>
           <Controller
-            name="firstName"
+            name="name"
             control={control}
             render={({ field: { value, onChange } }) => (
               <TextInput
                 label="Nome"
                 value={value}
                 onChangeText={onChange}
-                error={errors.firstName ? true : false}
+                error={errors.name ? true : false}
               />
             )}
             rules={{ required: true }}
           />
-          {errors.firstName && <InvalidFormText title="Insira o seu nome!" />}
+          {errors.name && <InvalidFormText title="Insira o seu nome!" />}
         </View>
         <View style={styles.input}>
           <Controller
-            name="lastName"
+            name="cpf"
             control={control}
             render={({ field: { value, onChange } }) => (
               <TextInput
-                label="Sobrenome"
+                label="CPF"
                 value={value}
-                onChangeText={onChange}
-                error={errors.lastName ? true : false}
+                placeholder="000.000.000-00"
+                onChangeText={(text) => onChange(maskCpf(text))}
+                error={errors.cpf ? true : false}
+                keyboardType="number-pad"
+                maxLength={14}
               />
             )}
-            rules={{ required: true }}
+            rules={{
+              validate: {
+                value: () => {
+                  const cpf = getValues("cpf");
+                  return cpf.length === 14;
+                },
+              },
+              required: {
+                value: true,
+                message: "Insira o seu CPF!",
+              },
+            }}
           />
-          {errors.lastName && (
-            <InvalidFormText title="Insira o seu sobrenome!" />
-          )}
+          {errors.cpf && <InvalidFormText title="Insira o CPF completo!" />}
         </View>
         <View style={styles.input}>
           <Controller
-            name="phone"
+            name="phone_number"
             control={control}
             render={({ field: { value, onChange } }) => (
               <TextInput
@@ -98,8 +111,8 @@ function UserInfoForm({ newUser, setNewUser }: UserInfoFormProps) {
             rules={{
               validate: {
                 value: () => {
-                  const password = getValues("phone");
-                  return password.length === 15;
+                  const phone = getValues("phone_number");
+                  return phone.length === 15;
                 },
               },
               required: {
@@ -108,9 +121,9 @@ function UserInfoForm({ newUser, setNewUser }: UserInfoFormProps) {
               },
             }}
           />
-          {errors.phone && (
+          {errors.phone_number && (
             <InvalidFormText
-              title={errors.phone.message || "Insira o número completo"}
+              title={errors.phone_number.message || "Insira o número completo"}
             />
           )}
         </View>

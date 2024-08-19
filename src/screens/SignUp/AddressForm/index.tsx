@@ -39,15 +39,15 @@ function AddressForm({ newUser }: AddressFormProps) {
   } = useForm<NewAddressUserProps>();
 
   const submit = handleSubmit((data) => {
-    const cepNoMask = removeMask(data.zipCode);
+    const cepNoMask = removeMask(data.cep);
 
     signUp({
       ...newUser,
       address: {
-        zipCode: cepNoMask,
+        cep: cepNoMask,
         city: data.city,
         state: data.state,
-        neighborhood: data.neighborhood,
+        district: data.district,
         street: data.street,
         complement: data.complement === "" ? undefined : data.complement,
         number: data.number === "" ? undefined : data.number,
@@ -60,20 +60,20 @@ function AddressForm({ newUser }: AddressFormProps) {
   };
 
   async function handleGetCep() {
-    const cep = getValues("zipCode");
+    const cep = getValues("cep");
     if (cep.length === 9) {
       try {
         const cepInfo: cepInfoProps = await getCep(cep);
 
         setValue("city", cepInfo.localidade);
         setValue("state", cepInfo.uf);
-        setValue("neighborhood", cepInfo.bairro);
+        setValue("district", cepInfo.bairro);
         setValue("street", cepInfo.logradouro);
         setValue("complement", cepInfo.complemento);
 
         clearErrors();
       } catch (error) {
-        setError("zipCode", { message: "Cep não encontrado" });
+        setError("cep", { message: "Cep não encontrado" });
       }
     }
   }
@@ -83,7 +83,7 @@ function AddressForm({ newUser }: AddressFormProps) {
       <View style={styles.contentInputs}>
         <View style={styles.input}>
           <Controller
-            name="zipCode"
+            name="cep"
             control={control}
             render={({ field: { value, onChange } }) => (
               <TextInput
@@ -99,27 +99,27 @@ function AddressForm({ newUser }: AddressFormProps) {
                   <TextInputPaper.Icon
                     icon="magnify"
                     color={
-                      errors.zipCode
+                      errors.cep
                         ? APPTHEME.colors.alert
                         : APPTHEME.colors.primary
                     }
                     onPress={handleGetCep}
                   />
                 }
-                error={errors.zipCode ? true : false}
+                error={errors.cep ? true : false}
               />
             )}
             rules={{
               required: { value: true, message: "Informe o cep" },
               validate: () => {
-                const zipCode = getValues("zipCode");
-                return zipCode.length === 9;
+                const cep = getValues("cep");
+                return cep.length === 9;
               },
             }}
           />
-          {errors.zipCode && (
+          {errors.cep && (
             <InvalidFormText
-              title={errors.zipCode.message || "Informe um Cep válido"}
+              title={errors.cep.message || "Informe um Cep válido"}
             />
           )}
         </View>
@@ -172,19 +172,19 @@ function AddressForm({ newUser }: AddressFormProps) {
         </View>
         <View style={styles.input}>
           <Controller
-            name="neighborhood"
+            name="district"
             control={control}
             render={({ field: { value, onChange } }) => (
               <TextInput
                 label="Bairro"
                 value={value}
                 onChangeText={onChange}
-                error={errors.neighborhood ? true : false}
+                error={errors.district ? true : false}
               />
             )}
             rules={{ required: true }}
           />
-          {errors.neighborhood && <InvalidFormText title="Informe o bairro" />}
+          {errors.district && <InvalidFormText title="Informe o bairro" />}
         </View>
         <View style={styles.input}>
           <Controller

@@ -53,8 +53,12 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   async function signUp(newUser: NewUserProps) {
     setisUserLoading(true);
 
+    if (!newUser.address){
+      delete newUser.address;
+    }
+
     await api
-      .post("signUp", newUser)
+      .post("signup", newUser)
       .then((response) => {
         const data: UserProps = response.data;
         api.defaults.headers.common[
@@ -71,42 +75,57 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }
 
   async function updateUserContact(updateUserContact: UpdateUserContactProps) {
-    setisUserLoading(true);
+    // setisUserLoading(true);
 
-    await api
-      .put("update-contact", updateUserContact)
-      .then(() => {
-        setUser({
-          ...user,
-          user: {
-            ...user.user,
-            firstName: updateUserContact.firstName,
-            lastName: updateUserContact.lastName,
-            phone: updateUserContact.phone,
-          },
-        });
-      })
-      .catch((err) => {
-        errorHandler(err);
-      })
-      .finally(() => {
-        setisUserLoading(false);
-      });
+    // await api
+    //   .put("update-contact", updateUserContact)
+    //   .then(() => {
+    //     setUser({
+    //       ...user,
+    //       user: {
+    //         ...user.user,
+    //         firstName: updateUserContact.firstName,
+    //         lastName: updateUserContact.lastName,
+    //         phone: updateUserContact.phone,
+    //       },
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     errorHandler(err);
+    //   })
+    //   .finally(() => {
+    //     setisUserLoading(false);
+    //   });
   }
 
   async function updateUserAddress(updateUserAddress: UpdateUserAddressProps) {
-    setisUserLoading(true);
+    // setisUserLoading(true);
 
+    // await api
+    //   .put("update-address", updateUserAddress)
+    //   .then(() => {
+    //     setUser({
+    //       ...user,
+    //       user: {
+    //         ...user.user,
+    //         address: updateUserAddress,
+    //       },
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     errorHandler(err);
+    //   })
+    //   .finally(() => {
+    //     setisUserLoading(false);
+    //   });
+  }
+
+  async function logOut() {
     await api
-      .put("update-address", updateUserAddress)
-      .then(() => {
-        setUser({
-          ...user,
-          user: {
-            ...user.user,
-            address: updateUserAddress,
-          },
-        });
+    .post("logout")
+    .then((response) => {
+        api.defaults.headers.common["Authorization"] = undefined;
+        setUser({} as UserProps);
       })
       .catch((err) => {
         errorHandler(err);
@@ -114,11 +133,6 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       .finally(() => {
         setisUserLoading(false);
       });
-  }
-
-  function logOut() {
-    setUser({} as UserProps);
-    api.defaults.headers.common["Authorization"] = undefined;
   }
 
   return (
