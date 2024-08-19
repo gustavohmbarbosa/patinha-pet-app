@@ -38,4 +38,13 @@ export const styles = StyleSheet.create({
     letterSpacing: APPTHEME.letterSpacing.label.md,
     color: APPTHEME.colors.text.black25,
   },
+  buttonFooter: {
+    fontSize: 14,
+    textDecorationLine: "underline",
+  },
+  buttonFooterContent: {
+    gap: 16,
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
 });

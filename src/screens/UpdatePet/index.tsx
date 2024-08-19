@@ -20,6 +20,7 @@ import { UpdatePetProps } from "../../lib/props/UpdatePetProps";
 import { useNavigation } from "@react-navigation/native";
 import { Switch } from "../../components/Switch";
 import { RadioGender } from "../../components/RadioGender";
+import { FooterText } from "../../components/Form/FooterText";
 
 type UpdatePetRouteProps = NativeStackScreenProps<
   StackNavigationProps,
@@ -44,7 +45,7 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
 
   const [lellerPet, setLellerPet] = useState(basePet.name[0]);
 
-  const { updatePet, isPetLoading } = usePet();
+  const { updatePet, deletePet, isPetLoading } = usePet();
 
   const {
     control,
@@ -78,6 +79,14 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
       }
     });
   });
+
+  const handleDeletePet = async () => {
+    await deletePet(basePet.id).then((response) => {
+      if (response) {
+        navigation.navigate("Home")
+      }
+    })
+  }
 
   return (
     <View style={styles.container}>
@@ -209,11 +218,20 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
               }}
               />
           </View>
-            </View>
+        </View>
       </View>
-      <Button onPress={submit} loading={isPetLoading}>
-        Salvar
-      </Button>
+      <View style={styles.buttonFooterContent}>
+        <Button onPress={submit} loading={isPetLoading}>
+          Salvar
+        </Button>
+        <FooterText
+          buttonText="Excluir Pet"
+          buttonTextStyle={styles.buttonFooter}
+          text=""
+          onPress={handleDeletePet}
+          disabled={isPetLoading}
+          />
+      </View>
     </View>
   );
 }

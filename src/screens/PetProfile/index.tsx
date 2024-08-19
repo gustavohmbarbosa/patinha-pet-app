@@ -14,6 +14,7 @@ import NeddleImg from "../../assets/needle.svg";
 import { APPTHEME } from "../../styles/theme";
 import { styles } from "./styles";
 import { CardAlert } from "../../components/CardAlert";
+import { Button } from "../../components/Button";
 
 type PetProfileProps = NativeStackScreenProps<
   StackNavigationProps,

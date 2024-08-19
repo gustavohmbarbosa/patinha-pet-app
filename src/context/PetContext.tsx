@@ -21,6 +21,7 @@ export type PetContextDataProps = {
   reloadPets: () => Promise<void>;
   addNewPet: (newPet: NewPetProps) => Promise<boolean>;
   updatePet: (pet: UpdatePetProps) => Promise<PetProps | null>;
+  deletePet: (id: Number) => Promise<boolean>;
   dogVaccines: VaccineProps[];
   catVaccines: VaccineProps[];
   addVaccineToPet: (
@@ -127,6 +128,21 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
       });
     return returnPet;
   }
+
+  async function deletePet(id: Number) {
+    setIsPetLoading(true);
+    return await api
+      .delete(`/pets/${id}`)
+      .then(async () => {
+        reloadPets();
+        return true;
+      })
+      .catch((err) => {
+        errorHandler(err);
+        setIsPetLoading(false);
+        return true;
+      });
+  }  
 
   async function getVaccines() {
     await api
@@ -273,6 +289,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
         reloadPets,
         addNewPet,
         updatePet,
+        deletePet,
         dogVaccines,
         catVaccines,
         addVaccineToPet,
