@@ -18,7 +18,9 @@ export function HeaderPets() {
   return (
     <View style={styles.container}>
       {isPetLoading ? (
-        <Loading />
+        <View style={styles.loading}>
+          <Loading />
+        </View>
       ) : (
         <>
           {pets.length > 0 ? (

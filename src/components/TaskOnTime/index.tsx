@@ -27,13 +27,13 @@ export function TaskOnTime() {
     setDoses(response);
   }
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", async () => {
-      await getAllDoses();
-    });
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener("focus", async () => {
+  //     await getAllDoses();
+  //   });
 
-    return unsubscribe;
-  }, [navigation]);
+  //   return unsubscribe;
+  // }, [navigation]);
 
   return (
     <View style={styles.container}>

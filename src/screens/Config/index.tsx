@@ -34,13 +34,13 @@ export default function Config() {
       icon: <PinImg width={24} height={24} />,
       onPress: () => navigation.push("AdressInfo"),
     },
-    {
-      id: 3,
-      title: "Rastreadores",
-      subtitle: "Meus rastreadores vinculados",
-      icon: <TrackerImg width={24} height={24} />,
-      onPress: () => navigation.push("Trackers"),
-    },
+    // {
+    //   id: 3,
+    //   title: "Rastreadores",
+    //   subtitle: "Meus rastreadores vinculados",
+    //   icon: <TrackerImg width={24} height={24} />,
+    //   onPress: () => navigation.push("Trackers"),
+    // },
   ];
 
   return (

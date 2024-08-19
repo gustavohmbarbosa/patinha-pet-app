@@ -29,15 +29,15 @@ export function FabGroup() {
         icon={open ? "close" : "plus"}
         onStateChange={onStateChange}
         actions={[
-          {
-            icon: "needle",
-            label: "Vacina",
-            labelStyle: styles.subFabLabel,
-            style: styles.subFab,
-            color: APPTHEME.colors.primary,
-            // ir para página de adicionar vacinação
-            onPress: () => navigation.push("NewVaccineDose"),
-          },
+          // {
+          //   icon: "needle",
+          //   label: "Vacina",
+          //   labelStyle: styles.subFabLabel,
+          //   style: styles.subFab,
+          //   color: APPTHEME.colors.primary,
+          //   // ir para página de adicionar vacinação
+          //   onPress: () => navigation.push("NewVaccineDose"),
+          // },
           {
             icon: "paw",
             label: "Pet",

@@ -15,10 +15,10 @@ const alertError = (apiError: AxiosResponse<any, any>) => {
       messageError = `${messageError}\n- ${errors[key]}`;
     });
   } else {
-    messageError = `Atenção`;
+    messageError = `Aconteceu algo de errado na solicitação`;
   }
 
-  return Alert.alert(`${apiError.data.message}`, messageError);
+  return Alert.alert(`${apiError.data.message || "Erro"}`, messageError);
 };
 
 export const errorHandler = (error: unknown) => {

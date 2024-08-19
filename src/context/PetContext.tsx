@@ -21,6 +21,7 @@ export type PetContextDataProps = {
   reloadPets: () => Promise<void>;
   addNewPet: (newPet: NewPetProps) => Promise<boolean>;
   updatePet: (pet: UpdatePetProps) => Promise<PetProps | null>;
+  deletePet: (id: Number) => Promise<boolean>;
   dogVaccines: VaccineProps[];
   catVaccines: VaccineProps[];
   addVaccineToPet: (
@@ -61,10 +62,11 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
     await api
       .get("/pets")
       .then((response) => {
-        const data: PetProps[] = response.data;
+        const data: PetProps[] = response.data.data;
         setPets(data);
       })
       .catch((err: AxiosError) => {
+        console.log(err);
         if (err.response?.status !== 404) {
           errorHandler(err);
         }
@@ -95,10 +97,8 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
       })
       .catch((err) => {
         errorHandler(err);
-        return true;
-      })
-      .finally(() => {
         setIsPetLoading(false);
+        return true;
       });
   }
 
@@ -129,6 +129,21 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
     return returnPet;
   }
 
+  async function deletePet(id: Number) {
+    setIsPetLoading(true);
+    return await api
+      .delete(`/pets/${id}`)
+      .then(async () => {
+        reloadPets();
+        return true;
+      })
+      .catch((err) => {
+        errorHandler(err);
+        setIsPetLoading(false);
+        return true;
+      });
+  }  
+
   async function getVaccines() {
     await api
       .get("/vaccines")
@@ -139,7 +154,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
 
         vaccines.forEach((vaccine) => {
           if (vaccine.isActiveForChoice) {
-            if (vaccine.petType === "DOG") {
+            if (vaccine.petType === "dog") {
               dog.push(vaccine);
             } else {
               cat.push(vaccine);
@@ -260,7 +275,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
   useEffect(() => {
     if (user.token) {
       reloadPets();
-      getVaccines();
+      // getVaccines();
     }
   }, [user]);
 
@@ -274,6 +289,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
         reloadPets,
         addNewPet,
         updatePet,
+        deletePet,
         dogVaccines,
         catVaccines,
         addVaccineToPet,

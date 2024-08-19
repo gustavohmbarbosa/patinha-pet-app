@@ -12,13 +12,13 @@ export const styles = StyleSheet.create({
     gap: 24,
   },
   contentInputs: {
-    gap: 24,
+    gap: 20,
   },
   contentRow: {
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     gap: 24,
   },
   inputRow: {
@@ -29,6 +29,9 @@ export const styles = StyleSheet.create({
   },
   inputRadio: {
     gap: 4,
+    alignItems: "flex-start",
+  },
+  inputSwitch: {
     alignItems: "flex-start",
   },
   title: {
