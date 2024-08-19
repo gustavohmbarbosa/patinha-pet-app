@@ -27,10 +27,10 @@ export const AuthContext = createContext({} as AuthContextDataProps);
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [user, setUser] = useState<UserProps>({} as UserProps);
-  const [isUserLoading, setisUserLoading] = useState(false);
+  const [isUserLoading, setIsUserLoading] = useState(false);
 
   async function login(email: string, password: string) {
-    setisUserLoading(true);
+    setIsUserLoading(true);
     await api
       .post("login", { email, password })
       .then((response) => {
@@ -46,12 +46,12 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         errorHandler(err);
       })
       .finally(() => {
-        setisUserLoading(false);
+        setIsUserLoading(false);
       });
   }
 
   async function signUp(newUser: NewUserProps) {
-    setisUserLoading(true);
+    setIsUserLoading(true);
 
     if (!newUser.address){
       delete newUser.address;
@@ -70,12 +70,12 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         errorHandler(err);
       })
       .finally(() => {
-        setisUserLoading(false);
+        setIsUserLoading(false);
       });
   }
 
   async function updateUserContact(updateUserContact: UpdateUserContactProps) {
-    // setisUserLoading(true);
+    // setIsUserLoading(true);
 
     // await api
     //   .put("update-contact", updateUserContact)
@@ -94,12 +94,12 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     //     errorHandler(err);
     //   })
     //   .finally(() => {
-    //     setisUserLoading(false);
+    //     setIsUserLoading(false);
     //   });
   }
 
   async function updateUserAddress(updateUserAddress: UpdateUserAddressProps) {
-    // setisUserLoading(true);
+    // setIsUserLoading(true);
 
     // await api
     //   .put("update-address", updateUserAddress)
@@ -116,7 +116,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     //     errorHandler(err);
     //   })
     //   .finally(() => {
-    //     setisUserLoading(false);
+    //     setIsUserLoading(false);
     //   });
   }
 
@@ -131,7 +131,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         errorHandler(err);
       })
       .finally(() => {
-        setisUserLoading(false);
+        setIsUserLoading(false);
       });
   }
 

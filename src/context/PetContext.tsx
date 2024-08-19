@@ -96,10 +96,8 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
       })
       .catch((err) => {
         errorHandler(err);
-        return true;
-      })
-      .finally(() => {
         setIsPetLoading(false);
+        return true;
       });
   }
 
@@ -259,10 +257,10 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
   }
 
   useEffect(() => {
-    // if (user.token) {
+    if (user.token) {
       reloadPets();
       // getVaccines();
-    // }
+    }
   }, [user]);
 
   return (

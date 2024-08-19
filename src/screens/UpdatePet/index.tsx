@@ -67,8 +67,8 @@ function UpdatePet({ route }: UpdatePetRouteProps) {
     const pet: UpdatePetProps = {
       ...data,
       id: basePet.id,
-      height: data.height ? Number(data.height) : null,
-      weight: data.weight ? Number(data.weight) : null,
+      height: data.height ? Number(data.height) : undefined,
+      weight: data.weight ? Number(data.weight) : undefined,
       birth: data.birth ? data.birth : null,
     };
 
