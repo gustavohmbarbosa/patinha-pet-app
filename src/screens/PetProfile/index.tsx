@@ -8,13 +8,13 @@ import { ButtonTextIcon } from "../../components/ButtonTextIcon";
 import { AvatarText } from "../../components/AvatarText";
 import { Tabs } from "../../components/Tabs";
 import { TasksPet } from "../../components/TasksPet";
-import { TrackersPet } from "../../components/TrackersPet";
 
 import { calculateAge } from "../../utils/ageByBirth";
 import NeddleImg from "../../assets/needle.svg";
-import MapImg from "../../assets/map-marker-path.svg";
 import { APPTHEME } from "../../styles/theme";
 import { styles } from "./styles";
+import { CardAlert } from "../../components/CardAlert";
+import { Button } from "../../components/Button";
 
 type PetProfileProps = NativeStackScreenProps<
   StackNavigationProps,
@@ -47,11 +47,12 @@ function PetProfile({ route }: PetProfileProps) {
           <View>
             <Text style={styles.headerTitle}>{pet.name}</Text>
             <Text style={styles.headerSubtitle}>
-              {pet.birth ? calculateAge(pet.birth) : "Não informado"}
+              Idade: {pet.birth ? calculateAge(pet.birth) : "Não informado"}
             </Text>
           </View>
-          <View style={styles.headerButtons}>
+          {/* <View style={styles.headerButtons}>
             <ButtonTextIcon
+              disabled
               label="Vacinas"
               icon={
                 <NeddleImg
@@ -64,20 +65,52 @@ function PetProfile({ route }: PetProfileProps) {
                 navigation.push("PetVaccines", { name: pet.name, id: pet.id });
               }}
             />
-            <ButtonTextIcon
-              label="Histórico"
-              icon={<MapImg width={16} height={16} />}
-            />
-          </View>
+          </View> */}
         </View>
       </View>
       <View style={styles.content}>
         <Tabs.root backgroundColor={APPTHEME.colors.primary}>
-          <Tabs.screen label="Tarefas">
-            <TasksPet pet={pet} />
+          <Tabs.screen label="Informações">
+            <View style={styles.cardInfo}>
+              <View style={styles.info}>
+                <Text style={styles.label}>Espécie</Text>
+                <Text style={styles.text}>{pet.specie === 'cat' ? "Gato" : "Cachorro"}</Text>
+              </View>
+              <View style={styles.info}>
+                <Text style={styles.label}>Raça</Text>
+                <Text style={styles.text}>{pet.race}</Text>
+              </View>
+              <View style={styles.row}>
+                <View style={styles.rowItem}>
+                  <Text style={styles.label}>Altura</Text>
+                  <Text style={styles.text}>{pet.height ? `${Number(pet.height).toFixed(2).replace(".", ",")} cm`: "Não informado"}</Text>
+                </View>
+                <View style={styles.rowItem}>
+                  <Text style={styles.label}>Peso</Text>
+                  <Text style={styles.text}>{pet.weight ? `${Number(pet.weight).toFixed(2).replace(".", ",")} kg` : "Não informado"}</Text>
+                </View>
+              </View>
+              <View style={styles.row}>
+                <View style={styles.rowItem}>
+                  <Text style={styles.label}>Gênero</Text>
+                  <Text style={styles.text}>{pet.gender === "female" ? "Femea" : "Macho"}</Text>
+                </View>
+                <View style={styles.rowItem}>
+                  <Text style={styles.label}>Castrado</Text>
+                  <Text style={styles.text}>{pet.castrated ? "Sim" : "Não"}</Text>
+                </View>
+              </View>
+              <View style={styles.info}>
+                <Text style={styles.label}>Data de nascimento</Text>
+                <Text style={styles.text}>{pet.birth ? new Date(pet.birth).toLocaleDateString("pt-br") : "Não informado"}</Text>
+              </View>              
+            </View>
           </Tabs.screen>
-          <Tabs.screen label="Rastreador">
-            <TrackersPet pet={pet} />
+          <Tabs.screen label="Tarefas">
+            {/* <TasksPet pet={pet} /> */}
+            <View style={styles.cardAlert}>
+              <CardAlert text="Em desenvolvimento" />
+            </View>
           </Tabs.screen>
         </Tabs.root>
       </View>

@@ -34,64 +34,64 @@ export default function Config() {
       icon: <PinImg width={24} height={24} />,
       onPress: () => navigation.push("AdressInfo"),
     },
-    {
-      id: 3,
-      title: "Rastreadores",
-      subtitle: "Meus rastreadores vinculados",
-      icon: <TrackerImg width={24} height={24} />,
-      onPress: () => navigation.push("Trackers"),
-    },
+    // {
+    //   id: 3,
+    //   title: "Rastreadores",
+    //   subtitle: "Meus rastreadores vinculados",
+    //   icon: <TrackerImg width={24} height={24} />,
+    //   onPress: () => navigation.push("Trackers"),
+    // },
   ];
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <AvatarIcon
+        {/* <AvatarIcon
           icon="image-plus"
           color={APPTHEME.colors.primary}
           backgroundColor={APPTHEME.colors.background}
           size={80}
-        />
-        <View style={styles.headerText}>
+        /> */}
+        {/* <View style={styles.headerText}>
           <Text style={styles.title}>
             {user.user.firstName + " " + user.user.lastName}
           </Text>
           <Text style={styles.subtitle}>{user.user.email}</Text>
-        </View>
+        </View> */}
       </View>
       <View style={styles.content}>
         <View>
-          <Divider
+          {/* <Divider
             style={{
               backgroundColor: APPTHEME.colors.background,
               opacity: 0.5,
             }}
-          />
+          /> */}
           {
             // não to usando Flatlist porque não é uma lista(plmns por agr)
-            options.map((item) => (
-              <View key={item.id}>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => item.onPress()}
-                >
-                  <View style={styles.buttonContent}>
-                    {item.icon}
-                    <View>
-                      <Text style={styles.title}>{item.title}</Text>
-                      <Text style={styles.buttonText}>{item.subtitle}</Text>
-                    </View>
-                  </View>
-                  <ChevronImg width={24} height={24} />
-                </TouchableOpacity>
-                <Divider
-                  style={{
-                    backgroundColor: APPTHEME.colors.background,
-                    opacity: 0.5,
-                  }}
-                />
-              </View>
-            ))
+            // options.map((item) => (
+            //   <View key={item.id}>
+            //     <TouchableOpacity
+            //       style={styles.button}
+            //       onPress={() => item.onPress()}
+            //     >
+            //       <View style={styles.buttonContent}>
+            //         {item.icon}
+            //         <View>
+            //           <Text style={styles.title}>{item.title}</Text>
+            //           <Text style={styles.buttonText}>{item.subtitle}</Text>
+            //         </View>
+            //       </View>
+            //       <ChevronImg width={24} height={24} />
+            //     </TouchableOpacity>
+            //     <Divider
+            //       style={{
+            //         backgroundColor: APPTHEME.colors.background,
+            //         opacity: 0.5,
+            //       }}
+            //     />
+            //   </View>
+            // ))
           }
         </View>
         <View>

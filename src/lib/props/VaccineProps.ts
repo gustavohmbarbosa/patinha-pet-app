@@ -2,7 +2,7 @@ export type VaccineProps = {
   id: number;
   name: string;
   description: string;
-  petType: "DOG" | "CAT";
+  petType: "dog" | "cat";
   required: boolean;
   ageForFirstDose: number;
   ageFotSecondDose: number;

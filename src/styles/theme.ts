@@ -48,7 +48,7 @@ export const APPTHEME = {
     display: 36,
     headline: 24,
     label: { md: 12, lg: 16 },
-    body: { sm: 12, lg: 16 },
+    body: { sm: 12, md: 14, lg: 16 },
   },
   lineHeight: {
     display: 44,

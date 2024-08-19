@@ -1,27 +1,31 @@
+import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { View, Text } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { AvatarText } from "../../components/AvatarText";
 import { InvalidFormText } from "../../components/Form/InvalidFormText";
 import { TextInput } from "../../components/TextInput";
-import { styles } from "./styles";
 import { APPTHEME } from "../../styles/theme";
 import { NewPetProps } from "../../lib/props/NewPetProps";
 import { RadioPet } from "../../components/RadioPet";
+import { RadioGender } from "../../components/RadioGender";
 import { Select } from "../../components/Select";
 import { DatePicker } from "../../components/DatePicker";
 import { Button } from "../../components/Button";
 import { withKeyboardAwareScrollView } from "../../components/withKeyboardAwareScrollView";
 import { maskNumberPositive } from "../../utils/masks";
-import { useEffect, useState } from "react";
 import { catBreeds, dogBreeds } from "../../utils/breeds";
 import { usePet } from "../../hooks/usePet";
-import { useNavigation } from "@react-navigation/native";
 import { StackRouterProps } from "../../routers/stack";
+import { Switch } from "../../components/Switch";
+import { styles } from "./styles";
 
 type FormNewPet = {
   name: string;
-  type: "CAT" | "DOG";
-  breed: string;
+  specie: "cat" | "dog";
+  race: string;
+  gender: 'female' | 'male';  
+  castrated: boolean;
   weight?: string;
   height?: string;
   birth?: Date;
@@ -36,11 +40,10 @@ function NewPet() {
 
   const {
     control,
-    getValues,
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormNewPet>({ defaultValues: { type: "DOG" } });
+  } = useForm<FormNewPet>({ defaultValues: { specie: "dog", castrated: false, gender: "male" } });
 
   const submit = handleSubmit(async (data) => {
     const newPet: NewPetProps = {
@@ -66,7 +69,7 @@ function NewPet() {
       <View style={styles.contentInputs}>
         <AvatarText
           label={lellerPet}
-          size={104}
+          size={96}
           backgroundColor={APPTHEME.colors.primary}
         />
         <View style={styles.input}>
@@ -92,33 +95,51 @@ function NewPet() {
           />
           {errors.name && <InvalidFormText title={"Informe o nome"} />}
         </View>
-        <View style={styles.inputRadio}>
-          <Text style={styles.title}>Espécie</Text>
-          <Controller
-            name="type"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <RadioPet
+        <View style={styles.contentRow}>
+          <View style={styles.inputRadio}>
+            <Text style={styles.title}>Espécie</Text>
+            <Controller
+              name="specie"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <RadioPet
                 pet={value}
                 setPet={(data) => {
-                  if (data === "DOG") {
+                  if (data === "dog") {
                     setIsDogBreeds(true);
                   } else {
                     setIsDogBreeds(false);
                   }
-                  setValue("breed", "");
+                  setValue("race", "");
                   onChange(data);
                 }}
+                />
+              )}
+              rules={{
+                required: true,
+              }}
               />
-            )}
-            rules={{
-              required: true,
-            }}
-          />
+          </View>
+          <View style={styles.inputRadio}>
+            <Text style={styles.title}>Gênero</Text>
+            <Controller
+              name="gender"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <RadioGender
+                gender={value}
+                setGender={onChange}
+                />
+              )}
+              rules={{
+                required: true,
+              }}
+              />
+          </View>
         </View>
         <View style={styles.input}>
           <Controller
-            name="breed"
+            name="race"
             control={control}
             render={({ field: { value, onChange } }) => (
               <Select
@@ -126,12 +147,12 @@ function NewPet() {
                 placeholder="Raça"
                 value={value}
                 onChange={onChange}
-                error={errors.breed ? true : false}
+                error={errors.race ? true : false}
               />
             )}
             rules={{ required: true }}
           />
-          {errors.breed && <InvalidFormText title="Informe a raça" />}
+          {errors.race && <InvalidFormText title="Informe a raça" />}
         </View>
         <View style={styles.input}>
           <Controller
@@ -183,6 +204,16 @@ function NewPet() {
               )}
             />
           </View>
+        </View>
+        <View style={styles.inputSwitch}>
+          <Text style={styles.title}>É castrado?</Text>
+          <Controller
+            name="castrated"
+            control={control}
+            render={({ field: { value, onChange } }) => (
+              <Switch value={value} onChange={() => onChange(!value)} />
+            )}
+          />
         </View>
       </View>
       <Button onPress={submit} loading={isPetLoading}>

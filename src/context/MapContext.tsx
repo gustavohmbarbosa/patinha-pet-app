@@ -23,21 +23,21 @@ export function MapContextProvider({ children }: MapContextProviderProps) {
   const [positionUser, setPositionUser] = useState<LocationObject | null>(null);
   const [permited, setPermited] = useState(false);
 
-  async function requestLocationPermitions() {
-    setIsMapLoading(true);
-    const { granted } = await requestForegroundPermissionsAsync();
+  // async function requestLocationPermitions() {
+  //   setIsMapLoading(true);
+  //   const { granted } = await requestForegroundPermissionsAsync();
 
-    if (granted) {
-      setPermited(true);
-      const currentPosition = await getCurrentPositionAsync();
-      setPositionUser(currentPosition);
-    }
-    setIsMapLoading(false);
-  }
+  //   if (granted) {
+  //     setPermited(true);
+  //     const currentPosition = await getCurrentPositionAsync();
+  //     setPositionUser(currentPosition);
+  //   }
+  //   setIsMapLoading(false);
+  // }
 
-  useEffect(() => {
-    requestLocationPermitions();
-  }, []);
+  // useEffect(() => {
+  //   requestLocationPermitions();
+  // }, []);
 
   useEffect(() => {
     if (permited) {

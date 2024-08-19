@@ -12,13 +12,13 @@ export const styles = StyleSheet.create({
     gap: 24,
   },
   contentInputs: {
-    gap: 24,
+    gap: 16,
   },
   contentRow: {
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     gap: 24,
   },
   inputRow: {
@@ -37,5 +37,14 @@ export const styles = StyleSheet.create({
     lineHeight: APPTHEME.lineHeight.label.md,
     letterSpacing: APPTHEME.letterSpacing.label.md,
     color: APPTHEME.colors.text.black25,
+  },
+  buttonFooter: {
+    fontSize: 14,
+    textDecorationLine: "underline",
+  },
+  buttonFooterContent: {
+    gap: 16,
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
 });

@@ -27,10 +27,10 @@ export const AuthContext = createContext({} as AuthContextDataProps);
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [user, setUser] = useState<UserProps>({} as UserProps);
-  const [isUserLoading, setisUserLoading] = useState(false);
+  const [isUserLoading, setIsUserLoading] = useState(false);
 
   async function login(email: string, password: string) {
-    setisUserLoading(true);
+    setIsUserLoading(true);
     await api
       .post("login", { email, password })
       .then((response) => {
@@ -46,15 +46,19 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         errorHandler(err);
       })
       .finally(() => {
-        setisUserLoading(false);
+        setIsUserLoading(false);
       });
   }
 
   async function signUp(newUser: NewUserProps) {
-    setisUserLoading(true);
+    setIsUserLoading(true);
+
+    if (!newUser.address){
+      delete newUser.address;
+    }
 
     await api
-      .post("signUp", newUser)
+      .post("signup", newUser)
       .then((response) => {
         const data: UserProps = response.data;
         api.defaults.headers.common[
@@ -66,59 +70,69 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         errorHandler(err);
       })
       .finally(() => {
-        setisUserLoading(false);
+        setIsUserLoading(false);
       });
   }
 
   async function updateUserContact(updateUserContact: UpdateUserContactProps) {
-    setisUserLoading(true);
+    // setIsUserLoading(true);
 
-    await api
-      .put("update-contact", updateUserContact)
-      .then(() => {
-        setUser({
-          ...user,
-          user: {
-            ...user.user,
-            firstName: updateUserContact.firstName,
-            lastName: updateUserContact.lastName,
-            phone: updateUserContact.phone,
-          },
-        });
-      })
-      .catch((err) => {
-        errorHandler(err);
-      })
-      .finally(() => {
-        setisUserLoading(false);
-      });
+    // await api
+    //   .put("update-contact", updateUserContact)
+    //   .then(() => {
+    //     setUser({
+    //       ...user,
+    //       user: {
+    //         ...user.user,
+    //         firstName: updateUserContact.firstName,
+    //         lastName: updateUserContact.lastName,
+    //         phone: updateUserContact.phone,
+    //       },
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     errorHandler(err);
+    //   })
+    //   .finally(() => {
+    //     setIsUserLoading(false);
+    //   });
   }
 
   async function updateUserAddress(updateUserAddress: UpdateUserAddressProps) {
-    setisUserLoading(true);
+    // setIsUserLoading(true);
 
+    // await api
+    //   .put("update-address", updateUserAddress)
+    //   .then(() => {
+    //     setUser({
+    //       ...user,
+    //       user: {
+    //         ...user.user,
+    //         address: updateUserAddress,
+    //       },
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     errorHandler(err);
+    //   })
+    //   .finally(() => {
+    //     setIsUserLoading(false);
+    //   });
+  }
+
+  async function logOut() {
     await api
-      .put("update-address", updateUserAddress)
-      .then(() => {
-        setUser({
-          ...user,
-          user: {
-            ...user.user,
-            address: updateUserAddress,
-          },
-        });
+    .post("logout")
+    .then((response) => {
+        api.defaults.headers.common["Authorization"] = undefined;
+        setUser({} as UserProps);
       })
       .catch((err) => {
         errorHandler(err);
       })
       .finally(() => {
-        setisUserLoading(false);
+        setIsUserLoading(false);
       });
-  }
-
-  function logOut() {
-    setUser({} as UserProps);
-    api.defaults.headers.common["Authorization"] = undefined;
   }
 
   return (

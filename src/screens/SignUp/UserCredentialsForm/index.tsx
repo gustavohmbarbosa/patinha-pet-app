@@ -21,7 +21,7 @@ type UserCredentialFormProps = {
 type FormDataProps = {
   email: string;
   password: string;
-  confirmPassword: string;
+  password_confirmation: string;
 };
 function UserCredentialForm({ newUser, setNewUser }: UserCredentialFormProps) {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +36,7 @@ function UserCredentialForm({ newUser, setNewUser }: UserCredentialFormProps) {
   const goTo = useTabNavigation();
 
   const submit = handleSubmit((data) => {
-    setNewUser({ ...newUser, email: data.email, password: data.password });
+    setNewUser({ ...newUser, email: data.email, password: data.password, password_confirmation: data.password_confirmation });
     goTo(2);
   });
 
@@ -109,7 +109,7 @@ function UserCredentialForm({ newUser, setNewUser }: UserCredentialFormProps) {
         </View>
         <View style={styles.input}>
           <Controller
-            name="confirmPassword"
+            name="password_confirmation"
             control={control}
             render={({ field: { value, onChange } }) => (
               <TextInput
@@ -117,7 +117,7 @@ function UserCredentialForm({ newUser, setNewUser }: UserCredentialFormProps) {
                 value={value}
                 onChangeText={onChange}
                 autoCapitalize="none"
-                error={errors.confirmPassword ? true : false}
+                error={errors.password_confirmation ? true : false}
                 secureTextEntry={!showPassword}
                 right={
                   <TextInputPaper.Icon
@@ -135,15 +135,15 @@ function UserCredentialForm({ newUser, setNewUser }: UserCredentialFormProps) {
               },
               validate: {
                 value: () => {
-                  return getValues("confirmPassword") === getValues("password");
+                  return getValues("password_confirmation") === getValues("password");
                 },
               },
             }}
           />
-          {errors.confirmPassword && (
+          {errors.password_confirmation && (
             <InvalidFormText
               title={
-                errors.confirmPassword.message ||
+                errors.password_confirmation.message ||
                 "Confirmação de senha inválida"
               }
             />

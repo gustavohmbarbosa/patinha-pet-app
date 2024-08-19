@@ -1,14 +1,16 @@
-# Dependencias
+# Patinha Pet App
 
-- Note 18+
-- npm 9.8.0 (A que estou usando, mais atual)
+O projeto foi desenvolvido inicialmente no projeto de Programação Orientada a Objetos ministrada pelo professor [Igor Vanderlei](https://github.com/igorvanderlei), tinha o intuito juntar informações sobre o pet e informações de consultas médicas, junto ao rastreamento do mesmo. Hoje o app sofre uma reformulação para o Projeto de Engenharia de software ministrado pelo Professor Dr. [Rodrigo Andrade](https://github.com/rcaa), da UFAPE. 
 
-# Bibliotecas importantes
+O sistema passa a estar em um ambiente de pet shop, contendo funcionalidades novas para compra de produtos e agendamento de serviços específicos oferecidos, o app tem a função de complementar o sistema web Saas do pet shop e auxiliar os clientes. As funcionalidas referente a rastreamento não serão utilizadas.
 
-Não precisa baixar pois já ta nas dependências
+## Tecnologias
 
-- [React Navigation](https://reactnavigation.org/) - usando a forma [Stack](https://reactnavigation.org/docs/stack-navigator)
-- [React Native Paper](https://callstack.github.io/react-native-paper/) - "Material UI"
+- [React Native](https://reactnative.dev/)
+- [Axios](https://axios-http.com/ptbr/docs/intro)
+- [React Navigation](https://reactnavigation.org/)
+- [React Native Paper](https://callstack.github.io/react-native-paper/)
+- [React Hook Form](https://react-hook-form.com/docs/useform)
 
 ## Rodar na sua máquina
 
@@ -16,15 +18,12 @@ Não precisa baixar pois já ta nas dependências
 
 ```bash
 # Clone este repositório
-$ git clone https://github.com/gustavohmbarbosa/patinha-pet-app.git
-
 
 # Para instalar dependências:
 $ npm install
 
 # Para rodar o projeto, deve usar:
 $ npx expo start
-
 
 # Para ter acesso a lista de comandos, basta usar
 $ npx expo -h
@@ -40,14 +39,14 @@ $ npx expo -h
 API_URL=ipv4
 ```
 
-## Outros
+## Integrantes Relacionados ao Projeto
 
-- Os components de tela devem ser adicionadas no mesmo estilo de `Home` : `src/screens/NomeDaTela/index.tsx`
-- Pode ser criado arquivo separado para style (no mesmo diretório) caso necessário: `src/screens/NomeDaTela/styles.ts`
-
-```bash
-# no index.tsx do component, importe os styles
-  import { styles } from "./styles";
-```
-
-- Prestar atenção no arquivo `src/routers/stack.tsx`, deve ser adicionado as telas sempre que criadas para uso.
+- **Analice de Melo Battisti** - [AnaliceBattisti](https://github.com/AnaliceBattisti)
+- **Emanuel Reino Almeida da Costa Santos** - [Emanuel-Al](https://github.com/Emanuel-Al)
+- **José Leonardo Santos de Lima** - [leoslima](https://github.com/leoslima)
+- **Gustavo Henrique Melo Barbosa** - [gustavohmbarbosa](https://github.com/gustavohmbarbosa)
+- **Laysa Alves Protásio** - [laysaprotasio](https://github.com/laysaprotasio)
+- **Luan Soares de Lima Zacarias** - [Luanzacarias](https://github.com/Luanzacarias)
+- **Marco Antônio Matos Moraes** - [marcomoraesx](https://github.com/marcomoraesx)
+- **Mariane de Melo Silva** - [marianeme](https://github.com/marianeme)
+- **Yuri Alves Batista** - [Capeudinho](https://github.com/Capeudinho)
