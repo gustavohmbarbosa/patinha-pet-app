@@ -8,14 +8,16 @@ import {
   UpdateUserContactProps,
 } from "../lib/props/UpdateUserProps";
 import { errorHandler } from "../utils/errorHandler";
+import { useNavigation } from "@react-navigation/native";
 
 export type AuthContextDataProps = {
   user: UserBasicProps;
   isUserLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   signUp: (data: NewUserProps) => Promise<void>;
+  getInfo(): Promise<UserProps | null>
   updateUserContact: (data: UpdateUserContactProps) => Promise<void>;
-  updateUserAddress: (data: UpdateUserAddressProps) => Promise<void>;
+  updateUserAddress: (data: UpdateUserAddressProps) => Promise<boolean>;
   logOut: () => void;
 };
 
@@ -23,10 +25,14 @@ export type AuthContextProviderProps = {
   children: ReactNode;
 };
 
-type DataRequestProps ={
+type DataAuthResponseProps ={
   token: string;
   user: UserBasicProps;
 };
+
+type DataGetInfoResponseProps = {
+  user: UserProps;
+}
 
 export const AuthContext = createContext({} as AuthContextDataProps);
 
@@ -39,7 +45,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     await api
       .post("login", { email, password })
       .then((response) => {
-        const data: DataRequestProps = response.data;
+        const data: DataAuthResponseProps = response.data;
         console.log(data);
         api.defaults.headers.common[
           "Authorization"
@@ -65,7 +71,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     await api
       .post("signup", newUser)
       .then((response) => {
-        const data: DataRequestProps = response.data;
+        const data: DataAuthResponseProps = response.data;
         api.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${response.data.token}`;
@@ -79,50 +85,57 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       });
   }
 
-  async function updateUserContact(updateUserContact: UpdateUserContactProps) {
-    // setIsUserLoading(true);
+  async function getInfo() {
+    return await api
+      .get("/")
+      .then((response) => {
+        const data: DataGetInfoResponseProps = response.data;
+        console.log(data);
 
-    // await api
-    //   .put("update-contact", updateUserContact)
-    //   .then(() => {
-    //     setUser({
-    //       ...user,
-    //       user: {
-    //         ...user.user,
-    //         firstName: updateUserContact.firstName,
-    //         lastName: updateUserContact.lastName,
-    //         phone: updateUserContact.phone,
-    //       },
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     errorHandler(err);
-    //   })
-    //   .finally(() => {
-    //     setIsUserLoading(false);
-    //   });
+        return data.user;
+      })
+      .catch((err) => {
+        errorHandler(err);
+        return null;
+      })
+  }
+
+  async function updateUserContact(updateUserContact: UpdateUserContactProps) {
+    setIsUserLoading(true);
+
+    await api
+      .patch("/", updateUserContact)
+      .then(() => {
+        setUser({
+            name: updateUserContact.name,
+            email: updateUserContact.email
+        });
+      })
+      .catch((err) => {
+        errorHandler(err);
+      })
+      .finally(() => {
+        setIsUserLoading(false);
+      });
   }
 
   async function updateUserAddress(updateUserAddress: UpdateUserAddressProps) {
-    // setIsUserLoading(true);
+    setIsUserLoading(true);
 
-    // await api
-    //   .put("update-address", updateUserAddress)
-    //   .then(() => {
-    //     setUser({
-    //       ...user,
-    //       user: {
-    //         ...user.user,
-    //         address: updateUserAddress,
-    //       },
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     errorHandler(err);
-    //   })
-    //   .finally(() => {
-    //     setIsUserLoading(false);
-    //   });
+    return await api
+      .patch("/", {
+        address: updateUserAddress
+      })
+      .then(() => {
+        return true;
+      })
+      .catch((err) => {
+        errorHandler(err);
+        return false;
+      })
+      .finally(() => {
+        setIsUserLoading(false);
+      });
   }
 
   async function logOut() {
@@ -147,6 +160,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         isUserLoading,
         login,
         signUp,
+        getInfo,
         updateUserContact,
         updateUserAddress,
         logOut,

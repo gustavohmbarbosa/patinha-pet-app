@@ -14,13 +14,9 @@ export type UserBasicProps = {
 };
 
 export type UserProps = {
-  token: string;
-  user: {
-    id: string;
-    name: string;
-    cpf: string;
-    email: string;
-    phone_number: string;
-    address: AddressUserProps;
-  };
+  name: string;
+  cpf: string;
+  email: string;
+  phone_number: string;
+  address: AddressUserProps;
 };

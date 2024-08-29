@@ -1,15 +1,16 @@
 export type UpdateUserContactProps = {
-  firstName: string;
-  lastName: string;
-  phone: string;
+  name: string;
+  cpf: string;
+  email: string;
+  phone_number: string;
 };
 
 export type UpdateUserAddressProps = {
-  zipCode: string;
+  cep: string;
   city: string;
   state: string;
-  neighborhood: string;
+  district: string;
   street: string;
-  number: string | null;
-  complement: string | null;
+  number?: string;
+  complement?: string;
 };
