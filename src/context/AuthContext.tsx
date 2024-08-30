@@ -16,7 +16,7 @@ export type AuthContextDataProps = {
   login: (email: string, password: string) => Promise<void>;
   signUp: (data: NewUserProps) => Promise<void>;
   getInfo(): Promise<UserProps | null>
-  updateUserContact: (data: UpdateUserContactProps) => Promise<void>;
+  updateUserContact: (data: UpdateUserContactProps) => Promise<boolean>;
   updateUserAddress: (data: UpdateUserAddressProps) => Promise<boolean>;
   logOut: () => void;
 };
@@ -103,16 +103,18 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   async function updateUserContact(updateUserContact: UpdateUserContactProps) {
     setIsUserLoading(true);
 
-    await api
+    return await api
       .patch("/", updateUserContact)
       .then(() => {
         setUser({
-            name: updateUserContact.name,
-            email: updateUserContact.email
+          ...user,
+          name: updateUserContact.name,
         });
+        return true;
       })
       .catch((err) => {
         errorHandler(err);
+        return false;
       })
       .finally(() => {
         setIsUserLoading(false);
