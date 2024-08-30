@@ -46,7 +46,6 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       .post("login", { email, password })
       .then((response) => {
         const data: DataAuthResponseProps = response.data;
-        console.log(data);
         api.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${response.data.token}`;
@@ -90,7 +89,6 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       .get("/")
       .then((response) => {
         const data: DataGetInfoResponseProps = response.data;
-        console.log(data);
 
         return data.user;
       })
