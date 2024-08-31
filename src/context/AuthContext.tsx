@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useState } from "react";
 import { UserBasicProps, UserProps } from "../lib/props/UserProps";
 import { api } from "../services/api";
-import { Alert } from "react-native";
+import { Alert, ToastAndroid } from "react-native";
 import { NewUserProps } from "../lib/props/NewUserProps";
 import {
   UpdateUserAddressProps,
@@ -40,6 +40,17 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [user, setUser] = useState<UserBasicProps>({} as UserBasicProps);
   const [isUserLoading, setIsUserLoading] = useState(false);
 
+  const showToastWithGravityAndOffset = (text: string) => {
+    ToastAndroid.showWithGravityAndOffset(
+      text,
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+      25,
+      50,
+    );
+  };
+
+
   async function login(email: string, password: string) {
     setIsUserLoading(true);
     await api
@@ -54,6 +65,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       })
       .catch((err) => {
         errorHandler(err);
+
       })
       .finally(() => {
         setIsUserLoading(false);
@@ -108,6 +120,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
           ...user,
           name: updateUserContact.name,
         });
+        showToastWithGravityAndOffset("Atualizado com sucesso");
         return true;
       })
       .catch((err) => {
@@ -127,6 +140,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         address: updateUserAddress
       })
       .then(() => {
+        showToastWithGravityAndOffset("Atualizado com sucesso");
         return true;
       })
       .catch((err) => {
