@@ -1,12 +1,11 @@
 export type BackUserErrorProps = {
   message: string;
   error?: {
-    phone?: string;
-    firstName?: string;
-    lastName?: string;
+    phone_number?: string;
+    name?: string;
     email?: string;
     password?: string;
-    zipCode?: string;
+    cep?: string;
     city?: string;
     street?: string;
     state?: string;

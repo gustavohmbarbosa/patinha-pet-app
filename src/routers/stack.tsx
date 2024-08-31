@@ -96,7 +96,7 @@ export default function StackRouterComponent() {
           animation: "fade_from_bottom",
         }}
       >
-        {user.token ? (
+        {user.email ? (
           <>
             <Stack.Screen
               name="Home"

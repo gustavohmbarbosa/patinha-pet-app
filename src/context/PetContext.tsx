@@ -12,6 +12,7 @@ import { VaccineDoseWithVaccineProps } from "../lib/props/VaccineDoseWithVaccine
 import { VaccineDoseWithPetAndVaccineProps } from "../lib/props/VaccineDoseWithPetAndVaccineProps";
 import { UpdateVaccineDoseProps } from "../lib/props/UpdateVaccineDoseProps";
 import { TrackerPetBondProps } from "../lib/props/TrackerPetBondProps";
+import { ToastAndroid } from "react-native";
 
 export type PetContextDataProps = {
   pets: PetProps[];
@@ -57,6 +58,17 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
   const [isVaccineDosesLoading, setIsVaccineDosesLoading] = useState(false);
   const [isTrackerPetLoading, setIsTrackerPetLoading] = useState(false);
 
+  const showToastWithGravityAndOffset = (text: string) => {
+    ToastAndroid.showWithGravityAndOffset(
+      text,
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+      25,
+      50,
+    );
+  };
+
+
   async function reloadPets() {
     setIsPetLoading(true);
     await api
@@ -66,7 +78,6 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
         setPets(data);
       })
       .catch((err: AxiosError) => {
-        console.log(err);
         if (err.response?.status !== 404) {
           errorHandler(err);
         }
@@ -93,6 +104,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
       .post("/pets", newPet)
       .then(() => {
         reloadPets();
+        showToastWithGravityAndOffset("Pet adicionado com sucesso!");
         return true;
       })
       .catch((err) => {
@@ -119,6 +131,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
         }
         returnPet = petsTemp[index];
         setPets(petsTemp);
+        showToastWithGravityAndOffset("Pet adtualizado!");
       })
       .catch((err) => {
         errorHandler(err);
@@ -135,6 +148,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
       .delete(`/pets/${id}`)
       .then(async () => {
         reloadPets();
+        showToastWithGravityAndOffset("Pet removido!");
         return true;
       })
       .catch((err) => {
@@ -273,7 +287,7 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
   }
 
   useEffect(() => {
-    if (user.token) {
+    if (user.email) {
       reloadPets();
       // getVaccines();
     }

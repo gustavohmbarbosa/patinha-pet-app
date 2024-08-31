@@ -1,21 +1,23 @@
 import { createContext, ReactNode, useState } from "react";
-import { UserProps } from "../lib/props/UserProps";
+import { UserBasicProps, UserProps } from "../lib/props/UserProps";
 import { api } from "../services/api";
-import { Alert } from "react-native";
+import { Alert, ToastAndroid } from "react-native";
 import { NewUserProps } from "../lib/props/NewUserProps";
 import {
   UpdateUserAddressProps,
   UpdateUserContactProps,
 } from "../lib/props/UpdateUserProps";
 import { errorHandler } from "../utils/errorHandler";
+import { useNavigation } from "@react-navigation/native";
 
 export type AuthContextDataProps = {
-  user: UserProps;
+  user: UserBasicProps;
   isUserLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   signUp: (data: NewUserProps) => Promise<void>;
-  updateUserContact: (data: UpdateUserContactProps) => Promise<void>;
-  updateUserAddress: (data: UpdateUserAddressProps) => Promise<void>;
+  getInfo(): Promise<UserProps | null>
+  updateUserContact: (data: UpdateUserContactProps) => Promise<boolean>;
+  updateUserAddress: (data: UpdateUserAddressProps) => Promise<boolean>;
   logOut: () => void;
 };
 
@@ -23,27 +25,47 @@ export type AuthContextProviderProps = {
   children: ReactNode;
 };
 
+type DataAuthResponseProps ={
+  token: string;
+  user: UserBasicProps;
+};
+
+type DataGetInfoResponseProps = {
+  user: UserProps;
+}
+
 export const AuthContext = createContext({} as AuthContextDataProps);
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
-  const [user, setUser] = useState<UserProps>({} as UserProps);
+  const [user, setUser] = useState<UserBasicProps>({} as UserBasicProps);
   const [isUserLoading, setIsUserLoading] = useState(false);
+
+  const showToastWithGravityAndOffset = (text: string) => {
+    ToastAndroid.showWithGravityAndOffset(
+      text,
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+      25,
+      50,
+    );
+  };
+
 
   async function login(email: string, password: string) {
     setIsUserLoading(true);
     await api
       .post("login", { email, password })
       .then((response) => {
-        const data: UserProps = response.data;
-
+        const data: DataAuthResponseProps = response.data;
         api.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${response.data.token}`;
 
-        setUser(data);
+        setUser(data.user);
       })
       .catch((err) => {
         errorHandler(err);
+
       })
       .finally(() => {
         setIsUserLoading(false);
@@ -60,11 +82,11 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     await api
       .post("signup", newUser)
       .then((response) => {
-        const data: UserProps = response.data;
+        const data: DataAuthResponseProps = response.data;
         api.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${response.data.token}`;
-        setUser(data);
+        setUser(data.user);
       })
       .catch((err) => {
         errorHandler(err);
@@ -74,50 +96,60 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       });
   }
 
-  async function updateUserContact(updateUserContact: UpdateUserContactProps) {
-    // setIsUserLoading(true);
+  async function getInfo() {
+    return await api
+      .get("/")
+      .then((response) => {
+        const data: DataGetInfoResponseProps = response.data;
 
-    // await api
-    //   .put("update-contact", updateUserContact)
-    //   .then(() => {
-    //     setUser({
-    //       ...user,
-    //       user: {
-    //         ...user.user,
-    //         firstName: updateUserContact.firstName,
-    //         lastName: updateUserContact.lastName,
-    //         phone: updateUserContact.phone,
-    //       },
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     errorHandler(err);
-    //   })
-    //   .finally(() => {
-    //     setIsUserLoading(false);
-    //   });
+        return data.user;
+      })
+      .catch((err) => {
+        errorHandler(err);
+        return null;
+      })
+  }
+
+  async function updateUserContact(updateUserContact: UpdateUserContactProps) {
+    setIsUserLoading(true);
+
+    return await api
+      .patch("/", updateUserContact)
+      .then(() => {
+        setUser({
+          ...user,
+          name: updateUserContact.name,
+        });
+        showToastWithGravityAndOffset("Atualizado com sucesso");
+        return true;
+      })
+      .catch((err) => {
+        errorHandler(err);
+        return false;
+      })
+      .finally(() => {
+        setIsUserLoading(false);
+      });
   }
 
   async function updateUserAddress(updateUserAddress: UpdateUserAddressProps) {
-    // setIsUserLoading(true);
+    setIsUserLoading(true);
 
-    // await api
-    //   .put("update-address", updateUserAddress)
-    //   .then(() => {
-    //     setUser({
-    //       ...user,
-    //       user: {
-    //         ...user.user,
-    //         address: updateUserAddress,
-    //       },
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     errorHandler(err);
-    //   })
-    //   .finally(() => {
-    //     setIsUserLoading(false);
-    //   });
+    return await api
+      .patch("/", {
+        address: updateUserAddress
+      })
+      .then(() => {
+        showToastWithGravityAndOffset("Atualizado com sucesso");
+        return true;
+      })
+      .catch((err) => {
+        errorHandler(err);
+        return false;
+      })
+      .finally(() => {
+        setIsUserLoading(false);
+      });
   }
 
   async function logOut() {
@@ -125,7 +157,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     .post("logout")
     .then((response) => {
         api.defaults.headers.common["Authorization"] = undefined;
-        setUser({} as UserProps);
+        setUser({} as UserBasicProps);
       })
       .catch((err) => {
         errorHandler(err);
@@ -142,6 +174,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         isUserLoading,
         login,
         signUp,
+        getInfo,
         updateUserContact,
         updateUserAddress,
         logOut,

@@ -2,7 +2,7 @@ import { AxiosResponse, isAxiosError } from "axios";
 import { Alert } from "react-native";
 
 const alertError = (apiError: AxiosResponse<any, any>) => {
-  if (apiError.status === 403)
+  if (apiError.status === 401)
     return Alert.alert(
       "Não autenticado",
       "Verifique os dados inseridos ou tente novamente mais tarde."
