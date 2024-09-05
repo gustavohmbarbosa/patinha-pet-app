@@ -114,11 +114,11 @@ export function TrackerContextProvider({
       });
   }
 
-  useEffect(() => {
-    if (user.token) {
-      getUserTrackers();
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user.email) {
+  //     getUserTrackers();
+  //   }
+  // }, [user]);
 
   return (
     <TrackerContext.Provider
