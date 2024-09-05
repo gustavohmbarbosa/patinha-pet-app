@@ -30,7 +30,7 @@ import Trackers from "../screens/Trackers";
 import AddTrackerToUser from "../screens/AddTrackerToUser";
 import AddTrackerToPet from "../screens/AddTrackerToPet";
 
-import AccountBoxImg from "../assets/account-box.svg";
+import AccountImg from "../assets/account-circle-outline.svg";
 import PencilImg from "../assets/pencil.svg";
 import CloseImg from "../assets/close.svg";
 import { PetProps } from "../lib/props/PetProps";
@@ -106,7 +106,7 @@ export default function StackRouterComponent() {
                 headerRight: () => (
                   <ButtonIcon
                     route="Config"
-                    icon={<AccountBoxImg width={32} height={32} />}
+                    icon={<AccountImg width={32} height={32} />}
                   />
                 ),
               }}
