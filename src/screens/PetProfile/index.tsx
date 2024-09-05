@@ -9,7 +9,7 @@ import { AvatarText } from "../../components/AvatarText";
 import { Tabs } from "../../components/Tabs";
 import { TasksPet } from "../../components/TasksPet";
 
-import { calculateAge } from "../../utils/ageByBirth";
+import { calculateAge } from "../../utils/date";
 import NeddleImg from "../../assets/needle.svg";
 import { APPTHEME } from "../../styles/theme";
 import { styles } from "./styles";
