@@ -13,6 +13,7 @@ import { VaccineDoseWithPetAndVaccineProps } from "../lib/props/VaccineDoseWithP
 import { UpdateVaccineDoseProps } from "../lib/props/UpdateVaccineDoseProps";
 import { TrackerPetBondProps } from "../lib/props/TrackerPetBondProps";
 import { ToastAndroid } from "react-native";
+import { formatDate } from "../utils/date";
 
 export type PetContextDataProps = {
   pets: PetProps[];
@@ -99,9 +100,11 @@ export function PetContextProvider({ children }: PetContextProviderProps) {
 
   async function addNewPet(newPet: NewPetProps) {
     setIsPetLoading(true);
+    
+    const birth = newPet.birth ? formatDate(newPet.birth) : undefined;
 
     return await api
-      .post("/pets", newPet)
+      .post("/pets", {...newPet, birth })
       .then(() => {
         reloadPets();
         showToastWithGravityAndOffset("Pet adicionado com sucesso!");

@@ -18,7 +18,7 @@ const alertError = (apiError: AxiosResponse<any, any>) => {
     messageError = `Aconteceu algo de errado na solicitação`;
   }
 
-  return Alert.alert(`${apiError.data.message || "Erro"}`, messageError);
+  return Alert.alert(`Erro`, apiError.data.message);
 };
 
 export const errorHandler = (error: unknown) => {

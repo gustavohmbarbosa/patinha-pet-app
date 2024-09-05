@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 16
   },
   tabScreen: {
     flex: 1,
@@ -14,4 +15,17 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
+  list: {
+    flex: 1,
+  },
+  content: {
+    gap: 16,
+    paddingVertical: 16,
+    paddingBottom: 24,
+  },
+  center: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  }
 });
